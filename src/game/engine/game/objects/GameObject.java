@@ -29,6 +29,7 @@ public class GameObject implements Drawable, Movable {
 
     protected void updateThisOne() {
 
+
     }
 
     public void update() {

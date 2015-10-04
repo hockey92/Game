@@ -1,0 +1,7 @@
+- add moving, rotating;
+- collision detect;
+- create joins for polygons;
+- animation;
+- fist variant of the game engine;
+- physics engine;
+- ...

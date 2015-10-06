@@ -54,7 +54,6 @@ public class CSO extends ConvexPolygon {
                 } else {
                     csoEdge.addEdge(vectorCoords, polygonNumber, vertexNumber);
                 }
-
             }
         }
 
@@ -91,10 +90,14 @@ public class CSO extends ConvexPolygon {
             return Math.abs(diff) < 0.01;
         }
 
+        float adjustValue(float value) {
+            return value < 0f ? value + 2f * (float) Math.PI : value;
+        }
+
         @Override
         public int compareTo(Angle angle) {
-            float diff = angle.value - value;
-            if (Math.abs(diff) < 0.01) {
+            float diff = adjustValue(angle.value) - adjustValue(value);
+            if (Math.abs(diff) < 0.05) {
                 return 0;
             } else if (diff < 0) {
                 return 1;

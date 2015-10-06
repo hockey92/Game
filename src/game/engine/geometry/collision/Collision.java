@@ -79,8 +79,8 @@ public class Collision implements Drawable {
                 throw new Exception("CSOEdge must contains one or two edges from convex polygons.");
         }
 
-        System.out.println(theNearestVertexNumber);
-        System.out.println(normal.get(0) + " " + normal.get(1));
+//        System.out.println(theNearestVertexNumber);
+//        System.out.println(normal.get(0) + " " + normal.get(1));
     }
 
     private void calculateEdgeToPointContact(CSO cso, int theNearestVertexNumber, Matrix point, ConvexPolygon[] ps) {
@@ -88,17 +88,14 @@ public class Collision implements Drawable {
         mutualPoint = Line.getMutualPoint(perpendicularLine, cso.getLine(theNearestVertexNumber));
         List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
 
-        if (csoEdge.get(0).a == 0) {
-            Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber);
-            Matrix d = Matrix.getLinearCombination(mutualPoint, csoPoint, 1f, -1f);
-            firstVector = Matrix.getLinearCombination(ps[0].getRealCoords(csoEdge.get(0).b), d, 1f, 1f);
-            secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, 1f);
-        } else {
-            Matrix csoPoint = cso.getRealCoords((theNearestVertexNumber + 1) % cso.getVerticesCount());
-            Matrix d = Matrix.getLinearCombination(mutualPoint, csoPoint, 1f, -1f);
-            firstVector = Matrix.getLinearCombination(ps[1].getRealCoords((csoEdge.get(0).b + 1) % ps[1].getVerticesCount()), d, 1f, -1f);
-            secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, -1f);
-        }
+        float[] coeffs = {1f, -1f};
+        int plgNum = csoEdge.get(0).a; // polygon number
+        int vrtNum = csoEdge.get(0).b; // vertex number
+
+        Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber + plgNum < cso.getVerticesCount() ? theNearestVertexNumber + plgNum : 0);
+        Matrix d = Matrix.getLinearCombination(mutualPoint, csoPoint, 1f, -1f); // relative shift
+        firstVector = Matrix.getLinearCombination(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVerticesCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
+        secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, coeffs[plgNum]);
     }
 
     private void calculateEdgeToEdgeContact() {

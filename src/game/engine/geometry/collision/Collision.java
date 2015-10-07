@@ -133,11 +133,6 @@ public class Collision implements Drawable {
         public int compare(Pair<Matrix, Line> obj1, Pair<Matrix, Line> obj2) {
             return (int) Math.signum(obj1.b.getValueOfExpression(obj2.a));
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            return false;
-        }
     }
 
     @Override

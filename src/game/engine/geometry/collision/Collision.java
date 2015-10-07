@@ -6,8 +6,7 @@ import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
 import game.engine.myutils.Pair;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Collision implements Drawable {
     private boolean objectsArePenetrated = false;
@@ -74,6 +73,7 @@ public class Collision implements Drawable {
                 calculateEdgeToPointContact(cso, theNearestVertexNumber, point, ps);
                 break;
             case 2:
+                calculateEdgeToEdgeContact(cso, theNearestVertexNumber, ps);
                 break;
             default:
                 throw new Exception("CSOEdge must contains one or two edges from convex polygons.");
@@ -98,8 +98,46 @@ public class Collision implements Drawable {
         secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, coeffs[plgNum]);
     }
 
-    private void calculateEdgeToEdgeContact() {
+    private void calculateEdgeToEdgeContact(CSO cso, int theNearestVertexNumber, ConvexPolygon[] ps) {
+        List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
+        List<Pair<Matrix, Line>> pointsAndLines = new ArrayList<Pair<Matrix, Line>>(4);
 
+        int coeffs[][] = new int[2][2];
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                int vertexNumber = csoEdge.get(i).b + j;
+                coeffs[csoEdge.get(i).a][j] = vertexNumber == ps[csoEdge.get(i).a].getVerticesCount() ? 0 : vertexNumber;
+            }
+        }
+
+        Line firstPLine = new Line(ps[0].getRealCoords(coeffs[0][0]), ps[0].getRealCoords(coeffs[0][1]));
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                Matrix currPoint = ps[i].getRealCoords(coeffs[i][j]);
+                Line currLine = new Line(currPoint, (new Matrix(currPoint)).applyLinearCombination(normal, 1, 1));
+                pointsAndLines.add(new Pair<Matrix, Line>(Line.getMutualPoint(firstPLine, currLine), currLine));
+            }
+        }
+
+        Collections.sort(pointsAndLines, new EdgeToEdgeContactPairComparator());
+
+        firstVector = Matrix.getLinearCombination(pointsAndLines.get(1).a, Matrix.getLinearCombination(pointsAndLines.get(2).a, pointsAndLines.get(1).a, 1f, -1f).mul(0.5f), 1f, 1f);
+        secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, 1f);
+    }
+
+    private static class EdgeToEdgeContactPairComparator implements Comparator<Pair<Matrix, Line>> {
+
+        @Override
+        public int compare(Pair<Matrix, Line> obj1, Pair<Matrix, Line> obj2) {
+            return (int) Math.signum(obj1.b.getValueOfExpression(obj2.a));
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return false;
+        }
     }
 
     @Override
@@ -114,7 +152,7 @@ public class Collision implements Drawable {
         if (objectsArePenetrated) {
             mutualPoint.applyLinearCombination(d, 1f, 1f);
             point.applyLinearCombination(d, 1f, 1f);
-            drawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
+//            drawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
             drawContext.drawCircle(point.get(0), point.get(1), 2f);
             drawContext.drawCircle(firstVector.get(0), firstVector.get(1), 2f);
             drawContext.drawCircle(secondVector.get(0), secondVector.get(1), 2f);

@@ -1,6 +1,5 @@
 package test;
 
-import game.engine.game.objects.GameObject;
 import game.engine.gamefield.GameField;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.geometry.figures.ShapeFactory;

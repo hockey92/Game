@@ -1,16 +1,15 @@
 package game.engine.game.objects;
 
 import game.engine.myutils.Matrix;
-import test.Main;
 
 import java.util.ArrayList;
 
-public class HardJoin extends GameObject {
+public class HardJoin extends GeometryObject {
     private Matrix polarCoordsOfParentJoinPoint;
     private ArrayList<Matrix> polarCoordsOfChildJoinPoints;
     private ArrayList<Float> anglesBetweenParentAndChild;
 
-    HardJoin(GameObject parent) {
+    HardJoin(GeometryObject parent) {
         this.parent = parent;
     }
 

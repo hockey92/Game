@@ -1,6 +1,6 @@
 package game.engine.game.objects;
 
-public class HumanBeing extends GameObject {
+public class HumanBeing extends GeometryObject {
 
     HumanBeing() {
 

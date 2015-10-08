@@ -9,16 +9,16 @@ import game.engine.myutils.Matrix;
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-public class GameObject implements Drawable, Movable {
+public class GeometryObject implements Drawable, Movable {
     protected ConvexPolygon shape = null;
 
-    protected GameObject parent = null;
-    protected AbstractList<GameObject> children = null;
+    protected GeometryObject parent = null;
+    protected AbstractList<GeometryObject> children = null;
 
-    GameObject() {
+    GeometryObject() {
     }
 
-    GameObject(ConvexPolygon shape, GameObject parent) {
+    GeometryObject(ConvexPolygon shape, GeometryObject parent) {
         this.shape = shape;
         this.parent = parent;
     }
@@ -34,14 +34,14 @@ public class GameObject implements Drawable, Movable {
 
     public void update() {
         updateThisOne();
-        for (GameObject gameObject : children) {
-            gameObject.update();
+        for (GeometryObject geometryObject : children) {
+            geometryObject.update();
         }
     }
 
-    public void addChild(GameObject child) {
+    public void addChild(GeometryObject child) {
         if (children == null) {
-            children = new ArrayList<GameObject>();
+            children = new ArrayList<GeometryObject>();
         }
         children.add(child);
     }
@@ -55,8 +55,8 @@ public class GameObject implements Drawable, Movable {
     @Override
     public void draw(DrawContext drawContext) {
         drawThisOne(drawContext);
-        for (GameObject gameObject : children) {
-            gameObject.draw(drawContext);
+        for (GeometryObject geometryObject : children) {
+            geometryObject.draw(drawContext);
         }
     }
 

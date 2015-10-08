@@ -1,4 +1,4 @@
-package game.engine.game.objects;
+package game.engine.game.objects.geometry;
 
 import game.engine.gamefield.DrawContext;
 import game.engine.gamefield.Drawable;
@@ -28,8 +28,6 @@ public class GeometryObject implements Drawable, Movable {
     }
 
     protected void updateThisOne() {
-
-
     }
 
     public void update() {

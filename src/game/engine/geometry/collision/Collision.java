@@ -2,6 +2,7 @@ package game.engine.geometry.collision;
 
 import game.engine.gamefield.DrawContext;
 import game.engine.gamefield.Drawable;
+import game.engine.geometry.GeometryObject;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
 import game.engine.myutils.Pair;
@@ -15,15 +16,18 @@ public class Collision implements Drawable {
     private Matrix point;
     private CSO cso;
     private Matrix mutualPoint;
-    private Matrix firstVector = Matrix.createCoords(0.0f, 0.0f);
-    private Matrix secondVector = Matrix.createCoords(0.0f, 0.0f);
+    private Matrix[] contactVectors = {Matrix.createCoords(0.0f, 0.0f), Matrix.createCoords(0.0f, 0.0f)};
 
-    public Collision() {
-
+    public Collision(GeometryObject go1, GeometryObject go2) throws Exception {
+        calculateCollision(go1.getShape(), go2.getShape());
     }
 
     public Collision(ConvexPolygon p1, ConvexPolygon p2) throws Exception {
         calculateCollision(p1, p2);
+    }
+
+    public Matrix getContactVector(int index) {
+        return contactVectors[index];
     }
 
     public float getPenetrationDepth() {
@@ -36,6 +40,10 @@ public class Collision implements Drawable {
 
     public boolean checkBroadPhase(ConvexPolygon p1, ConvexPolygon p2) {
         return true;
+    }
+
+    public Matrix getNormal() {
+        return normal;
     }
 
     public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) throws Exception {
@@ -94,8 +102,9 @@ public class Collision implements Drawable {
 
         Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber + plgNum < cso.getVerticesCount() ? theNearestVertexNumber + plgNum : 0);
         Matrix d = Matrix.getLinearCombination(mutualPoint, csoPoint, 1f, -1f); // relative shift
-        firstVector = Matrix.getLinearCombination(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVerticesCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
-        secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, coeffs[plgNum]);
+        contactVectors[plgNum] = Matrix.getLinearCombination(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVerticesCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
+        int nxtPlgNum = plgNum + 1 > 1 ? 0 : 1;
+        contactVectors[nxtPlgNum] = Matrix.getLinearCombination(contactVectors[plgNum], Matrix.getMul(normal, penetrationDepth), 1f, coeffs[plgNum]);
     }
 
     private void calculateEdgeToEdgeContact(CSO cso, int theNearestVertexNumber, ConvexPolygon[] ps) {
@@ -123,8 +132,8 @@ public class Collision implements Drawable {
 
         Collections.sort(pointsAndLines, new EdgeToEdgeContactPairComparator());
 
-        firstVector = Matrix.getLinearCombination(pointsAndLines.get(1).a, Matrix.getLinearCombination(pointsAndLines.get(2).a, pointsAndLines.get(1).a, 1f, -1f).mul(0.5f), 1f, 1f);
-        secondVector = Matrix.getLinearCombination(firstVector, Matrix.getMul(normal, penetrationDepth), 1f, 1f);
+        contactVectors[0] = Matrix.getLinearCombination(pointsAndLines.get(1).a, Matrix.getLinearCombination(pointsAndLines.get(2).a, pointsAndLines.get(1).a, 1f, -1f).mul(0.5f), 1f, 1f);
+        contactVectors[1] = Matrix.getLinearCombination(contactVectors[0], Matrix.getMul(normal, penetrationDepth), 1f, 1f);
     }
 
     private static class EdgeToEdgeContactPairComparator implements Comparator<Pair<Matrix, Line>> {
@@ -149,8 +158,9 @@ public class Collision implements Drawable {
             point.applyLinearCombination(d, 1f, 1f);
 //            drawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
             drawContext.drawCircle(point.get(0), point.get(1), 2f);
-            drawContext.drawCircle(firstVector.get(0), firstVector.get(1), 2f);
-            drawContext.drawCircle(secondVector.get(0), secondVector.get(1), 2f);
+            for (int i = 0; i < 2; i++) {
+                drawContext.drawCircle(contactVectors[i].get(0), contactVectors[i].get(1), 2f);
+            }
             mutualPoint.applyLinearCombination(d, 1f, -1f);
             point.applyLinearCombination(d, 1f, -1f);
 

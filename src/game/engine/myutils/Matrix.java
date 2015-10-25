@@ -268,6 +268,27 @@ public class Matrix implements Cloneable {
         return null;
     }
 
+    public static float getCrossProduct(Matrix v1, Matrix v2) {
+        if (!v1.isCoords() || !v2.isCoords()) {
+            throw new MatrixException("A cross product participant isn't correct");
+        }
+        return v1.get(0) * v2.get(1) - v2.get(0) * v1.get(1);
+    }
+
+    public static Matrix getCrossProduct(Matrix v1, float v2) {
+        if (!v1.isCoords()) {
+            throw new MatrixException("A cross product participance isn't correct");
+        }
+        return Matrix.createCoords(v1.get(1) * v2, v1.get(0) * v2);
+    }
+
+    public static Matrix getCrossProduct(float v1, Matrix v2) {
+        if (!v2.isCoords()) {
+            throw new MatrixException("A cross product participance isn't correct");
+        }
+        return Matrix.createCoords(-v2.get(1) * v1, -v2.get(0) * v1);
+    }
+
     @Override
     public String toString() {
         String matrixOut = "";

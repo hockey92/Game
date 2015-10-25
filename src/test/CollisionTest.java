@@ -45,7 +45,7 @@ public class CollisionTest {
             if (collision != null) {
                 collision.calculateCollision((ConvexPolygon) gameObjects.get(0), (ConvexPolygon) gameObjects.get(1));
             }
-            Thread.sleep(200);
+            Thread.sleep(40);
         }
     }
 }

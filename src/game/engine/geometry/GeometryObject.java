@@ -1,4 +1,4 @@
-package game.engine.game.objects.geometry;
+package game.engine.geometry;
 
 import game.engine.gamefield.DrawContext;
 import game.engine.gamefield.Drawable;
@@ -15,10 +15,10 @@ public class GeometryObject implements Drawable, Movable {
     protected GeometryObject parent = null;
     protected AbstractList<GeometryObject> children = null;
 
-    GeometryObject() {
+    public GeometryObject() {
     }
 
-    GeometryObject(ConvexPolygon shape, GeometryObject parent) {
+    public GeometryObject(ConvexPolygon shape, GeometryObject parent) {
         this.shape = shape;
         this.parent = parent;
     }
@@ -32,8 +32,10 @@ public class GeometryObject implements Drawable, Movable {
 
     public void update() {
         updateThisOne();
-        for (GeometryObject geometryObject : children) {
-            geometryObject.update();
+        if (children != null) {
+            for (GeometryObject geometryObject : children) {
+                geometryObject.update();
+            }
         }
     }
 
@@ -53,8 +55,10 @@ public class GeometryObject implements Drawable, Movable {
     @Override
     public void draw(DrawContext drawContext) {
         drawThisOne(drawContext);
-        for (GeometryObject geometryObject : children) {
-            geometryObject.draw(drawContext);
+        if (children != null) {
+            for (GeometryObject geometryObject : children) {
+                geometryObject.draw(drawContext);
+            }
         }
     }
 
@@ -65,7 +69,9 @@ public class GeometryObject implements Drawable, Movable {
 
     @Override
     public void move(Matrix dCoords) {
-
+        if (shape != null) {
+            shape.move(dCoords);
+        }
     }
 
     @Override

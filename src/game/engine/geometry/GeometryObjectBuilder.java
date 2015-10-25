@@ -1,6 +1,4 @@
-package game.engine.game.objects.geometry;
-
-import game.engine.game.objects.geometry.GeometryObject;
+package game.engine.geometry;
 
 public class GeometryObjectBuilder {
     private GeometryObject geometryObject = null;

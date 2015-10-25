@@ -1,6 +1,5 @@
-package game.engine.game.objects.geometry;
+package game.engine.geometry;
 
-import game.engine.game.objects.geometry.GeometryObject;
 import game.engine.myutils.Matrix;
 
 import java.util.ArrayList;

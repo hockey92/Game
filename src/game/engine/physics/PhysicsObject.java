@@ -34,10 +34,11 @@ public class PhysicsObject implements Drawable {
     }
 
     public void update(float dt) {
-        v.applyLinearCombination((new Matrix(a)).mul(dt), 1f, 1f);
         Matrix dMove = (new Matrix(v)).mul(dt);
         geometryObject.move(dMove);
         geometryObject.rotate(av * dt);
+
+        v.applyLinearCombination((new Matrix(a)).mul(dt), 1f, 1f);
     }
 
     public Matrix getV() {

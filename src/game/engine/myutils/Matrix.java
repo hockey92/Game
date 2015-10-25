@@ -24,11 +24,6 @@ public class Matrix implements Cloneable {
         this.columnCount = column;
         transposed = false;
         values = new float[row][column];
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                values[i][j] = 0;
-            }
-        }
     }
 
     public Matrix(Matrix matrix) {
@@ -287,6 +282,31 @@ public class Matrix implements Cloneable {
             throw new MatrixException("A cross product participance isn't correct");
         }
         return Matrix.createCoords(-v2.get(1) * v1, -v2.get(0) * v1);
+    }
+
+    public Matrix setValues(float[][] values) {
+        for (int i = 0; i < values.length; i++) {
+            if (i > rowCount) {
+                break;
+            }
+            for (int j = 0; j < values[i].length; j++) {
+                if (j > columnCount) {
+                    break;
+                }
+                set(i, j, values[i][j]);
+            }
+        }
+        return this;
+    }
+
+    public Matrix setMainDiag(float[] mainDiag) {
+        if (columnCount != rowCount || columnCount != mainDiag.length) {
+            throw new MatrixException("Incorrect size");
+        }
+        for (int i = 0; i < mainDiag.length; i++) {
+            values[i][i] = mainDiag[i];
+        }
+        return this;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package test;
 
 import game.engine.geometry.GeometryObject;
+import game.engine.physics.PhysicsHandler;
 import game.engine.physics.PhysicsObject;
 import game.engine.gamefield.Drawable;
 import game.engine.gamefield.GameField;
@@ -13,6 +14,7 @@ import java.util.List;
 public class PhysicsObjectTest {
     public static void main(String args[]) throws Exception {
         List<Drawable> gameObjects = new ArrayList<Drawable>();
+        PhysicsHandler physicsHandler = new PhysicsHandler();
 
         float[] xs1 = {-50f, 50f, -50f};
         float[] ys1 = {-50f, -50f, 50f};
@@ -22,27 +24,26 @@ public class PhysicsObjectTest {
 
         PhysicsObject.PhysicsObjectBuilder builder = (new PhysicsObject.PhysicsObjectBuilder())
                 .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 100f, 0f, 0f, 0f), null))
-                .setV(Matrix.createCoords(1f, 0f))
-                .setA(Matrix.createCoords(0f, 0.002f))
-                .setAV(0.02f);
+                .setV(Matrix.createCoords(4f, 0f))
+                .setA(Matrix.createCoords(0f, 0.05f))
+                .setAV(0.02f)
+                .setInvM(0.1f)
+                .setInvI(0.1f);
 
         PhysicsObject.PhysicsObjectBuilder platformBuilder = (new PhysicsObject.PhysicsObjectBuilder())
-                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(600f, 10f, 500f, 500f, 0f), null))
-                .setV(Matrix.createCoords(1f, 0f))
-                .setA(Matrix.createCoords(0f, 0.002f))
-                .setAV(0.02f);
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(600f, 10f, 450f, 500f, 0f), null))
+                .setV(Matrix.createCoords(0f, 0f))
+                .setA(Matrix.createCoords(0f, 0f))
+                .setAV(0f);
 
-        gameObjects.add(builder.createPhysicsObject());
-        gameObjects.add(platformBuilder.createPhysicsObject());
+        PhysicsObject po1 = builder.createPhysicsObject();
+        PhysicsObject platform = platformBuilder.createPhysicsObject();
 
-//        Collision collision = null;
-//
-//        try {
-//            collision = new Collision((ConvexPolygon) gameObjects.get(0), (ConvexPolygon) gameObjects.get(1));
-//            gameObjects.add(collision);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        gameObjects.add(po1);
+        gameObjects.add(platform);
+
+        physicsHandler.addObject(po1);
+        physicsHandler.addObject(platform);
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);
@@ -51,14 +52,7 @@ public class PhysicsObjectTest {
         Thread renderThread = new Thread(gameField);
         renderThread.start();
 
-        while (true) {
-            ((PhysicsObject) gameObjects.get(0)).update(1f);
-//            ((ConvexPolygon) gameObjects.get(0)).rotate(0.05f);
-//            ((ConvexPolygon) gameObjects.get(1)).rotate(-0.05f);
-//            if (collision != null) {
-//                collision.calculateCollision((ConvexPolygon) gameObjects.get(0), (ConvexPolygon) gameObjects.get(1));
-//            }
-            Thread.sleep(20);
-        }
+        Thread physicsThread = new Thread(physicsHandler);
+        physicsThread.start();
     }
 }

@@ -105,6 +105,7 @@ public class Collision implements Drawable {
         contactVectors[plgNum] = Matrix.getLinearCombination(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVerticesCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
         int nxtPlgNum = plgNum + 1 > 1 ? 0 : 1;
         contactVectors[nxtPlgNum] = Matrix.getLinearCombination(contactVectors[plgNum], Matrix.getMul(normal, penetrationDepth), 1f, coeffs[plgNum]);
+        adjustResult(ps);
     }
 
     private void calculateEdgeToEdgeContact(CSO cso, int theNearestVertexNumber, ConvexPolygon[] ps) {
@@ -134,6 +135,13 @@ public class Collision implements Drawable {
 
         contactVectors[0] = Matrix.getLinearCombination(pointsAndLines.get(1).a, Matrix.getLinearCombination(pointsAndLines.get(2).a, pointsAndLines.get(1).a, 1f, -1f).mul(0.5f), 1f, 1f);
         contactVectors[1] = Matrix.getLinearCombination(contactVectors[0], Matrix.getMul(normal, penetrationDepth), 1f, 1f);
+        adjustResult(ps);
+    }
+
+    private void adjustResult(ConvexPolygon[] ps) {
+        for (int i = 0; i < 2; i++) {
+            contactVectors[i].applyLinearCombination(ps[i].getCenterOfMass(), 1f, -1f);
+        }
     }
 
     private static class EdgeToEdgeContactPairComparator implements Comparator<Pair<Matrix, Line>> {

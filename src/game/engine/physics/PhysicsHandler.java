@@ -18,10 +18,11 @@ public class PhysicsHandler implements Runnable {
     @Override
     public void run() {
         while (true) {
+            long time1 = System.currentTimeMillis();
             for (PhysicsObject object : physicsObjects) {
                 object.update(dt);
             }
-
+            long time2 = System.currentTimeMillis();
             List<Constraint> contactConstraints = new LinkedList<Constraint>();
             for (int i = 0; i < physicsObjects.size(); i++) {
                 for (int j = i + 1; j < physicsObjects.size(); j++) {
@@ -44,15 +45,18 @@ public class PhysicsHandler implements Runnable {
                     }
                 }
             }
-
+            long time3 = System.currentTimeMillis();
             for (int iteration = 0; iteration < iterationCount; iteration++) {
                 for (Constraint constraint : contactConstraints) {
                     constraint.fix();
                 }
             }
+            long time4 = System.currentTimeMillis();
+
+            System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
 
             try {
-                Thread.sleep(5);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

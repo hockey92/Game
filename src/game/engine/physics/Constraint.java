@@ -39,7 +39,6 @@ abstract public class Constraint {
     protected float calculateLyambda() {
         Matrix J = getJacobian();
         Matrix transposeJ = (new Matrix(J)).transpose();
-//        getB();
         return Matrix.getLinComb(Matrix.mul(V, transposeJ), getB(), -1f, -1f).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
 //        return -Matrix.mul(V, transposeJ).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
     }
@@ -47,10 +46,10 @@ abstract public class Constraint {
     public void fix() {
         float lyambda = calculateLyambda();
 //        System.err.println("lyambda = " + lyambda);
-//        float oldImpulse = totalImpulse;
-//        totalImpulse = oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
-//        lyambda = totalImpulse + oldImpulse;
-        if (lyambda > 0) return;
+        float oldImpulse = totalImpulse;
+        totalImpulse = oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
+        lyambda = totalImpulse + oldImpulse;
+//        if (lyambda > 0) return;
         Matrix J = getJacobian();
         Matrix transposeJ = (new Matrix(J)).transpose();
         Matrix dV = Matrix.mul(M, transposeJ).mul(lyambda);

@@ -1,7 +1,6 @@
 package test;
 
 import game.engine.geometry.GeometryObject;
-import game.engine.geometry.collision.Collision;
 import game.engine.physics.PhysicsHandler;
 import game.engine.physics.PhysicsObject;
 import game.engine.gamefield.Drawable;
@@ -24,14 +23,13 @@ public class PhysicsObjectTest {
         float[] ys2 = {-50f, -50f, 50f};
 
         float invM = 0.001f;
+        int n = 30;
 
+        PhysicsObject pos[] = new PhysicsObject[n];
 
-        PhysicsObject pos[] = new PhysicsObject[2];
-
-
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < n; i++) {
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
-                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(20f, 100f, 200 + 200 * i, 200, 0.5f), null))
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(50f, 50f, 100 + 5 * i, 200 + (i / 50) * 70, 0.5f), null))
                     .setV(Matrix.createCoords(4f, 0f))
                     .setA(Matrix.createCoords(0f, 0.05f))
                     .setAV(0)
@@ -110,6 +108,7 @@ public class PhysicsObjectTest {
 //        PhysicsObject po4 = builder4.createPhysicsObject();
 //        PhysicsObject po5 = builder5.createPhysicsObject();
         PhysicsObject gPlatform = gPlatformBuilder.createPhysicsObject();
+        gPlatform.getGeometryObject().rotate(0.2f);
         PhysicsObject gPlatform2 = gPlatformBuilder2.createPhysicsObject();
         PhysicsObject vPlatform = vPlatformBuilder.createPhysicsObject();
         PhysicsObject vPlatform2 = vPlatformBuilder2.createPhysicsObject();
@@ -139,7 +138,7 @@ public class PhysicsObjectTest {
         physicsHandler.addObject(vPlatform);
         physicsHandler.addObject(vPlatform2);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < n; i++) {
             physicsHandler.addObject(pos[i]);
             gameObjects.add(pos[i]);
         }

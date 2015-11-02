@@ -1,6 +1,7 @@
 package test;
 
 import game.engine.geometry.GeometryObject;
+import game.engine.geometry.collision.Collision;
 import game.engine.physics.PhysicsHandler;
 import game.engine.physics.PhysicsObject;
 import game.engine.gamefield.Drawable;
@@ -22,28 +23,126 @@ public class PhysicsObjectTest {
         float[] xs2 = {-50f, 50f, -50f};
         float[] ys2 = {-50f, -50f, 50f};
 
-        PhysicsObject.PhysicsObjectBuilder builder = (new PhysicsObject.PhysicsObjectBuilder())
-                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 100f, 0f, 0f, 0f), null))
-                .setV(Matrix.createCoords(4f, 0f))
-                .setA(Matrix.createCoords(0f, 0.05f))
-                .setAV(0.02f)
-                .setInvM(0.1f)
-                .setInvI(0.1f);
+        float invM = 0.001f;
 
-        PhysicsObject.PhysicsObjectBuilder platformBuilder = (new PhysicsObject.PhysicsObjectBuilder())
-                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(600f, 10f, 450f, 500f, 0f), null))
+
+        PhysicsObject pos[] = new PhysicsObject[2];
+
+
+        for (int i = 0; i < 2; i++) {
+            pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(20f, 100f, 200 + 200 * i, 200, 0.5f), null))
+                    .setV(Matrix.createCoords(4f, 0f))
+                    .setA(Matrix.createCoords(0f, 0.05f))
+                    .setAV(0)
+                    .setInvM(1f)
+                    .setInvI(invM)
+                    .createPhysicsObject();
+        }
+
+//        PhysicsObject.PhysicsObjectBuilder builder = (new PhysicsObject.PhysicsObjectBuilder())
+//                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 100f, 300f, 200f, 0.5f), null))
+//                .setV(Matrix.createCoords(4f, 0f))
+//                .setA(Matrix.createCoords(0f, 0.05f))
+//                .setAV(0)
+//                .setInvM(1f)
+//                .setInvI(invM);
+//
+//        PhysicsObject.PhysicsObjectBuilder builder2 = (new PhysicsObject.PhysicsObjectBuilder())
+//                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 100f, 300f, 200f, 0.5f), null))
+//                .setV(Matrix.createCoords(4f, 0f))
+//                .setA(Matrix.createCoords(0f, 0.05f))
+//                .setAV(0)
+//                .setInvM(1f)
+//                .setInvI(invM);
+//
+//        PhysicsObject.PhysicsObjectBuilder builder3 = (new PhysicsObject.PhysicsObjectBuilder())
+//                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 100f, 300f, 200f, 0.5f), null))
+//                .setV(Matrix.createCoords(4f, 0f))
+//                .setA(Matrix.createCoords(0f, 0.05f))
+//                .setAV(0)
+//                .setInvM(1f)
+//                .setInvI(invM);
+//
+//        PhysicsObject.PhysicsObjectBuilder builder4 = (new PhysicsObject.PhysicsObjectBuilder())
+//                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 100f, 300f, 200f, 0.5f), null))
+//                .setV(Matrix.createCoords(4f, 0f))
+//                .setA(Matrix.createCoords(0f, 0.05f))
+//                .setAV(0)
+//                .setInvM(1f)
+//                .setInvI(invM);
+//
+//        PhysicsObject.PhysicsObjectBuilder builder5 = (new PhysicsObject.PhysicsObjectBuilder())
+//                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 100f, 300f, 200f, 0.5f), null))
+//                .setV(Matrix.createCoords(4f, 0f))
+//                .setA(Matrix.createCoords(0f, 0.05f))
+//                .setAV(0)
+//                .setInvM(1f)
+//                .setInvI(invM);
+
+        PhysicsObject.PhysicsObjectBuilder gPlatformBuilder = (new PhysicsObject.PhysicsObjectBuilder())
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(3000f, 10f, 500f, 550f, 0f), null))
                 .setV(Matrix.createCoords(0f, 0f))
                 .setA(Matrix.createCoords(0f, 0f))
                 .setAV(0f);
 
-        PhysicsObject po1 = builder.createPhysicsObject();
-        PhysicsObject platform = platformBuilder.createPhysicsObject();
+        PhysicsObject.PhysicsObjectBuilder gPlatformBuilder2 = (new PhysicsObject.PhysicsObjectBuilder())
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(3000f, 10f, 500f, 20f, 0f), null))
+                .setV(Matrix.createCoords(0f, 0f))
+                .setA(Matrix.createCoords(0f, 0f))
+                .setAV(0f);
 
-        gameObjects.add(po1);
-        gameObjects.add(platform);
+        PhysicsObject.PhysicsObjectBuilder vPlatformBuilder = (new PhysicsObject.PhysicsObjectBuilder())
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(10f, 3000f, 600f, 300f, 0f), null))
+                .setV(Matrix.createCoords(0f, 0f))
+                .setA(Matrix.createCoords(0f, 0f))
+                .setAV(0f);
 
-        physicsHandler.addObject(po1);
-        physicsHandler.addObject(platform);
+        PhysicsObject.PhysicsObjectBuilder vPlatformBuilder2 = (new PhysicsObject.PhysicsObjectBuilder())
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(10f, 3000f, 20f, 300f, 0f), null))
+                .setV(Matrix.createCoords(0f, 0f))
+                .setA(Matrix.createCoords(0f, 0f))
+                .setAV(0f);
+
+//        PhysicsObject po1 = builder.createPhysicsObject();
+//        PhysicsObject po2 = builder2.createPhysicsObject();
+//        PhysicsObject po3 = builder3.createPhysicsObject();
+//        PhysicsObject po4 = builder4.createPhysicsObject();
+//        PhysicsObject po5 = builder5.createPhysicsObject();
+        PhysicsObject gPlatform = gPlatformBuilder.createPhysicsObject();
+        PhysicsObject gPlatform2 = gPlatformBuilder2.createPhysicsObject();
+        PhysicsObject vPlatform = vPlatformBuilder.createPhysicsObject();
+        PhysicsObject vPlatform2 = vPlatformBuilder2.createPhysicsObject();
+
+//        Collision collision1 = new Collision(po1.getGeometryObject(), gPlatform.getGeometryObject());
+//        Collision collision2 = new Collision(po2.getGeometryObject(), vPlatform.getGeometryObject());
+
+//        gameObjects.add(po1);
+//        gameObjects.add(po2);
+//        gameObjects.add(po3);
+//        gameObjects.add(po4);
+//        gameObjects.add(po5);
+        gameObjects.add(gPlatform);
+        gameObjects.add(gPlatform2);
+        gameObjects.add(vPlatform);
+        gameObjects.add(vPlatform2);
+//        gameObjects.add(collision1);
+//        gameObjects.add(collision2);
+
+//        physicsHandler.addObject(po1);
+//        physicsHandler.addObject(po2);
+//        physicsHandler.addObject(po3);
+//        physicsHandler.addObject(po4);
+//        physicsHandler.addObject(po5);
+        physicsHandler.addObject(gPlatform);
+        physicsHandler.addObject(gPlatform2);
+        physicsHandler.addObject(vPlatform);
+        physicsHandler.addObject(vPlatform2);
+
+        for (int i = 0; i < 2; i++) {
+            physicsHandler.addObject(pos[i]);
+            gameObjects.add(pos[i]);
+        }
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);
@@ -54,5 +153,11 @@ public class PhysicsObjectTest {
 
         Thread physicsThread = new Thread(physicsHandler);
         physicsThread.start();
+
+//        while(true) {
+//            collision1.calculateCollision(po1.getGeometryObject().getShape(), gPlatform.getGeometryObject().getShape());
+//            collision2.calculateCollision(po1.getGeometryObject().getShape(), vPlatform.getGeometryObject().getShape());
+//            Thread.sleep(2);
+//        }
     }
 }

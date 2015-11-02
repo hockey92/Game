@@ -146,7 +146,7 @@ public class Matrix implements Cloneable {
         return this;
     }
 
-    public static Matrix getLinearCombination(Matrix a, Matrix b, float c1, float c2) throws MatrixException {
+    public static Matrix getLinComb(Matrix a, Matrix b, float c1, float c2) throws MatrixException {
         if (a.getRowCount() != b.getRowCount() || a.getColumnCount() != b.getColumnCount()) {
             throw new MatrixException("Incorrect matrix sizes");
         }
@@ -185,7 +185,7 @@ public class Matrix implements Cloneable {
         }
     }
 
-    public void set(int index, float value) {
+    public Matrix set(int index, float value) {
         if (!isVector()) {
             throw new MatrixException("It isn't a vector");
         } else if (Math.max(columnCount, rowCount) <= index) {
@@ -197,6 +197,8 @@ public class Matrix implements Cloneable {
         } else {
             values[0][index] = value;
         }
+
+        return this;
     }
 
     private boolean isVector() {
@@ -263,25 +265,41 @@ public class Matrix implements Cloneable {
         return null;
     }
 
-    public static float getCrossProduct(Matrix v1, Matrix v2) {
-        if (!v1.isCoords() || !v2.isCoords()) {
-            throw new MatrixException("A cross product participant isn't correct");
-        }
-        return v1.get(0) * v2.get(1) - v2.get(0) * v1.get(1);
+//    public static float getCrossProduct(Matrix v1, Matrix v2) {
+//        if (!v1.isCoords() || !v2.isCoords()) {
+//            throw new MatrixException("A cross product participant isn't correct");
+//        }
+//        return v1.get(0) * v2.get(1) - v2.get(0) * v1.get(1);
+//    }
+//
+//    public static Matrix getCrossProduct(Matrix v1, float v2) {
+//        if (!v1.isCoords()) {
+//            throw new MatrixException("A cross product participance isn't correct");
+//        }
+//        return Matrix.createCoords(v1.get(1) * v2, v1.get(0) * v2);
+//    }
+//
+//    public static Matrix getCrossProduct(float v1, Matrix v2) {
+//        if (!v2.isCoords()) {
+//            throw new MatrixException("A cross product participance isn't correct");
+//        }
+//        return Matrix.createCoords(-v2.get(1) * v1, -v2.get(0) * v1);
+//    }
+
+    public static Matrix getCrossProduct(Matrix v1, Matrix v2) {
+        Matrix crossProduct = new Matrix(1, 3);
+        crossProduct.values[0][0] = v1.get(1) * v2.get(2) - v1.get(2) * v2.get(1);
+        crossProduct.values[0][1] = v1.get(0) * v2.get(2) - v1.get(2) * v2.get(0);
+        crossProduct.values[0][2] = v1.get(0) * v2.get(1) - v1.get(1) * v2.get(0);
+        return crossProduct;
     }
 
-    public static Matrix getCrossProduct(Matrix v1, float v2) {
-        if (!v1.isCoords()) {
-            throw new MatrixException("A cross product participance isn't correct");
+    public static Matrix convert(Matrix init) {
+        Matrix converted = new Matrix(1, 3);
+        for (int i = 0; i < 2; i++) {
+            converted.set(i, init.get(i));
         }
-        return Matrix.createCoords(v1.get(1) * v2, v1.get(0) * v2);
-    }
-
-    public static Matrix getCrossProduct(float v1, Matrix v2) {
-        if (!v2.isCoords()) {
-            throw new MatrixException("A cross product participance isn't correct");
-        }
-        return Matrix.createCoords(-v2.get(1) * v1, -v2.get(0) * v1);
+        return converted;
     }
 
     public Matrix setValues(float[][] values) {

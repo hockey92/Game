@@ -29,10 +29,10 @@ public class CSO extends ConvexPolygon {
         vertices = new Matrix[csoEdges.length];
         vertices[0] = Matrix.createCoords(0f, 0f);
         for (int i = 0; i < csoEdges.length - 1; i++) {
-            vertices[i + 1] = Matrix.getLinearCombination(csoEdges[i].getVectorCoords(), vertices[i], 1, 1);
+            vertices[i + 1] = Matrix.getLinComb(csoEdges[i].getVectorCoords(), vertices[i], 1, 1);
         }
         calculateOuterRectangleBorders();
-        setCenterOfMass(Matrix.getLinearCombination(rightTopPoint, Matrix.getLinearCombination(p1.getRightTopPoint(), p2.getLeftBottomPoint().mul(-1f), 1f, 1f), -1f, 1f));
+        setCenterOfMass(Matrix.getLinComb(rightTopPoint, Matrix.getLinComb(p1.getRightTopPoint(), p2.getLeftBottomPoint().mul(-1f), 1f, 1f), -1f, 1f));
         calculateLines();
     }
 
@@ -97,7 +97,7 @@ public class CSO extends ConvexPolygon {
         @Override
         public int compareTo(Angle angle) {
             float diff = adjustValue(angle.value) - adjustValue(value);
-            if (Math.abs(diff) < 0.05) {
+            if (Math.abs(diff) < 0.005) {
                 return 0;
             } else if (diff < 0) {
                 return 1;

@@ -17,6 +17,7 @@ public class Collision implements Drawable {
     private CSO cso;
     private Matrix mutualPoint;
     private Matrix[] contactVectors = {Matrix.createCoords(0.0f, 0.0f), Matrix.createCoords(0.0f, 0.0f)};
+    private ConvexPolygon[] convexPolygons = new ConvexPolygon[2];
 
     public Collision(GeometryObject go1, GeometryObject go2) throws Exception {
         calculateCollision(go1.getShape(), go2.getShape());
@@ -39,7 +40,12 @@ public class Collision implements Drawable {
     }
 
     public boolean checkBroadPhase(ConvexPolygon p1, ConvexPolygon p2) {
-        return true;
+        Matrix[] lbps = {p1.getRealCoords(p1.getLeftBottomPoint()), p2.getRealCoords(p2.getLeftBottomPoint())};
+        Matrix[] rtps = {p1.getRealCoords(p1.getRightTopPoint()), p2.getRealCoords(p2.getRightTopPoint())};
+        return !(lbps[0].get(0) > rtps[1].get(0) ||
+                lbps[1].get(0) > rtps[0].get(0) ||
+                lbps[0].get(1) > rtps[1].get(1) ||
+                lbps[1].get(1) > rtps[0].get(1));
     }
 
     public Matrix getNormal() {
@@ -48,6 +54,9 @@ public class Collision implements Drawable {
 
     public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) throws Exception {
         objectsArePenetrated = false;
+
+        convexPolygons[0] = p1;
+        convexPolygons[1] = p2;
 
         if (!checkBroadPhase(p1, p2)) {
             return;
@@ -101,10 +110,10 @@ public class Collision implements Drawable {
         int vrtNum = csoEdge.get(0).b; // vertex number
 
         Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber + plgNum < cso.getVerticesCount() ? theNearestVertexNumber + plgNum : 0);
-        Matrix d = Matrix.getLinearCombination(mutualPoint, csoPoint, 1f, -1f); // relative shift
-        contactVectors[plgNum] = Matrix.getLinearCombination(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVerticesCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
+        Matrix d = Matrix.getLinComb(mutualPoint, csoPoint, 1f, -1f); // relative shift
+        contactVectors[plgNum] = Matrix.getLinComb(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVerticesCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
         int nxtPlgNum = plgNum + 1 > 1 ? 0 : 1;
-        contactVectors[nxtPlgNum] = Matrix.getLinearCombination(contactVectors[plgNum], Matrix.getMul(normal, penetrationDepth), 1f, coeffs[plgNum]);
+        contactVectors[nxtPlgNum] = Matrix.getLinComb(contactVectors[plgNum], Matrix.getMul(normal, penetrationDepth), 1f, coeffs[plgNum]);
         adjustResult(ps);
     }
 
@@ -133,8 +142,8 @@ public class Collision implements Drawable {
 
         Collections.sort(pointsAndLines, new EdgeToEdgeContactPairComparator());
 
-        contactVectors[0] = Matrix.getLinearCombination(pointsAndLines.get(1).a, Matrix.getLinearCombination(pointsAndLines.get(2).a, pointsAndLines.get(1).a, 1f, -1f).mul(0.5f), 1f, 1f);
-        contactVectors[1] = Matrix.getLinearCombination(contactVectors[0], Matrix.getMul(normal, penetrationDepth), 1f, 1f);
+        contactVectors[0] = Matrix.getLinComb(pointsAndLines.get(1).a, Matrix.getLinComb(pointsAndLines.get(2).a, pointsAndLines.get(1).a, 1f, -1f).mul(0.5f), 1f, 1f);
+        contactVectors[1] = Matrix.getLinComb(contactVectors[0], Matrix.getMul(normal, penetrationDepth), 1f, 1f);
         adjustResult(ps);
     }
 
@@ -155,24 +164,25 @@ public class Collision implements Drawable {
     @Override
     public void draw(DrawContext drawContext) {
         Matrix d = Matrix.createCoords(400f, 300f);
-        cso.move(d.get(0), d.get(1));
+//        cso.move(d.get(0), d.get(1));
 
-        cso.draw(drawContext);
-
-        cso.move(-d.get(0), -d.get(1));
+//        cso.draw(drawContext);
+//
+//        cso.move(-d.get(0), -d.get(1));
 
         if (objectsArePenetrated) {
-            mutualPoint.applyLinearCombination(d, 1f, 1f);
-            point.applyLinearCombination(d, 1f, 1f);
+//            mutualPoint.applyLinearCombination(d, 1f, 1f);
+//            point.applyLinearCombination(d, 1f, 1f);
 //            drawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
-            drawContext.drawCircle(point.get(0), point.get(1), 2f);
-            for (int i = 0; i < 2; i++) {
-                drawContext.drawCircle(contactVectors[i].get(0), contactVectors[i].get(1), 2f);
-            }
-            mutualPoint.applyLinearCombination(d, 1f, -1f);
-            point.applyLinearCombination(d, 1f, -1f);
+//            drawContext.drawCircle(point.get(0), point.get(1), 2f);
+//            for (int i = 0; i < 2; i++) {
+//                drawContext.drawCircle(convexPolygons[i].getCenterOfMass().get(0) + contactVectors[i].get(0),
+//                                       convexPolygons[i].getCenterOfMass().get(1) + contactVectors[i].get(1), 4f);
+//            }
+//            mutualPoint.applyLinearCombination(d, 1f, -1f);
+//            point.applyLinearCombination(d, 1f, -1f);
 
-//            Matrix shiftPoint = Matrix.getLinearCombination(point, d, 1f, 1f);
+//            Matrix shiftPoint = Matrix.getLinComb(point, d, 1f, 1f);
 //            drawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);
 //            shiftPoint.applyLinearCombination(Matrix.mul(normal, -penetrationDepth), 1f, 1f);
 //            drawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);

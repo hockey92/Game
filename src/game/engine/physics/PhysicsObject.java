@@ -57,8 +57,9 @@ public class PhysicsObject implements Drawable {
         return invI;
     }
 
-    public void applyImpulse(Matrix impulse) {
-
+    public void applyVelocityFix(Matrix dV, float dAV) {
+        av += dAV;
+        v.applyLinearCombination(dV, 1f, 1f);
     }
 
     @Override

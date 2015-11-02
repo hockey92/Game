@@ -54,7 +54,7 @@ public class ConvexPolygon implements Drawable, Movable {
     }
 
     public void setAngle(float angle) {
-
+        rotate(angle);
     }
 
     public float getAngle() {
@@ -74,7 +74,7 @@ public class ConvexPolygon implements Drawable, Movable {
     }
 
     public Matrix getRealCoords(Matrix coords) {
-        return Matrix.getLinearCombination(coords, centerOfMass, 1, 1);
+        return Matrix.getLinComb(coords, centerOfMass, 1, 1);
     }
 
     public Matrix getCoords(int vertexNum) {

@@ -46,10 +46,10 @@ abstract public class Constraint {
     public void fix() {
         float lyambda = calculateLyambda();
 //        System.err.println("lyambda = " + lyambda);
-        float oldImpulse = totalImpulse;
-        totalImpulse = oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
-        lyambda = totalImpulse + oldImpulse;
-//        if (lyambda > 0) return;
+//        float oldImpulse = totalImpulse;
+//        totalImpulse = oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
+//        lyambda = totalImpulse + oldImpulse;
+        if (lyambda > 0) return;
         Matrix J = getJacobian();
         Matrix transposeJ = (new Matrix(J)).transpose();
         Matrix dV = Matrix.mul(M, transposeJ).mul(lyambda);

@@ -22,14 +22,14 @@ public class PhysicsObjectTest {
         float[] xs2 = {-50f, 50f, -50f};
         float[] ys2 = {-50f, -50f, 50f};
 
-        float invM = 0.001f;
-        int n = 30;
+        float invM = 0f;
+        int n = 1;
 
         PhysicsObject pos[] = new PhysicsObject[n];
 
         for (int i = 0; i < n; i++) {
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
-                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(50f, 50f, 100 + 5 * i, 200 + (i / 50) * 70, 0.5f), null))
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(50f, 50f, 100 + 5 * i, 200 + (i / 50) * 70, 0f), null))
                     .setV(Matrix.createCoords(4f, 0f))
                     .setA(Matrix.createCoords(0f, 0.05f))
                     .setAV(0)

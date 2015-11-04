@@ -22,17 +22,17 @@ public class PhysicsObjectTest {
         float[] xs2 = {-50f, 50f, -50f};
         float[] ys2 = {-50f, -50f, 50f};
 
-        float invM = 0f;
-        int n = 1;
+        float invM = 0.0009f;
+        int n = 20;
 
         PhysicsObject pos[] = new PhysicsObject[n];
 
         for (int i = 0; i < n; i++) {
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
-                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(50f, 50f, 100 + 5 * i, 200 + (i / 50) * 70, 0f), null))
-                    .setV(Matrix.createCoords(4f, 0f))
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(60f, 60f, 50 + (i % 18) * 30, 50 + 30 * (i / 18), 0f), null))
+                    .setV(Matrix.createCoords(0f, 0f))
                     .setA(Matrix.createCoords(0f, 0.05f))
-                    .setAV(0)
+                    .setAV(0.3f)
                     .setInvM(1f)
                     .setInvI(invM)
                     .createPhysicsObject();
@@ -108,7 +108,7 @@ public class PhysicsObjectTest {
 //        PhysicsObject po4 = builder4.createPhysicsObject();
 //        PhysicsObject po5 = builder5.createPhysicsObject();
         PhysicsObject gPlatform = gPlatformBuilder.createPhysicsObject();
-        gPlatform.getGeometryObject().rotate(0.2f);
+//        gPlatform.getGeometryObject().rotate(0.2f);
         PhysicsObject gPlatform2 = gPlatformBuilder2.createPhysicsObject();
         PhysicsObject vPlatform = vPlatformBuilder.createPhysicsObject();
         PhysicsObject vPlatform2 = vPlatformBuilder2.createPhysicsObject();

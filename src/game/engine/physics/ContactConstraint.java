@@ -22,7 +22,7 @@ public class ContactConstraint extends Constraint {
         Matrix d2 = Matrix.getLinComb(Matrix.getCrossProduct(av1, Matrix.convert(c.getContactVector(0))).mul(-1f),
                 Matrix.getCrossProduct(av2, Matrix.convert(c.getContactVector(1))), 1f, 1f);
         Matrix answ = new Matrix(1, 1);
-//        answ.set(0, Matrix.getScalarProduct(Matrix.getLinComb(Matrix.convert(d1), d2, 1f, 1f), Matrix.convert(c.getNormal())) * 0.3f);
+        answ.set(0, Math.max(Matrix.getScalarProduct(Matrix.getLinComb(Matrix.convert(d1), d2, 1f, 1f), Matrix.convert(c.getNormal())) - 0.1f, 0) * 0.2f);
         return answ;
     }
 
@@ -38,7 +38,7 @@ public class ContactConstraint extends Constraint {
 //        Matrix normal = new Matrix(c.getNormal());
 //        return normal.mul(c.getPenetrationDepth() * (1f / dt));
         Matrix b = new Matrix(1, 1);
-        b.set(0, c.getPenetrationDepth() * (1f / dt)).mul(0.01f);
+        b.set(0, Math.max(c.getPenetrationDepth() - 0.1f, 0) * (1f / dt)).mul(0.1f);
         return b.applyLinearCombination(calculateAdjustment(), 1f, 1f);
     }
 }

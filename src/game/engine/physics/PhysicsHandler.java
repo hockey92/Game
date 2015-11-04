@@ -8,8 +8,8 @@ import java.util.List;
 
 public class PhysicsHandler implements Runnable {
     List<PhysicsObject> physicsObjects = new ArrayList<PhysicsObject>();
-    private float dt = 0.5f;
-    private int iterationCount = 1;
+    private float dt = 1f;
+    private int iterationCount = 20;
 
     public void addObject(PhysicsObject po) {
         physicsObjects.add(po);
@@ -56,7 +56,8 @@ public class PhysicsHandler implements Runnable {
             System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
 
             try {
-                Thread.sleep(20);
+                long sleepTime = 20 - (time4 - time1);
+                Thread.sleep(sleepTime < 5 ? 2 : sleepTime);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

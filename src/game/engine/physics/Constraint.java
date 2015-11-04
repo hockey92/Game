@@ -7,7 +7,7 @@ abstract public class Constraint {
     protected PhysicsObject po2;
     private Matrix J = null;
     private Matrix b = null;
-    protected Matrix V;
+    protected Matrix V = null;
     protected Matrix M;
     private float totalImpulse = 0;
 
@@ -15,7 +15,7 @@ abstract public class Constraint {
         this.po1 = po1;
         this.po2 = po2;
         this.M = PhysicsMatrixFactory.createMassMatrix(po1, po2);
-        this.V = PhysicsMatrixFactory.createVelocityMatrix(po1, po2);
+//        this.V = PhysicsMatrixFactory.createVelocityMatrix(po1, po2);
     }
 
     public Matrix getJacobian() {
@@ -32,6 +32,7 @@ abstract public class Constraint {
         return b;
     }
 
+
     abstract protected Matrix createJacobian();
 
     abstract protected Matrix createB();
@@ -39,17 +40,16 @@ abstract public class Constraint {
     protected float calculateLyambda() {
         Matrix J = getJacobian();
         Matrix transposeJ = (new Matrix(J)).transpose();
+        Matrix V = PhysicsMatrixFactory.createVelocityMatrix(po1, po2);
         return Matrix.getLinComb(Matrix.mul(V, transposeJ), getB(), -1f, -1f).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
 //        return -Matrix.mul(V, transposeJ).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
     }
 
     public void fix() {
         float lyambda = calculateLyambda();
-//        System.err.println("lyambda = " + lyambda);
-//        float oldImpulse = totalImpulse;
-//        totalImpulse = oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
-//        lyambda = totalImpulse + oldImpulse;
-        if (lyambda > 0) return;
+        float oldImpulse = totalImpulse;
+        totalImpulse = oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
+        lyambda = totalImpulse - oldImpulse;
         Matrix J = getJacobian();
         Matrix transposeJ = (new Matrix(J)).transpose();
         Matrix dV = Matrix.mul(M, transposeJ).mul(lyambda);

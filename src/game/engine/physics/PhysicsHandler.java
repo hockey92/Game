@@ -8,11 +8,16 @@ import java.util.List;
 
 public class PhysicsHandler implements Runnable {
     List<PhysicsObject> physicsObjects = new ArrayList<PhysicsObject>();
+    List<JointConstraint> joints = new ArrayList<JointConstraint>();
     private float dt = 1f;
     private int iterationCount = 20;
 
     public void addObject(PhysicsObject po) {
         physicsObjects.add(po);
+    }
+
+    public void addJoint(JointConstraint joint) {
+        joints.add(joint);
     }
 
     @Override
@@ -26,6 +31,9 @@ public class PhysicsHandler implements Runnable {
             List<Constraint> contactConstraints = new LinkedList<Constraint>();
             for (int i = 0; i < physicsObjects.size(); i++) {
                 for (int j = i + 1; j < physicsObjects.size(); j++) {
+                    if (i == 4 && j == 5) {
+                        continue;
+                    }
                     Collision c = null;
                     PhysicsObject p1 = physicsObjects.get(i);
                     PhysicsObject p2 = physicsObjects.get(j);
@@ -46,11 +54,14 @@ public class PhysicsHandler implements Runnable {
                 }
             }
             long time3 = System.currentTimeMillis();
-            for (int iteration = 0; iteration < iterationCount; iteration++) {
+//            for (int iteration = 0; iteration < iterationCount; iteration++) {
                 for (Constraint constraint : contactConstraints) {
                     constraint.fix();
                 }
+            for (JointConstraint joint : joints) {
+                joint.fix();
             }
+//            }
             long time4 = System.currentTimeMillis();
 
             System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));

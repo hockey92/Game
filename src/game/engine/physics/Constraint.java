@@ -37,6 +37,10 @@ abstract public class Constraint {
 
     abstract protected Matrix createB();
 
+    protected float clamp(float lyambda) {
+        return lyambda;
+    }
+
     protected float calculateLyambda() {
         Matrix J = getJacobian();
         Matrix transposeJ = (new Matrix(J)).transpose();
@@ -48,7 +52,7 @@ abstract public class Constraint {
     public void fix() {
         float lyambda = calculateLyambda();
         float oldImpulse = totalImpulse;
-        totalImpulse = oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
+        totalImpulse = clamp(oldImpulse + lyambda);//oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
         lyambda = totalImpulse - oldImpulse;
         Matrix J = getJacobian();
         Matrix transposeJ = (new Matrix(J)).transpose();

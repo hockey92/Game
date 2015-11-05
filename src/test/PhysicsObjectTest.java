@@ -1,6 +1,7 @@
 package test;
 
 import game.engine.geometry.GeometryObject;
+import game.engine.physics.JointConstraint;
 import game.engine.physics.PhysicsHandler;
 import game.engine.physics.PhysicsObject;
 import game.engine.gamefield.Drawable;
@@ -22,8 +23,8 @@ public class PhysicsObjectTest {
         float[] xs2 = {-50f, 50f, -50f};
         float[] ys2 = {-50f, -50f, 50f};
 
-        float invM = 0.0009f;
-        int n = 20;
+        float invM = 0.001f;
+        int n = 2;
 
         PhysicsObject pos[] = new PhysicsObject[n];
 
@@ -32,7 +33,7 @@ public class PhysicsObjectTest {
                     .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(60f, 60f, 50 + (i % 18) * 30, 50 + 30 * (i / 18), 0f), null))
                     .setV(Matrix.createCoords(0f, 0f))
                     .setA(Matrix.createCoords(0f, 0.05f))
-                    .setAV(0.3f)
+                    .setAV(0f)
                     .setInvM(1f)
                     .setInvI(invM)
                     .createPhysicsObject();
@@ -142,6 +143,8 @@ public class PhysicsObjectTest {
             physicsHandler.addObject(pos[i]);
             gameObjects.add(pos[i]);
         }
+
+        physicsHandler.addJoint(new JointConstraint(pos[0], pos[1], 1f));
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);

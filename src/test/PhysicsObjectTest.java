@@ -23,22 +23,79 @@ public class PhysicsObjectTest {
         float[] xs2 = {-50f, 50f, -50f};
         float[] ys2 = {-50f, -50f, 50f};
 
-        float invM = 0.001f;
-        int n = 2;
+        float invI = 0.001f;
+        int n = 20;
 
         PhysicsObject pos[] = new PhysicsObject[n];
 
-        for (int i = 0; i < n; i++) {
+        pos[0] = (new PhysicsObject.PhysicsObjectBuilder())
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(5f, 5f, 300f, 100f, 0f), null))
+                .setV(Matrix.createCoords(0f, 0f))
+                .setA(Matrix.createCoords(0f, 0f))
+                .setAV(0f)
+                .setInvM(0f)
+                .setInvI(0f)
+                .createPhysicsObject();
+
+        pos[n - 1] = (new PhysicsObject.PhysicsObjectBuilder())
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(20f, 20f, 300f, 250f, 0f), null))
+                .setV(Matrix.createCoords(0f, 0f))
+                .setA(Matrix.createCoords(0f, 0f))
+                .setAV(0f)
+                .setInvM(0f)
+                .setInvI(0f)
+                .createPhysicsObject();
+
+        float x = 300f;
+        for (int i = 1; i < n - 1; i++) {
+            x += i == 1 ? 10f : 20f;
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
-                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(60f, 60f, 50 + (i % 18) * 30, 50 + 30 * (i / 18), 0f), null))
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(20f, 5f, x, 100f, 0f), null))
                     .setV(Matrix.createCoords(0f, 0f))
-                    .setA(Matrix.createCoords(0f, 0.05f))
+                    .setA(Matrix.createCoords(0f, 0.01f))
                     .setAV(0f)
                     .setInvM(1f)
-                    .setInvI(invM)
+                    .setInvI(1f * 12f * (1f / (25f + 10000f)))
                     .createPhysicsObject();
         }
-
+//        pos[2] = (new PhysicsObject.PhysicsObjectBuilder())
+//                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 5f, 400f, 100f, 0f), null))
+//                .setV(Matrix.createCoords(0f, 0f))
+//                .setA(Matrix.createCoords(0f, 0.05f))
+//                .setAV(0f)
+//                .setInvM(1f)
+//                .setInvI(1f * 12f * (1f / (400f + 10000f)))
+//                .createPhysicsObject();
+//
+//        pos[3] = (new PhysicsObject.PhysicsObjectBuilder())
+//                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 5f, 400f, 100f, 0f), null))
+//                .setV(Matrix.createCoords(0f, 0f))
+//                .setA(Matrix.createCoords(0f, 0.05f))
+//                .setAV(0f)
+//                .setInvM(1f)
+//                .setInvI(1f * 12f * (1f / (25f + 10000f)))
+//                .createPhysicsObject();
+//
+//        pos[4] = (new PhysicsObject.PhysicsObjectBuilder())
+//                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 5f, 400f, 100f, 0f), null))
+//                .setV(Matrix.createCoords(0f, 0f))
+//                .setA(Matrix.createCoords(0f, 0.05f))
+//                .setAV(0f)
+//                .setInvM(1f)
+//                .setInvI(1f * 12f * (1f / (25f + 10000f)))
+//                .createPhysicsObject();
+//
+//        for (int i = 0; i < n; i++) {
+//            pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
+//                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(60f, 60f, 50 + (i % 18) * 30, 50 + 30 * (i / 18), 0f), null))
+//                    .setV(Matrix.createCoords(0f, 0f))
+//                    .setA(Matrix.createCoords(0f, 0.05f))
+//                    .setAV(0f)
+//                    .setInvM(1f)
+//                    .setInvI(invM)
+//                    .createPhysicsObject();
+//        }
+//
 //        PhysicsObject.PhysicsObjectBuilder builder = (new PhysicsObject.PhysicsObjectBuilder())
 //                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 100f, 300f, 200f, 0.5f), null))
 //                .setV(Matrix.createCoords(4f, 0f))
@@ -144,7 +201,7 @@ public class PhysicsObjectTest {
             gameObjects.add(pos[i]);
         }
 
-        physicsHandler.addJoint(new JointConstraint(pos[0], pos[1], 1f));
+//        physicsHandler.addJoint(new JointConstraint(pos[0], pos[1], 0f, 0f, 50f, (float) - Math.PI, 1f));
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);

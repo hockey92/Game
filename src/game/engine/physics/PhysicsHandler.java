@@ -9,8 +9,8 @@ import java.util.List;
 public class PhysicsHandler implements Runnable {
     List<PhysicsObject> physicsObjects = new ArrayList<PhysicsObject>();
     List<JointConstraint> joints = new ArrayList<JointConstraint>();
-    private float dt = 1f;
-    private int iterationCount = 20;
+    private float dt = 0.5f;
+    private int iterationCount = 5;
 
     public void addObject(PhysicsObject po) {
         physicsObjects.add(po);
@@ -31,7 +31,7 @@ public class PhysicsHandler implements Runnable {
             List<Constraint> contactConstraints = new LinkedList<Constraint>();
             for (int i = 0; i < physicsObjects.size(); i++) {
                 for (int j = i + 1; j < physicsObjects.size(); j++) {
-                    if (i == 4 && j == 5) {
+                    if (i != 23 && j != 23) {
                         continue;
                     }
                     Collision c = null;
@@ -54,24 +54,31 @@ public class PhysicsHandler implements Runnable {
                 }
             }
             long time3 = System.currentTimeMillis();
-//            for (int iteration = 0; iteration < iterationCount; iteration++) {
+            joints.add(new JointConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
+
+            for (int i = 0; i < 15; i++) {
+                joints.add(new JointConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
+            }
+            for (int iteration = 0; iteration < iterationCount; iteration++) {
                 for (Constraint constraint : contactConstraints) {
                     constraint.fix();
                 }
-            for (JointConstraint joint : joints) {
-                joint.fix();
-            }
+                for (JointConstraint joint : joints) {
+                    joint.fix();
+                }
 //            }
-            long time4 = System.currentTimeMillis();
+                long time4 = System.currentTimeMillis();
 
-            System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
+//            System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
 
-            try {
-                long sleepTime = 20 - (time4 - time1);
-                Thread.sleep(sleepTime < 5 ? 2 : sleepTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    long sleepTime = 20 - (time4 - time1);
+                    Thread.sleep(sleepTime < 5 ? 2 : sleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+            joints.clear();
         }
     }
 }

@@ -294,6 +294,17 @@ public class Matrix implements Cloneable {
         return crossProduct;
     }
 
+    public float length() {
+        if (!isVector()) {
+            throw new MatrixException("Matrix isn't vector");
+        }
+        float answ = 0f;
+        for (int i = 0; i < maxOfSizes(); i++) {
+            answ += get(i) * get(i);
+        }
+        return (float) Math.sqrt(answ);
+    }
+
     public static Matrix convert(Matrix init) {
         Matrix converted = new Matrix(1, 3);
         for (int i = 0; i < 2; i++) {

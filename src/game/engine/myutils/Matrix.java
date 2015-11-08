@@ -159,7 +159,7 @@ public class Matrix implements Cloneable {
         return linCombMatrix;
     }
 
-    public Matrix applyLinearCombination(Matrix b, float c1, float c2) throws MatrixException {
+    public Matrix applyLinComb(Matrix b, float c1, float c2) throws MatrixException {
         if (this.getRowCount() != b.getRowCount() || this.getColumnCount() != b.getColumnCount()) {
             throw new MatrixException("Incorrect matrix sizes");
         }

@@ -54,31 +54,29 @@ public class PhysicsHandler implements Runnable {
                 }
             }
             long time3 = System.currentTimeMillis();
-//            joints.add(new JointConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
+            joints.add(new JointConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
 
             for (int i = 0; i < 17; i++) {
                 joints.add(new JointConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
             }
             for (int iteration = 0; iteration < iterationCount; iteration++) {
-                for (Constraint constraint : contactConstraints) {
-                    constraint.fix();
-                }
+//                for (Constraint constraint : contactConstraints) {
+//                    constraint.fix();
+//                }
                 for (JointConstraint joint : joints) {
                     joint.fix();
                 }
-//            }
-                long time4 = System.currentTimeMillis();
+//                long time4 = System.currentTimeMillis();
 
-//            System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
-
-                try {
-                    long sleepTime = 10 - (time4 - time1);
-                    Thread.sleep(2);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//                System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
             }
             joints.clear();
+            try {
+//                long sleepTime = 10 - (time4 - time1);
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

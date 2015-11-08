@@ -46,15 +46,7 @@ public class JointConstraint extends Constraint {
     }
 
     private Matrix calculateAdjustment() {
-//        Matrix d1 = Matrix.getLinComb((new Matrix(po1.getV())).mul(-1f), po2.getV(), 1f, 1f);
-//        Matrix av1 = new Matrix(1, 3);
-//        av1.set(2, po1.getAV());
-//        Matrix av2 = new Matrix(1, 3);
-//        av2.set(2, po2.getAV());
-//        Matrix d2 = Matrix.getLinComb(Matrix.getCrossProduct(av1, Matrix.convert(c.getContactVector(0))).mul(-1f),
-//                Matrix.getCrossProduct(av2, Matrix.convert(c.getContactVector(1))), 1f, 1f);
         Matrix answ = new Matrix(1, 1);
-//        answ.set(0, Math.max(Matrix.getScalarProduct(Matrix.getLinComb(Matrix.convert(d1), d2, 1f, 1f), Matrix.convert(c.getNormal())) - 0.1f, 0) * 0.2f);
         return answ;
     }
 
@@ -67,7 +59,7 @@ public class JointConstraint extends Constraint {
     protected Matrix createB() {
         Matrix b = new Matrix(1, 1);
         float len = d.length();
-        b.set(0, (len < 0.5f ? 0 : len) * (1f / dt)).mul(0.1f);
-        return b.applyLinearCombination(calculateAdjustment(), 1f, 1f);
+        b.set(0, (len < 0.5f ? len : len) * (1f / dt)).mul(0.1f);
+        return b.applyLinComb(calculateAdjustment(), 1f, 1f);
     }
 }

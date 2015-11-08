@@ -35,7 +35,7 @@ public class ContactConstraint extends Constraint {
     protected Matrix createB() {
         Matrix b = new Matrix(1, 1);
         b.set(0, Math.max(c.getPenetrationDepth() - 0.1f, 0) * (1f / dt)).mul(0.1f);
-        return b.applyLinearCombination(calculateAdjustment(), 1f, 1f);
+        return b.applyLinComb(calculateAdjustment(), 1f, 1f);
     }
 
     @Override

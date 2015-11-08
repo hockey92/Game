@@ -45,7 +45,7 @@ public class CSO extends ConvexPolygon {
 
                 int nextVertexNumber = vertexNumber + 1 == ps[polygonNumber].getVerticesCount() ? 0 : vertexNumber + 1;
                 Matrix vectorCoords = ps[polygonNumber].getCoords(nextVertexNumber)
-                        .applyLinearCombination(ps[polygonNumber].getCoords(vertexNumber), coeffs[polygonNumber][0], coeffs[polygonNumber][1]);
+                        .applyLinComb(ps[polygonNumber].getCoords(vertexNumber), coeffs[polygonNumber][0], coeffs[polygonNumber][1]);
 
                 Angle angle = new Angle(vectorCoords);
                 CSOEdge csoEdge = sortedEdgesMap.get(angle);
@@ -115,7 +115,7 @@ public class CSO extends ConvexPolygon {
         }
 
         public void addEdge(Matrix vectorCoords, int polygonNumber, int vertexNumber) {
-            this.vectorCoords.applyLinearCombination(vectorCoords, 1, 1);
+            this.vectorCoords.applyLinComb(vectorCoords, 1, 1);
             edges.add(new Pair<Integer, Integer>(polygonNumber, vertexNumber));
         }
 

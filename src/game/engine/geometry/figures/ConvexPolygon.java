@@ -87,12 +87,12 @@ public class ConvexPolygon implements Drawable, Movable {
 
     @Override
     public void move(float dx, float dy) {
-        centerOfMass.applyLinearCombination(Matrix.createCoords(dx, dy), 1, 1);
+        centerOfMass.applyLinComb(Matrix.createCoords(dx, dy), 1, 1);
     }
 
     @Override
     public void move(Matrix dCoords) {
-        centerOfMass.applyLinearCombination(dCoords, 1, 1);
+        centerOfMass.applyLinComb(dCoords, 1, 1);
     }
 
     @Override

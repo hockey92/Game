@@ -34,11 +34,16 @@ public class PhysicsObject implements Drawable {
     }
 
     public void update(float dt) {
-        Matrix dMove = (new Matrix(v)).mul(dt);
+        Matrix newV = Matrix.getLinComb(v, (new Matrix(a)).mul(dt), 1f, 1f);
+
+        Matrix dMove = Matrix.getLinComb(v, newV, 1f, 1f).mul(0.5f * dt);
         geometryObject.move(dMove);
         geometryObject.rotate(av * dt);
 
-        v.applyLinearCombination((new Matrix(a)).mul(dt), 1f, 1f);
+        v = newV;
+
+        v.mul(0.999f);
+        av *= 0.999f;
     }
 
     public Matrix getV() {
@@ -59,7 +64,7 @@ public class PhysicsObject implements Drawable {
 
     public void applyVelocityFix(Matrix dV, float dAV) {
         av += dAV;
-        v.applyLinearCombination(dV, 1f, 1f);
+        v.applyLinComb(dV, 1f, 1f);
     }
 
     @Override

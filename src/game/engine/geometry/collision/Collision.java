@@ -63,7 +63,7 @@ public class Collision implements Drawable {
         }
 
         cso = new CSO(p1, p2);
-        point = p2.getCenterOfMass().applyLinearCombination(p1.getCenterOfMass(), 1f, -1f);
+        point = p2.getCenterOfMass().applyLinComb(p1.getCenterOfMass(), 1f, -1f);
 
         int theNearestVertexNumber = 0;
         penetrationDepth = cso.getLine(0).getDistanceToPoint(point);
@@ -101,7 +101,7 @@ public class Collision implements Drawable {
     }
 
     private void calculateEdgeToPointContact(CSO cso, int theNearestVertexNumber, Matrix point, ConvexPolygon[] ps) {
-        Line perpendicularLine = new Line(point, (new Matrix(point)).applyLinearCombination(normal, 1, 1));
+        Line perpendicularLine = new Line(point, (new Matrix(point)).applyLinComb(normal, 1, 1));
         mutualPoint = Line.getMutualPoint(perpendicularLine, cso.getLine(theNearestVertexNumber));
         List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
 
@@ -135,7 +135,7 @@ public class Collision implements Drawable {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 Matrix currPoint = ps[i].getRealCoords(coeffs[i][j]);
-                Line currLine = new Line(currPoint, (new Matrix(currPoint)).applyLinearCombination(normal, 1, 1));
+                Line currLine = new Line(currPoint, (new Matrix(currPoint)).applyLinComb(normal, 1, 1));
                 pointsAndLines.add(new Pair<Matrix, Line>(Line.getMutualPoint(firstPLine, currLine), currLine));
             }
         }
@@ -149,7 +149,7 @@ public class Collision implements Drawable {
 
     private void adjustResult(ConvexPolygon[] ps) {
         for (int i = 0; i < 2; i++) {
-            contactVectors[i].applyLinearCombination(ps[i].getCenterOfMass(), 1f, -1f);
+            contactVectors[i].applyLinComb(ps[i].getCenterOfMass(), 1f, -1f);
         }
     }
 
@@ -171,20 +171,20 @@ public class Collision implements Drawable {
 //        cso.move(-d.get(0), -d.get(1));
 
         if (objectsArePenetrated) {
-//            mutualPoint.applyLinearCombination(d, 1f, 1f);
-//            point.applyLinearCombination(d, 1f, 1f);
+//            mutualPoint.applyLinComb(d, 1f, 1f);
+//            point.applyLinComb(d, 1f, 1f);
 //            drawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
 //            drawContext.drawCircle(point.get(0), point.get(1), 2f);
 //            for (int i = 0; i < 2; i++) {
 //                drawContext.drawCircle(convexPolygons[i].getCenterOfMass().get(0) + contactVectors[i].get(0),
 //                                       convexPolygons[i].getCenterOfMass().get(1) + contactVectors[i].get(1), 4f);
 //            }
-//            mutualPoint.applyLinearCombination(d, 1f, -1f);
-//            point.applyLinearCombination(d, 1f, -1f);
+//            mutualPoint.applyLinComb(d, 1f, -1f);
+//            point.applyLinComb(d, 1f, -1f);
 
 //            Matrix shiftPoint = Matrix.getLinComb(point, d, 1f, 1f);
 //            drawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);
-//            shiftPoint.applyLinearCombination(Matrix.mul(normal, -penetrationDepth), 1f, 1f);
+//            shiftPoint.applyLinComb(Matrix.mul(normal, -penetrationDepth), 1f, 1f);
 //            drawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);
         }
     }

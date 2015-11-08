@@ -31,7 +31,7 @@ public class PhysicsHandler implements Runnable {
             List<Constraint> contactConstraints = new LinkedList<Constraint>();
             for (int i = 0; i < physicsObjects.size(); i++) {
                 for (int j = i + 1; j < physicsObjects.size(); j++) {
-                    if (i != 23 && j != 23) {
+                    if (i != 23 && i != 24 && j != 23 && j != 24 && i > 3 && j > 3) {
                         continue;
                     }
                     Collision c = null;
@@ -54,9 +54,9 @@ public class PhysicsHandler implements Runnable {
                 }
             }
             long time3 = System.currentTimeMillis();
-            joints.add(new JointConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
+//            joints.add(new JointConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
 
-            for (int i = 0; i < 15; i++) {
+            for (int i = 0; i < 17; i++) {
                 joints.add(new JointConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
             }
             for (int iteration = 0; iteration < iterationCount; iteration++) {
@@ -72,8 +72,8 @@ public class PhysicsHandler implements Runnable {
 //            System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
 
                 try {
-                    long sleepTime = 20 - (time4 - time1);
-                    Thread.sleep(sleepTime < 5 ? 2 : sleepTime);
+                    long sleepTime = 10 - (time4 - time1);
+                    Thread.sleep(2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

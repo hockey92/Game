@@ -24,7 +24,7 @@ public class PhysicsObjectTest {
         float[] ys2 = {-50f, -50f, 50f};
 
         float invI = 0.001f;
-        int n = 20;
+        int n = 21;
 
         PhysicsObject pos[] = new PhysicsObject[n];
 
@@ -37,8 +37,17 @@ public class PhysicsObjectTest {
                 .setInvI(0f)
                 .createPhysicsObject();
 
+        pos[n - 2] = (new PhysicsObject.PhysicsObjectBuilder())
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(5f, 5f, 550f, 250f, 0f), null))
+                .setV(Matrix.createCoords(0f, 0f))
+                .setA(Matrix.createCoords(0f, 0f))
+                .setAV(0f)
+                .setInvM(0f)
+                .setInvI(0f)
+                .createPhysicsObject();
+
         pos[n - 1] = (new PhysicsObject.PhysicsObjectBuilder())
-                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(20f, 20f, 300f, 250f, 0f), null))
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(5f, 5f, 450f, 250f, 0f), null))
                 .setV(Matrix.createCoords(0f, 0f))
                 .setA(Matrix.createCoords(0f, 0f))
                 .setAV(0f)
@@ -47,15 +56,16 @@ public class PhysicsObjectTest {
                 .createPhysicsObject();
 
         float x = 300f;
-        for (int i = 1; i < n - 1; i++) {
+        for (int i = 1; i < n - 2; i++) {
             x += i == 1 ? 10f : 20f;
+            float invM = i == n - 3 ? 1f : 1f;
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
-                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(20f, 5f, x, 100f, 0f), null))
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(20f, 0.5f, x, 100f, 0f), null))
                     .setV(Matrix.createCoords(0f, 0f))
                     .setA(Matrix.createCoords(0f, 0.01f))
                     .setAV(0f)
-                    .setInvM(1f)
-                    .setInvI(1f * 12f * (1f / (25f + 10000f)))
+                    .setInvM(invM)
+                    .setInvI(invM * 12f * (1f / (0.25f + 400f)))
                     .createPhysicsObject();
         }
 //        pos[2] = (new PhysicsObject.PhysicsObjectBuilder())
@@ -149,7 +159,7 @@ public class PhysicsObjectTest {
                 .setAV(0f);
 
         PhysicsObject.PhysicsObjectBuilder vPlatformBuilder = (new PhysicsObject.PhysicsObjectBuilder())
-                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(10f, 3000f, 600f, 300f, 0f), null))
+                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(10f, 3000f, 800f, 300f, 0f), null))
                 .setV(Matrix.createCoords(0f, 0f))
                 .setA(Matrix.createCoords(0f, 0f))
                 .setAV(0f);

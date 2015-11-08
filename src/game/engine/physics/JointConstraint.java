@@ -65,12 +65,9 @@ public class JointConstraint extends Constraint {
 
     @Override
     protected Matrix createB() {
-//        Matrix transposeJ = (new Matrix(getJacobian())).transpose();
-//        return Matrix.mul(M, transposeJ).mul(calculateLyambda());
-//        Matrix normal = new Matrix(c.getNormal());
-//        return normal.mul(c.getPenetrationDepth() * (1f / dt));
         Matrix b = new Matrix(1, 1);
-        b.set(0, (float) Math.sqrt(Matrix.getScalarProduct(d, d) * (1f / dt))).mul(0.1f);
+        float len = d.length();
+        b.set(0, (len < 0.5f ? 0 : len) * (1f / dt)).mul(0.1f);
         return b.applyLinearCombination(calculateAdjustment(), 1f, 1f);
     }
 }

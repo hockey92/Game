@@ -33,10 +33,6 @@ public class ContactConstraint extends Constraint {
 
     @Override
     protected Matrix createB() {
-//        Matrix transposeJ = (new Matrix(getJacobian())).transpose();
-//        return Matrix.mul(M, transposeJ).mul(calculateLyambda());
-//        Matrix normal = new Matrix(c.getNormal());
-//        return normal.mul(c.getPenetrationDepth() * (1f / dt));
         Matrix b = new Matrix(1, 1);
         b.set(0, Math.max(c.getPenetrationDepth() - 0.1f, 0) * (1f / dt)).mul(0.1f);
         return b.applyLinearCombination(calculateAdjustment(), 1f, 1f);

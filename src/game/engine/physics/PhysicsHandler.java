@@ -60,9 +60,9 @@ public class PhysicsHandler implements Runnable {
                 joints.add(new JointConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
             }
             for (int iteration = 0; iteration < iterationCount; iteration++) {
-//                for (Constraint constraint : contactConstraints) {
-//                    constraint.fix();
-//                }
+                for (Constraint constraint : contactConstraints) {
+                    constraint.fix();
+                }
                 for (JointConstraint joint : joints) {
                     joint.fix();
                 }

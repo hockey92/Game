@@ -59,7 +59,7 @@ public class JointConstraint extends Constraint {
     protected Matrix createB() {
         Matrix b = new Matrix(1, 1);
         float len = d.length();
-        b.set(0, (len < 0.5f ? len : len) * (1f / dt)).mul(0.1f);
+        b.set(0, (len < 0.1f ? 0 : len) * (1f / dt)).mul(0.1f);
         return b.applyLinComb(calculateAdjustment(), 1f, 1f);
     }
 }

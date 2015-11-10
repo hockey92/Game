@@ -42,8 +42,8 @@ public class PhysicsObject implements Drawable {
 
         v = newV;
 
-        v.mul(0.999f);
-        av *= 0.999f;
+        v.mul(0.998f);
+        av *= 0.998f;
     }
 
     public Matrix getV() {

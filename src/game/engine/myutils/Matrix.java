@@ -338,6 +338,13 @@ public class Matrix implements Cloneable {
         return this;
     }
 
+    public static Matrix convertPolarCoords(float angle, float r) {
+        return Matrix.createCoords(
+                r * (float) Math.cos(angle),
+                r * (float) Math.sin(angle)
+        );
+    }
+
     @Override
     public String toString() {
         String matrixOut = "";

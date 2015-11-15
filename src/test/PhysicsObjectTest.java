@@ -60,12 +60,12 @@ public class PhysicsObjectTest {
             x += i == 1 ? 10f : 20f;
             float invM = i == n - 3 ? 1f : 1f;
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
-                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(20f, 0.5f, x, 100f, 0f), null))
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(10f, 0.5f, x, 100f, 0f), null))
                     .setV(Matrix.createCoords(0f, 0f))
                     .setA(Matrix.createCoords(0f, 0.05f))
                     .setAV(0f)
                     .setInvM(invM)
-                    .setInvI(invM * 12f * (1f / (0.25f + 400f)))
+                    .setInvI(invM * 12f * (1f / (0f + 100f)))
                     .createPhysicsObject();
         }
 //        pos[2] = (new PhysicsObject.PhysicsObjectBuilder())

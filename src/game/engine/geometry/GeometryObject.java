@@ -18,6 +18,10 @@ public class GeometryObject implements Drawable, Movable {
     public GeometryObject() {
     }
 
+    public GeometryObject(ConvexPolygon shape) {
+        this.shape = shape;
+    }
+
     public GeometryObject(ConvexPolygon shape, GeometryObject parent) {
         this.shape = shape;
         this.parent = parent;

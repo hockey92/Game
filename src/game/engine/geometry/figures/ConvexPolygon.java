@@ -10,7 +10,7 @@ public class ConvexPolygon implements Drawable, Movable {
     protected Matrix[] initialVertices;
     protected Matrix[] vertices;
     protected Matrix centerOfMass = Matrix.createCoords(0, 0);
-    protected float angle;
+    protected float angle = 0.0f;
     protected Matrix rightTopPoint = Matrix.createCoords(0, 0);
     protected Matrix leftBottomPoint = Matrix.createCoords(0, 0);
 

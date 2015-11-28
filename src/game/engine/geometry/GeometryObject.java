@@ -1,7 +1,7 @@
 package game.engine.geometry;
 
-import game.engine.gamefield.DrawContext;
-import game.engine.gamefield.Drawable;
+import game.engine.gamefield.IDrawContext;
+import game.engine.gamefield.IDrawable;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.geometry.figures.Movable;
 import game.engine.myutils.Matrix;
@@ -9,7 +9,7 @@ import game.engine.myutils.Matrix;
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-public class GeometryObject implements Drawable, Movable {
+public class GeometryObject implements IDrawable, Movable {
     protected ConvexPolygon shape = null;
 
     protected GeometryObject parent = null;
@@ -50,18 +50,18 @@ public class GeometryObject implements Drawable, Movable {
         children.add(child);
     }
 
-    protected void drawThisOne(DrawContext drawContext) {
+    protected void drawThisOne(IDrawContext IDrawContext) {
         if (shape != null) {
-            shape.draw(drawContext);
+            shape.draw(IDrawContext);
         }
     }
 
     @Override
-    public void draw(DrawContext drawContext) {
-        drawThisOne(drawContext);
+    public void draw(IDrawContext IDrawContext) {
+        drawThisOne(IDrawContext);
         if (children != null) {
             for (GeometryObject geometryObject : children) {
-                geometryObject.draw(drawContext);
+                geometryObject.draw(IDrawContext);
             }
         }
     }

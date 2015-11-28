@@ -1,7 +1,7 @@
 package game.engine.geometry.collision;
 
-import game.engine.gamefield.DrawContext;
-import game.engine.gamefield.Drawable;
+import game.engine.gamefield.IDrawContext;
+import game.engine.gamefield.IDrawable;
 import game.engine.geometry.GeometryObject;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
@@ -9,7 +9,7 @@ import game.engine.myutils.Pair;
 
 import java.util.*;
 
-public class Collision implements Drawable {
+public class Collision implements ICollision, IDrawable {
     private boolean objectsArePenetrated = false;
     private float penetrationDepth;
     private Matrix normal;
@@ -27,19 +27,22 @@ public class Collision implements Drawable {
         calculateCollision(p1, p2);
     }
 
+    @Override
     public Matrix getContactVector(int index) {
         return contactVectors[index];
     }
 
+    @Override
     public float getPenetrationDepth() {
         return penetrationDepth;
     }
 
+    @Override
     public boolean isCollision() {
         return objectsArePenetrated;
     }
 
-    public boolean checkBroadPhase(ConvexPolygon p1, ConvexPolygon p2) {
+    public static boolean checkBroadPhase(ConvexPolygon p1, ConvexPolygon p2) {
         Matrix[] lbps = {p1.getRealCoords(p1.getLeftBottomPoint()), p2.getRealCoords(p2.getLeftBottomPoint())};
         Matrix[] rtps = {p1.getRealCoords(p1.getRightTopPoint()), p2.getRealCoords(p2.getRightTopPoint())};
         return !(lbps[0].get(0) > rtps[1].get(0) ||
@@ -48,6 +51,7 @@ public class Collision implements Drawable {
                 lbps[1].get(1) > rtps[0].get(1));
     }
 
+    @Override
     public Matrix getNormal() {
         return normal;
     }
@@ -162,30 +166,30 @@ public class Collision implements Drawable {
     }
 
     @Override
-    public void draw(DrawContext drawContext) {
+    public void draw(IDrawContext IDrawContext) {
         Matrix d = Matrix.createCoords(400f, 300f);
 //        cso.move(d.get(0), d.get(1));
 
-//        cso.draw(drawContext);
+//        cso.draw(IDrawContext);
 //
 //        cso.move(-d.get(0), -d.get(1));
 
         if (objectsArePenetrated) {
 //            mutualPoint.applyLinComb(d, 1f, 1f);
 //            point.applyLinComb(d, 1f, 1f);
-//            drawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
-//            drawContext.drawCircle(point.get(0), point.get(1), 2f);
+//            IDrawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
+//            IDrawContext.drawCircle(point.get(0), point.get(1), 2f);
 //            for (int i = 0; i < 2; i++) {
-//                drawContext.drawCircle(convexPolygons[i].getCenterOfMass().get(0) + contactVectors[i].get(0),
+//                IDrawContext.drawCircle(convexPolygons[i].getCenterOfMass().get(0) + contactVectors[i].get(0),
 //                                       convexPolygons[i].getCenterOfMass().get(1) + contactVectors[i].get(1), 4f);
 //            }
 //            mutualPoint.applyLinComb(d, 1f, -1f);
 //            point.applyLinComb(d, 1f, -1f);
 
 //            Matrix shiftPoint = Matrix.getLinComb(point, d, 1f, 1f);
-//            drawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);
+//            IDrawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);
 //            shiftPoint.applyLinComb(Matrix.mul(normal, -penetrationDepth), 1f, 1f);
-//            drawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);
+//            IDrawContext.drawCircle(shiftPoint.get(0), shiftPoint.get(1), 4f);
         }
     }
 }

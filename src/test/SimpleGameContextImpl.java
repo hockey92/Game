@@ -1,13 +1,13 @@
 package test;
 
-import game.engine.gamefield.DrawContext;
+import game.engine.gamefield.IDrawContext;
 import game.engine.myutils.Matrix;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
-public class SimpleGameContextImpl extends JFrame implements DrawContext {
+public class SimpleGameContextImpl extends JFrame implements IDrawContext {
 
     private Graphics currGraphics = null;
     private BufferStrategy bf = null;

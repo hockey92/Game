@@ -1,6 +1,6 @@
 package test;
 
-import game.engine.gamefield.Drawable;
+import game.engine.gamefield.IDrawable;
 import game.engine.gamefield.GameField;
 import game.engine.geometry.collision.Collision;
 import game.engine.geometry.figures.ConvexPolygon;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CollisionTest {
     public static void main(String args[]) throws Exception {
-        List<Drawable> gameObjects = new ArrayList<Drawable>();
+        List<IDrawable> gameObjects = new ArrayList<IDrawable>();
 
         float[] xs1 = {-50f, 50f, -50f};
         float[] ys1 = {-50f, -50f, 50f};

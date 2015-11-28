@@ -16,7 +16,7 @@ public class PhysicsMatrixFactory {
         return jacobian;
     }
 
-    public static Matrix createMassMatrix(PhysicsObject p1, PhysicsObject p2) {
+    public static Matrix createMassMatrix(IPhysicsObject p1, IPhysicsObject p2) {
         Matrix massMatrix = new Matrix(12, 12);
         float[] mainDiag = {p1.getInvM(), p1.getInvM(), p1.getInvM(), 0, 0, p1.getInvI(),
                 p2.getInvM(), p2.getInvM(), p2.getInvM(), 0, 0, p2.getInvI()};
@@ -24,7 +24,7 @@ public class PhysicsMatrixFactory {
         return massMatrix;
     }
 
-    public static Matrix createVelocityMatrix(PhysicsObject p1, PhysicsObject p2) {
+    public static Matrix createVelocityMatrix(IPhysicsObject p1, IPhysicsObject p2) {
         Matrix velocityMatrix = new Matrix(1, 12);
         float[][] values = {{p1.getV().get(0), p1.getV().get(1), 0, 0, 0, p1.getAV(),
                 p2.getV().get(0), p2.getV().get(1), 0, 0, 0, p2.getAV()}};

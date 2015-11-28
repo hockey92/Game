@@ -1,11 +1,11 @@
 package game.engine.physics;
 
 import game.engine.geometry.GeometryObject;
-import game.engine.gamefield.DrawContext;
-import game.engine.gamefield.Drawable;
+import game.engine.gamefield.IDrawContext;
+import game.engine.gamefield.IDrawable;
 import game.engine.myutils.Matrix;
 
-public class PhysicsObject implements Drawable {
+public class PhysicsObject implements IPhysicsObject, IDrawable {
     private float invM; // 1/mass
     private float invI; // 1/inertia_moment
     private Matrix v = Matrix.createCoords(0f, 0f); // velocity
@@ -29,10 +29,12 @@ public class PhysicsObject implements Drawable {
         this.geometryObject = geometryObject;
     }
 
+    @Override
     public GeometryObject getGeometryObject() {
         return geometryObject;
     }
 
+    @Override
     public void update(float dt) {
         Matrix newV = Matrix.getLinComb(v, (new Matrix(a)).mul(dt), 1f, 1f);
 
@@ -46,30 +48,35 @@ public class PhysicsObject implements Drawable {
         av *= 0.998f;
     }
 
+    @Override
     public Matrix getV() {
         return v;
     }
 
+    @Override
     public float getAV() {
         return av;
     }
 
+    @Override
     public float getInvM() {
         return invM;
     }
 
+    @Override
     public float getInvI() {
         return invI;
     }
 
+    @Override
     public void applyVelocityFix(Matrix dV, float dAV) {
         av += dAV;
         v.applyLinComb(dV, 1f, 1f);
     }
 
     @Override
-    public void draw(DrawContext drawContext) {
-        geometryObject.draw(drawContext);
+    public void draw(IDrawContext IDrawContext) {
+        geometryObject.draw(IDrawContext);
     }
 
     static public class PhysicsObjectBuilder {

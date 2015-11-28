@@ -14,7 +14,7 @@ public class JointConstraint extends Constraint {
     private Matrix v2;
     private Matrix d;
 
-    public JointConstraint(PhysicsObject po1, PhysicsObject po2, float r1, float angle1, float r2, float angle2, float dt) {
+    public JointConstraint(IPhysicsObject po1, IPhysicsObject po2, float r1, float angle1, float r2, float angle2, float dt) {
         super(po1, po2);
 
         this.r1 = r1;
@@ -37,7 +37,7 @@ public class JointConstraint extends Constraint {
         System.out.println("l = " + d.length());
     }
 
-    private Matrix getVector(PhysicsObject po, float angle, float r) {
+    private Matrix getVector(IPhysicsObject po, float angle, float r) {
         angle += po.getGeometryObject().getShape().getAngle();
         return Matrix.createCoords(
                 r * (float) Math.cos(angle),

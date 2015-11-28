@@ -3,25 +3,25 @@ package game.engine.gamefield;
 import java.util.List;
 
 public class GameField implements Runnable {
-    private List<? extends Drawable> objectsToDraw = null;
-    DrawContext drawContext = null;
+    private List<? extends IDrawable> objectsToDraw = null;
+    IDrawContext IDrawContext = null;
 
-    public GameField(DrawContext drawContext) {
-        this.drawContext = drawContext;
+    public GameField(IDrawContext IDrawContext) {
+        this.IDrawContext = IDrawContext;
     }
 
-    public void setObjectsToDraw(List<? extends Drawable> objectsToDraw) {
+    public void setObjectsToDraw(List<? extends IDrawable> objectsToDraw) {
         this.objectsToDraw = objectsToDraw;
     }
 
     public void render() {
-        drawContext.startRendering();
+        IDrawContext.startRendering();
         if (objectsToDraw != null) {
-            for (Drawable objectToDraw : objectsToDraw) {
-                objectToDraw.draw(drawContext);
+            for (IDrawable objectToDraw : objectsToDraw) {
+                objectToDraw.draw(IDrawContext);
             }
         }
-        drawContext.endRendering();
+        IDrawContext.endRendering();
     }
 
     @Override

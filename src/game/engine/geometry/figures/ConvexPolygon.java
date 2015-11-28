@@ -1,10 +1,10 @@
 package game.engine.geometry.figures;
 
-import game.engine.gamefield.DrawContext;
-import game.engine.gamefield.Drawable;
+import game.engine.gamefield.IDrawContext;
+import game.engine.gamefield.IDrawable;
 import game.engine.myutils.Matrix;
 
-public class ConvexPolygon implements Drawable, Movable {
+public class ConvexPolygon implements IConvexPolygon, Movable {
     public static final float doublePI = (float) (2.0 * Math.PI);
     protected int verticesCount;
     protected Matrix[] initialVertices;
@@ -134,21 +134,21 @@ public class ConvexPolygon implements Drawable, Movable {
         this.leftBottomPoint = leftBottomPoint;
     }
 
-    private void drawRectangle(DrawContext drawContext) {
+    private void drawRectangle(IDrawContext IDrawContext) {
         Matrix a = getRealCoords(leftBottomPoint);
         Matrix b = getRealCoords(rightTopPoint);
-        drawContext.drawRect(a.get(0), a.get(1), b.get(0), b.get(1));
+        IDrawContext.drawRect(a.get(0), a.get(1), b.get(0), b.get(1));
     }
 
     @Override
-    public void draw(DrawContext drawContext) {
+    public void draw(IDrawContext IDrawContext) {
 
 //        for (int i = 0; i < verticesCount; i++) {
 //            Matrix realCoords = getRealCoords(i);
-//            drawContext.drawCircle(realCoords.get(0), realCoords.get(1), 4);
+//            IDrawContext.drawCircle(realCoords.get(0), realCoords.get(1), 4);
 //        }
 
-        drawContext.drawPolygon(getRealCoords());
-//        drawRectangle(drawContext);
+        IDrawContext.drawPolygon(getRealCoords());
+//        drawRectangle(IDrawContext);
     }
 }

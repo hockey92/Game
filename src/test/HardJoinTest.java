@@ -1,10 +1,9 @@
 package test;
 
-import game.engine.gamefield.Drawable;
+import game.engine.gamefield.IDrawable;
 import game.engine.gamefield.GameField;
 import game.engine.geometry.GeometryObject;
 import game.engine.geometry.HardJoin;
-import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.geometry.figures.ShapeFactory;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ public class HardJoinTest {
         GeometryObject geometryObject;
         GeometryObject parent = geometryObject = new GeometryObject(ShapeFactory.createRectangle(40f, 40f, 300f, 300f, 0f));
 
-        List<Drawable> objectsToDraw = new ArrayList<Drawable>();
+        List<IDrawable> objectsToDraw = new ArrayList<IDrawable>();
         objectsToDraw.add(parent);
 
         for (int i = 0; i < 10; i++) {

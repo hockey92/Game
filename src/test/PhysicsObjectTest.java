@@ -1,10 +1,10 @@
 package test;
 
 import game.engine.geometry.GeometryObject;
-import game.engine.physics.JointConstraint;
+import game.engine.physics.IPhysicsObject;
 import game.engine.physics.PhysicsHandler;
 import game.engine.physics.PhysicsObject;
-import game.engine.gamefield.Drawable;
+import game.engine.gamefield.IDrawable;
 import game.engine.gamefield.GameField;
 import game.engine.geometry.figures.ShapeFactory;
 import game.engine.myutils.Matrix;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PhysicsObjectTest {
     public static void main(String args[]) throws Exception {
-        List<Drawable> gameObjects = new ArrayList<Drawable>();
+        List<IDrawable> gameObjects = new ArrayList<IDrawable>();
         PhysicsHandler physicsHandler = new PhysicsHandler();
 
         float[] xs1 = {-50f, 50f, -50f};
@@ -26,7 +26,7 @@ public class PhysicsObjectTest {
         float invI = 0.001f;
         int n = 21;
 
-        PhysicsObject pos[] = new PhysicsObject[n];
+        IPhysicsObject pos[] = new PhysicsObject[n];
 
         pos[0] = (new PhysicsObject.PhysicsObjectBuilder())
                 .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(5f, 5f, 300f, 100f, 0f), null))
@@ -175,11 +175,11 @@ public class PhysicsObjectTest {
 //        PhysicsObject po3 = builder3.createPhysicsObject();
 //        PhysicsObject po4 = builder4.createPhysicsObject();
 //        PhysicsObject po5 = builder5.createPhysicsObject();
-        PhysicsObject gPlatform = gPlatformBuilder.createPhysicsObject();
+        IPhysicsObject gPlatform = gPlatformBuilder.createPhysicsObject();
 //        gPlatform.getGeometryObject().rotate(0.2f);
-        PhysicsObject gPlatform2 = gPlatformBuilder2.createPhysicsObject();
-        PhysicsObject vPlatform = vPlatformBuilder.createPhysicsObject();
-        PhysicsObject vPlatform2 = vPlatformBuilder2.createPhysicsObject();
+        IPhysicsObject gPlatform2 = gPlatformBuilder2.createPhysicsObject();
+        IPhysicsObject vPlatform = vPlatformBuilder.createPhysicsObject();
+        IPhysicsObject vPlatform2 = vPlatformBuilder2.createPhysicsObject();
 
 //        Collision collision1 = new Collision(po1.getGeometryObject(), gPlatform.getGeometryObject());
 //        Collision collision2 = new Collision(po2.getGeometryObject(), vPlatform.getGeometryObject());

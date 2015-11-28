@@ -1,22 +1,23 @@
 package game.engine.physics;
 
 import game.engine.geometry.collision.Collision;
+import game.engine.geometry.collision.ICollision;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PhysicsHandler implements Runnable {
-    List<PhysicsObject> physicsObjects = new ArrayList<PhysicsObject>();
-    List<JointConstraint> joints = new ArrayList<JointConstraint>();
+    List<IPhysicsObject> physicsObjects = new ArrayList<IPhysicsObject>();
+    List<IConstraint> joints = new ArrayList<IConstraint>();
     private float dt = 0.5f;
     private int iterationCount = 5;
 
-    public void addObject(PhysicsObject po) {
+    public void addObject(IPhysicsObject po) {
         physicsObjects.add(po);
     }
 
-    public void addJoint(JointConstraint joint) {
+    public void addJoint(IConstraint joint) {
         joints.add(joint);
     }
 
@@ -24,19 +25,19 @@ public class PhysicsHandler implements Runnable {
     public void run() {
         while (true) {
             long time1 = System.currentTimeMillis();
-            for (PhysicsObject object : physicsObjects) {
+            for (IPhysicsObject object : physicsObjects) {
                 object.update(dt);
             }
             long time2 = System.currentTimeMillis();
-            List<Constraint> contactConstraints = new LinkedList<Constraint>();
+            List<IConstraint> contactConstraints = new LinkedList<IConstraint>();
             for (int i = 0; i < physicsObjects.size(); i++) {
                 for (int j = i + 1; j < physicsObjects.size(); j++) {
                     if (i != 23 && i != 24 && j != 23 && j != 24 && i > 3 && j > 3) {
                         continue;
                     }
-                    Collision c = null;
-                    PhysicsObject p1 = physicsObjects.get(i);
-                    PhysicsObject p2 = physicsObjects.get(j);
+                    ICollision c = null;
+                    IPhysicsObject p1 = physicsObjects.get(i);
+                    IPhysicsObject p2 = physicsObjects.get(j);
 
                     if (p1.getInvM() + p1.getInvI() == 0 && p2.getInvM() + p2.getInvI() == 0) {
                         continue;
@@ -60,10 +61,10 @@ public class PhysicsHandler implements Runnable {
                 joints.add(new JointConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
             }
             for (int iteration = 0; iteration < iterationCount; iteration++) {
-                for (Constraint constraint : contactConstraints) {
+                for (IConstraint constraint : contactConstraints) {
                     constraint.fix();
                 }
-                for (JointConstraint joint : joints) {
+                for (IConstraint joint : joints) {
                     joint.fix();
                 }
 //                long time4 = System.currentTimeMillis();

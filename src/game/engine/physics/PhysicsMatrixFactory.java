@@ -10,8 +10,7 @@ public class PhysicsMatrixFactory {
         Matrix r32 = Matrix.convert(r2);
         Matrix cp1 = Matrix.getCrossProduct(r31.mul(-1f), n3);
         Matrix cp2 = Matrix.getCrossProduct(r32, n3);
-        float[][] values = {{-normal.get(0), -normal.get(1), 0, cp1.get(0), cp1.get(1), cp1.get(2),
-                normal.get(0), normal.get(1), 0, cp2.get(0), cp2.get(1), cp2.get(2)}};
+        float[][] values = {{-normal.get(0), -normal.get(1), 0, cp1.get(0), cp1.get(1), cp1.get(2), normal.get(0), normal.get(1), 0, cp2.get(0), cp2.get(1), cp2.get(2)}};
         jacobian.setValues(values);
         return jacobian;
     }

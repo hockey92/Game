@@ -306,6 +306,9 @@ public class Matrix implements Cloneable {
     }
 
     public static Matrix convert(Matrix init) {
+        if (!init.isCoords()) {
+            throw new MatrixException("Matrix isn't coords");
+        }
         Matrix converted = new Matrix(1, 3);
         for (int i = 0; i < 2; i++) {
             converted.set(i, init.get(i));

@@ -14,7 +14,7 @@ public class ContactConstraint extends Constraint {
     }
 
     private Matrix calculateAdjustment() {
-        Matrix d1 = Matrix.getLinComb((new Matrix(po1.getV())).mul(-1f), po2.getV(), 1f, 1f);
+        Matrix d1 = Matrix.getLinComb(new Matrix(po1.getV()), po2.getV(), -1f, 1f);
         Matrix av1 = new Matrix(1, 3);
         av1.set(2, po1.getAV());
         Matrix av2 = new Matrix(1, 3);
@@ -22,7 +22,7 @@ public class ContactConstraint extends Constraint {
         Matrix d2 = Matrix.getLinComb(Matrix.getCrossProduct(av1, Matrix.convert(c.getContactVector(0))).mul(-1f),
                 Matrix.getCrossProduct(av2, Matrix.convert(c.getContactVector(1))), 1f, 1f);
         Matrix answ = new Matrix(1, 1);
-        answ.set(0, Math.max(Matrix.getScalarProduct(Matrix.getLinComb(Matrix.convert(d1), d2, 1f, 1f), Matrix.convert(c.getNormal())) - 0.1f, 0) * 0.5f);
+        answ.set(0, Math.max(Matrix.getScalarProduct(Matrix.getLinComb(Matrix.convert(d1), d2, 1f, 1f), Matrix.convert(c.getNormal())) - 0.5f, 0) * 0.5f);
         return answ;
     }
 
@@ -34,7 +34,7 @@ public class ContactConstraint extends Constraint {
     @Override
     protected Matrix createB() {
         Matrix b = new Matrix(1, 1);
-        b.set(0, Math.max(c.getPenetrationDepth() - 0.1f, 0) * (1f / dt)).mul(0.1f);
+        b.set(0, Math.max(c.getPenetrationDepth() - 0.5f, 0) * (1f / dt)).mul(0.045f);
         return b.applyLinComb(calculateAdjustment(), 1f, 1f);
     }
 

@@ -44,8 +44,8 @@ public class PhysicsObject implements IPhysicsObject, IDrawable {
 
         v = newV;
 
-        v.mul(0.998f);
-        av *= 0.998f;
+//        v.mul(0.998f);
+//        av *= 0.998f;
     }
 
     @Override
@@ -72,6 +72,18 @@ public class PhysicsObject implements IPhysicsObject, IDrawable {
     public void applyVelocityFix(Matrix dV, float dAV) {
         av += dAV;
         v.applyLinComb(dV, 1f, 1f);
+    }
+
+    @Override
+    public void updateVelocity(float dt) {
+        v = Matrix.getLinComb(v, (new Matrix(a)).mul(dt), 1f, 1f);
+    }
+
+    @Override
+    public void updatePosition(float dt) {
+        Matrix dMove = new Matrix(v).mul(dt);
+        geometryObject.move(dMove);
+        geometryObject.rotate(av * dt);
     }
 
     @Override

@@ -1,5 +1,5 @@
 package game.engine.gamefield;
 
 public interface IDrawable {
-    void draw(IDrawContext IDrawContext);
+    void draw(IDrawContext drawContext);
 }

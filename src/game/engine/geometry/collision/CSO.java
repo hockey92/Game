@@ -1,5 +1,7 @@
 package game.engine.geometry.collision;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Matrix;
 import game.engine.myutils.Pair;
@@ -74,6 +76,7 @@ public class CSO extends ConvexPolygon {
 
     private static class Angle implements Comparable<Angle> {
         private float value;
+        private final float ERROR = 0.00001f;
 
         public Angle(Matrix matrix) {
             value = (float) Math.atan2(matrix.get(1), matrix.get(0));
@@ -87,7 +90,7 @@ public class CSO extends ConvexPolygon {
 
             Angle angle = (Angle) object;
             float diff = angle.value - value;
-            return Math.abs(diff) < 0.01;
+            return Math.abs(diff) < ERROR;
         }
 
         float adjustValue(float value) {
@@ -97,7 +100,7 @@ public class CSO extends ConvexPolygon {
         @Override
         public int compareTo(Angle angle) {
             float diff = adjustValue(angle.value) - adjustValue(value);
-            if (Math.abs(diff) < 0.005) {
+            if (Math.abs(diff) < ERROR) {
                 return 0;
             } else if (diff < 0) {
                 return 1;

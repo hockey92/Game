@@ -9,16 +9,16 @@ import java.util.List;
 
 public class PhysicsHandler implements Runnable {
     List<IPhysicsObject> physicsObjects = new ArrayList<IPhysicsObject>();
-    List<IConstraint> joints = new ArrayList<IConstraint>();
+    List<IConstraint> constraints = new ArrayList<IConstraint>();
     private float dt = 0.5f;
-    private int iterationCount = 5;
+    private int iterationCount = 20;
 
-    public void addObject(IPhysicsObject po) {
-        physicsObjects.add(po);
+    public void addObject(IPhysicsObject physicsObject) {
+        physicsObjects.add(physicsObject);
     }
 
-    public void addJoint(IConstraint joint) {
-        joints.add(joint);
+    public void addJoint(IConstraint constraint) {
+        constraints.add(constraint);
     }
 
     @Override
@@ -32,9 +32,9 @@ public class PhysicsHandler implements Runnable {
             List<IConstraint> contactConstraints = new LinkedList<IConstraint>();
             for (int i = 0; i < physicsObjects.size(); i++) {
                 for (int j = i + 1; j < physicsObjects.size(); j++) {
-                    if (i != 23 && i != 24 && j != 23 && j != 24 && i > 3 && j > 3) {
-                        continue;
-                    }
+//                    if (i != 23 && i != 24 && j != 23 && j != 24 && i > 3 && j > 3) {
+//                        continue;
+//                    }
                     ICollision c = null;
                     IPhysicsObject p1 = physicsObjects.get(i);
                     IPhysicsObject p2 = physicsObjects.get(j);
@@ -55,23 +55,26 @@ public class PhysicsHandler implements Runnable {
                 }
             }
             long time3 = System.currentTimeMillis();
-            joints.add(new JointConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
-
-            for (int i = 0; i < 17; i++) {
-                joints.add(new JointConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
-            }
+//            constraints.add(new JointConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
+//
+//            for (int i = 0; i < 17; i++) {
+//                constraints.add(new JointConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
+//            }
             for (int iteration = 0; iteration < iterationCount; iteration++) {
                 for (IConstraint constraint : contactConstraints) {
                     constraint.fix();
                 }
-                for (IConstraint joint : joints) {
-                    joint.fix();
-                }
-//                long time4 = System.currentTimeMillis();
+//                for (IConstraint constraint : constraints) {
+//                    constraint.fix();
+//                }
+                long time4 = System.currentTimeMillis();
 
-//                System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
+                System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
             }
-            joints.clear();
+            constraints.clear();
+//            for (IPhysicsObject object : physicsObjects) {
+//                object.updatePosition(dt);
+//            }
             try {
 //                long sleepTime = 10 - (time4 - time1);
                 Thread.sleep(10);

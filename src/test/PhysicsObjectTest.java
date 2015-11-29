@@ -24,7 +24,7 @@ public class PhysicsObjectTest {
         float[] ys2 = {-50f, -50f, 50f};
 
         float invI = 0.001f;
-        int n = 21;
+        int n = 50;
 
         IPhysicsObject pos[] = new PhysicsObject[n];
 
@@ -32,7 +32,7 @@ public class PhysicsObjectTest {
                 .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(5f, 5f, 300f, 100f, 0f), null))
                 .setV(Matrix.createCoords(0f, 0f))
                 .setA(Matrix.createCoords(0f, 0f))
-                .setAV(0f)
+                .setAV(0.1f)
                 .setInvM(0f)
                 .setInvI(0f)
                 .createPhysicsObject();
@@ -41,7 +41,7 @@ public class PhysicsObjectTest {
                 .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(15f, 15f, 300f, 250f, 0f), null))
                 .setV(Matrix.createCoords(0f, 0f))
                 .setA(Matrix.createCoords(0f, 0f))
-                .setAV(0f)
+                .setAV(0.1f)
                 .setInvM(0f)
                 .setInvI(0f)
                 .createPhysicsObject();
@@ -50,22 +50,22 @@ public class PhysicsObjectTest {
                 .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(15f, 15f, 400f, 250f, 0f), null))
                 .setV(Matrix.createCoords(0f, 0f))
                 .setA(Matrix.createCoords(0f, 0f))
-                .setAV(0f)
+                .setAV(0.1f)
                 .setInvM(0f)
                 .setInvI(0f)
                 .createPhysicsObject();
 
         float x = 300f;
         for (int i = 1; i < n - 2; i++) {
-            x += i == 1 ? 10f : 20f;
+//            x += i == 1 ? 10f : 20f;
             float invM = i == n - 3 ? 1f : 1f;
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
-                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(10f, 0.5f, x, 100f, 0f), null))
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(50f, 50f, x, 100f, 0f), null))
                     .setV(Matrix.createCoords(0f, 0f))
-                    .setA(Matrix.createCoords(0f, 0.05f))
+                    .setA(Matrix.createCoords(0f, 0.1f))
                     .setAV(0f)
                     .setInvM(invM)
-                    .setInvI(invM * 12f * (1f / (0f + 100f)))
+                    .setInvI(invM * 12f * (1f / (2500f + 2500f)))
                     .createPhysicsObject();
         }
 //        pos[2] = (new PhysicsObject.PhysicsObjectBuilder())

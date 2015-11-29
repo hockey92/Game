@@ -18,4 +18,8 @@ public interface IPhysicsObject extends IDrawable {
     float getInvI();
 
     void applyVelocityFix(Matrix dV, float dAV);
+
+    void updateVelocity(float dt);
+
+    void updatePosition(float dt);
 }

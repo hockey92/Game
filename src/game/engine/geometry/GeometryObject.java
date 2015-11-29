@@ -3,13 +3,13 @@ package game.engine.geometry;
 import game.engine.gamefield.IDrawContext;
 import game.engine.gamefield.IDrawable;
 import game.engine.geometry.figures.ConvexPolygon;
-import game.engine.geometry.figures.Movable;
+import game.engine.geometry.figures.IMovable;
 import game.engine.myutils.Matrix;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
 
-public class GeometryObject implements IDrawable, Movable {
+public class GeometryObject implements IDrawable, IMovable, IAnimationable {
     protected ConvexPolygon shape = null;
 
     protected GeometryObject parent = null;
@@ -50,25 +50,27 @@ public class GeometryObject implements IDrawable, Movable {
         children.add(child);
     }
 
-    protected void drawThisOne(IDrawContext IDrawContext) {
+    protected void drawThisOne(IDrawContext drawContext) {
         if (shape != null) {
-            shape.draw(IDrawContext);
+            shape.draw(drawContext);
         }
     }
 
     @Override
-    public void draw(IDrawContext IDrawContext) {
-        drawThisOne(IDrawContext);
+    public void draw(IDrawContext drawContext) {
+        drawThisOne(drawContext);
         if (children != null) {
             for (GeometryObject geometryObject : children) {
-                geometryObject.draw(IDrawContext);
+                geometryObject.draw(drawContext);
             }
         }
     }
 
     @Override
     public void move(float dx, float dy) {
-
+        if (shape != null) {
+            shape.move(dx, dy);
+        }
     }
 
     @Override
@@ -82,5 +84,10 @@ public class GeometryObject implements IDrawable, Movable {
     public void rotate(float dAngle) {
         shape.rotate(dAngle);
         update();
+    }
+
+    @Override
+    public void nextFrame() {
+
     }
 }

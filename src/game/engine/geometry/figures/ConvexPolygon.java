@@ -1,10 +1,9 @@
 package game.engine.geometry.figures;
 
 import game.engine.gamefield.IDrawContext;
-import game.engine.gamefield.IDrawable;
 import game.engine.myutils.Matrix;
 
-public class ConvexPolygon implements IConvexPolygon, Movable {
+public class ConvexPolygon implements IConvexPolygon, IMovable {
     public static final float doublePI = (float) (2.0 * Math.PI);
     protected int verticesCount;
     protected Matrix[] initialVertices;

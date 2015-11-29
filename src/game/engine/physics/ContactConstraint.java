@@ -3,11 +3,11 @@ package game.engine.physics;
 import game.engine.geometry.collision.ICollision;
 import game.engine.myutils.Matrix;
 
-public class ContactAbstractConstraint extends AbstractConstraint {
+public class ContactConstraint extends AbstractConstraint {
     private ICollision c;
     private float dt;
 
-    public ContactAbstractConstraint(IPhysicsObject po1, IPhysicsObject po2, ICollision c, float dt) {
+    public ContactConstraint(IPhysicsObject po1, IPhysicsObject po2, ICollision c, float dt) {
         super(po1, po2);
         this.c = c;
         this.dt = dt;

@@ -52,6 +52,7 @@ abstract public class AbstractConstraint implements IConstraint {
     @Override
     public void fix() {
         float lyambda = calculateLyambda();
+//        System.out.println("lyambda = " + lyambda);
         float oldImpulse = totalImpulse;
         totalImpulse = clamp(oldImpulse + lyambda);//oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
         lyambda = totalImpulse - oldImpulse;

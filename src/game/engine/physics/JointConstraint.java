@@ -2,7 +2,7 @@ package game.engine.physics;
 
 import game.engine.myutils.Matrix;
 
-public class JointAbstractConstraint extends AbstractConstraint {
+public class JointConstraint extends AbstractConstraint {
     private float dt;
     private float angle1 = 0f;
     private float angle2 = 0f;
@@ -14,7 +14,7 @@ public class JointAbstractConstraint extends AbstractConstraint {
     private Matrix v2;
     private Matrix d;
 
-    public JointAbstractConstraint(IPhysicsObject po1, IPhysicsObject po2, float r1, float angle1, float r2, float angle2, float dt) {
+    public JointConstraint(IPhysicsObject po1, IPhysicsObject po2, float r1, float angle1, float r2, float angle2, float dt) {
         super(po1, po2);
 
         this.r1 = r1;

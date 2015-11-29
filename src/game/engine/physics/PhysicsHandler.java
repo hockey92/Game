@@ -11,7 +11,7 @@ public class PhysicsHandler implements Runnable {
     List<IPhysicsObject> physicsObjects = new ArrayList<IPhysicsObject>();
     List<IConstraint> constraints = new ArrayList<IConstraint>();
     private float dt = 0.5f;
-    private int iterationCount = 20;
+    private int iterationCount = 50;
 
     public void addObject(IPhysicsObject physicsObject) {
         physicsObjects.add(physicsObject);
@@ -26,7 +26,7 @@ public class PhysicsHandler implements Runnable {
         while (true) {
             long time1 = System.currentTimeMillis();
             for (IPhysicsObject object : physicsObjects) {
-                object.update(dt);
+                object.updateVelocity(dt);
             }
             long time2 = System.currentTimeMillis();
             List<IConstraint> contactConstraints = new LinkedList<IConstraint>();
@@ -50,15 +50,15 @@ public class PhysicsHandler implements Runnable {
                     }
 
                     if (c != null && c.isCollision()) {
-                        contactConstraints.add(new ContactConstraint(p1, p2, c, dt));
+                        contactConstraints.add(new ContactAbstractConstraint(p1, p2, c, dt));
                     }
                 }
             }
             long time3 = System.currentTimeMillis();
-//            constraints.add(new JointConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
+//            constraints.add(new JointAbstractConstraint(physicsObjects.get(4), physicsObjects.get(5), 0f, 0f, 10f, (float) -Math.PI, 1f));
 //
 //            for (int i = 0; i < 17; i++) {
-//                constraints.add(new JointConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
+//                constraints.add(new JointAbstractConstraint(physicsObjects.get(5 + i), physicsObjects.get(6 + i), 10f, 0f, 10f, (float) -Math.PI, dt));
 //            }
             for (int iteration = 0; iteration < iterationCount; iteration++) {
                 for (IConstraint constraint : contactConstraints) {
@@ -72,9 +72,9 @@ public class PhysicsHandler implements Runnable {
                 System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
             }
             constraints.clear();
-//            for (IPhysicsObject object : physicsObjects) {
-//                object.updatePosition(dt);
-//            }
+            for (IPhysicsObject object : physicsObjects) {
+                object.updatePosition(dt);
+            }
             try {
 //                long sleepTime = 10 - (time4 - time1);
                 Thread.sleep(10);

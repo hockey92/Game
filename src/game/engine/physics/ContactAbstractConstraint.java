@@ -3,11 +3,11 @@ package game.engine.physics;
 import game.engine.geometry.collision.ICollision;
 import game.engine.myutils.Matrix;
 
-public class ContactConstraint extends Constraint {
+public class ContactAbstractConstraint extends AbstractConstraint {
     private ICollision c;
     private float dt;
 
-    public ContactConstraint(IPhysicsObject po1, IPhysicsObject po2, ICollision c, float dt) {
+    public ContactAbstractConstraint(IPhysicsObject po1, IPhysicsObject po2, ICollision c, float dt) {
         super(po1, po2);
         this.c = c;
         this.dt = dt;
@@ -22,7 +22,7 @@ public class ContactConstraint extends Constraint {
         Matrix d2 = Matrix.getLinComb(Matrix.getCrossProduct(av1, Matrix.convert(c.getContactVector(0))).mul(-1f),
                 Matrix.getCrossProduct(av2, Matrix.convert(c.getContactVector(1))), 1f, 1f);
         Matrix answ = new Matrix(1, 1);
-        answ.set(0, Math.max(Matrix.getScalarProduct(Matrix.getLinComb(Matrix.convert(d1), d2, 1f, 1f), Matrix.convert(c.getNormal())) - 0.5f, 0) * 0.5f);
+        answ.set(0, Math.max(Matrix.getScalarProduct(Matrix.getLinComb(Matrix.convert(d1), d2, 1f, 1f), Matrix.convert(c.getNormal())) - 0.0f, 0) * 0.5f);
         return answ;
     }
 
@@ -34,7 +34,7 @@ public class ContactConstraint extends Constraint {
     @Override
     protected Matrix createB() {
         Matrix b = new Matrix(1, 1);
-        b.set(0, Math.max(c.getPenetrationDepth() - 0.5f, 0) * (1f / dt)).mul(0.045f);
+        b.set(0, Math.max(c.getPenetrationDepth() - 0.0f, 0) * (1f / dt)).mul(0.08f);
         return b.applyLinComb(calculateAdjustment(), 1f, 1f);
     }
 

@@ -2,7 +2,7 @@ package game.engine.physics;
 
 import game.engine.myutils.Matrix;
 
-abstract public class Constraint implements IConstraint {
+abstract public class AbstractConstraint implements IConstraint {
     protected IPhysicsObject po1;
     protected IPhysicsObject po2;
     private Matrix J = null;
@@ -11,7 +11,7 @@ abstract public class Constraint implements IConstraint {
     protected Matrix M;
     private float totalImpulse = 0;
 
-    public Constraint(IPhysicsObject po1, IPhysicsObject po2) {
+    public AbstractConstraint(IPhysicsObject po1, IPhysicsObject po2) {
         this.po1 = po1;
         this.po2 = po2;
         this.M = PhysicsMatrixFactory.createMassMatrix(po1, po2);

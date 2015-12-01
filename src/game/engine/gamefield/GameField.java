@@ -4,10 +4,10 @@ import java.util.List;
 
 public class GameField implements Runnable {
     private List<? extends IDrawable> objectsToDraw = null;
-    IDrawContext IDrawContext = null;
+    IDrawContext drawContext = null;
 
-    public GameField(IDrawContext IDrawContext) {
-        this.IDrawContext = IDrawContext;
+    public GameField(IDrawContext drawContext) {
+        this.drawContext = drawContext;
     }
 
     public void setObjectsToDraw(List<? extends IDrawable> objectsToDraw) {
@@ -15,13 +15,13 @@ public class GameField implements Runnable {
     }
 
     public void render() {
-        IDrawContext.startRendering();
+        drawContext.startRendering();
         if (objectsToDraw != null) {
             for (IDrawable objectToDraw : objectsToDraw) {
-                objectToDraw.draw(IDrawContext);
+                objectToDraw.draw(drawContext);
             }
         }
-        IDrawContext.endRendering();
+        drawContext.endRendering();
     }
 
     @Override

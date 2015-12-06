@@ -27,7 +27,7 @@ public class ContactConstraint extends AbstractConstraint {
 
     @Override
     protected Matrix createJacobian() {
-        return PhysicsMatrixFactory.createSimpleJacobian(c.getNormal(), c.getContactVector(0), c.getContactVector(1));
+        return PhysicsMatrixUtils.createSimpleJacobian(c.getNormal(), c.getContactVector(0), c.getContactVector(1));
     }
 
     @Override

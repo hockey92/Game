@@ -52,7 +52,7 @@ public class JointConstraint extends AbstractConstraint {
 
     @Override
     protected Matrix createJacobian() {
-        return PhysicsMatrixFactory.createSimpleJacobian(d, rv1, rv2);
+        return PhysicsMatrixUtils.createSimpleJacobian(d, rv1, rv2);
     }
 
     @Override

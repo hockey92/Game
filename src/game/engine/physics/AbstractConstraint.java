@@ -7,15 +7,14 @@ abstract public class AbstractConstraint implements IConstraint {
     protected IPhysicsObject po2;
     private Matrix J = null;
     private Matrix b = null;
-    protected Matrix V = null;
     protected Matrix M;
     private float totalImpulse = 0;
 
     public AbstractConstraint(IPhysicsObject po1, IPhysicsObject po2) {
         this.po1 = po1;
         this.po2 = po2;
-        this.M = PhysicsMatrixFactory.createMassMatrix(po1, po2);
-//        this.V = PhysicsMatrixFactory.createVelocityMatrix(po1, po2);
+        this.M = PhysicsMatrixUtils.createMassMatrix(po1, po2);
+//        this.V = PhysicsMatrixUtils.createVelocityMatrix(po1, po2);
     }
 
     protected Matrix getJacobian() {
@@ -44,7 +43,7 @@ abstract public class AbstractConstraint implements IConstraint {
     protected float calculateLyambda() {
         Matrix J = getJacobian();
         Matrix transposeJ = J.transpose();
-        Matrix V = PhysicsMatrixFactory.createVelocityMatrix(po1, po2);
+        Matrix V = PhysicsMatrixUtils.createVelocityMatrix(po1, po2);
         return Matrix.getLinComb(Matrix.mul(V, transposeJ), getB(), -1f, -1f).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
 //        return -Matrix.mul(V, transposeJ).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
     }

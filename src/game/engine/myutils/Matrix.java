@@ -1,7 +1,5 @@
 package game.engine.myutils;
 
-import game.engine.geometry.PolarCoords;
-
 class MatrixException extends RuntimeException {
 
     public MatrixException() {
@@ -52,10 +50,10 @@ public class Matrix implements Cloneable {
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                transposedMatrix.values[j][i] = values[j][i];
+                transposedMatrix.values[j][i] = values[i][j];
             }
         }
-        return this;
+        return transposedMatrix;
     }
 
     public int getRowCount() {

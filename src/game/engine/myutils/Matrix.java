@@ -32,9 +32,7 @@ public class Matrix implements Cloneable {
         transposed = matrix.transposed;
         values = new float[rowCount][columnCount];
         for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < columnCount; j++) {
-                values[i][j] = matrix.values[i][j];
-            }
+            System.arraycopy(matrix.values, 0, values, 0, columnCount);
         }
     }
 

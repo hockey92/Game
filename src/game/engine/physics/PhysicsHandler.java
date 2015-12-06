@@ -11,7 +11,7 @@ public class PhysicsHandler implements Runnable {
     List<IPhysicsObject> physicsObjects = new ArrayList<IPhysicsObject>();
     List<IConstraint> constraints = new ArrayList<IConstraint>();
     private float dt = 0.5f;
-    private int iterationCount = 1;
+    private int iterationCount = 4;
 
     public void addObject(IPhysicsObject physicsObject) {
         physicsObjects.add(physicsObject);

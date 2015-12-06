@@ -33,7 +33,7 @@ public class ContactConstraint extends AbstractConstraint {
     @Override
     protected Matrix createB() {
         Matrix b = new Matrix(1, 1);
-        b.set(0, Math.max(c.getPenetrationDepth() - 0.0f, 0) * (1f / dt)).mul(0.08f);
+        b.set(0, Math.max(c.getPenetrationDepth() - 0.0f, 0) * (1f / dt)).mul(0.1f);
         return b.plus(calculateAdjustment());
     }
 

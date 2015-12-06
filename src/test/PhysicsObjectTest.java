@@ -211,7 +211,7 @@ public class PhysicsObjectTest {
             gameObjects.add(pos[i]);
         }
 
-//        physicsHandler.addJoint(new JointConstraint(pos[0], pos[1], 0f, 0f, 50f, (float) - Math.PI, 1f));
+//        physicsHandler.addConstraint(new JointConstraint(pos[0], pos[1], 0f, 0f, 50f, (float) - Math.PI, 1f));
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);

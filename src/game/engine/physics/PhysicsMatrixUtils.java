@@ -3,6 +3,7 @@ package game.engine.physics;
 import game.engine.myutils.Matrix;
 
 public class PhysicsMatrixUtils {
+
     public static Matrix createSimpleJacobian(Matrix normal, Matrix r1, Matrix r2) {
         Matrix jacobian = new Matrix(1, 12);
         Matrix n3 = Matrix.convert(normal);

@@ -1,8 +1,5 @@
-package test;
+package game.engine.geometry;
 
-import game.engine.geometry.GeometryObject;
-import game.engine.geometry.HardJoin;
-import game.engine.geometry.PolarCoords;
 import game.engine.geometry.figures.ShapeFactory;
 import game.engine.myutils.MathUtils;
 
@@ -17,7 +14,7 @@ public class HumanBeing extends GeometryObject {
 
     private GeometryObject createObjectsChain(int objectsCount, float w, float h) {
         if (objectsCount < 1) {
-            throw new RuntimeException("You should create at least one link in chain.");
+            throw new RuntimeException("You should create at least one link in a chain.");
         }
 
         GeometryObject first;

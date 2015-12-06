@@ -1,5 +1,6 @@
 package game.engine.geometry;
 
+import game.engine.myutils.CoordsUtils;
 import game.engine.myutils.MathUtils;
 import game.engine.myutils.Matrix;
 
@@ -21,8 +22,8 @@ public class HardJoin extends GeometryObject {
         throw new UnsupportedOperationException("You can't use addChild(GeometryObject gObject) in HardJoin. Use addChild(GeometryObject gObject, Matrix childPolarCoords) instead.");
     }
 
-    public void addChild(GeometryObject gObject, PolarCoords childPolarCoords) {
-        super.addChild(gObject);
+    public void addChild(GeometryObject child, PolarCoords childPolarCoords) {
+        super.addChild(child);
         childrenPolarCoords.add(childPolarCoords);
         anglesBetweenParentAndChild.add(0f);
     }
@@ -35,10 +36,10 @@ public class HardJoin extends GeometryObject {
             GeometryObject child = children.get(i);
 
             float parentAngle = parent.getShape().getAngle() + parendPolarCoords.getAngle();
-            Matrix relationParentPoint = PolarCoords.createCartesianCoords(parentAngle, parendPolarCoords.getR());
+            Matrix relationParentPoint = CoordsUtils.convertToCartesianCoords(parentAngle, parendPolarCoords.getR());
 
             float childAngle = parentAngle + angleBetweenParentAndChild;
-            Matrix relationChildPoint = PolarCoords.createCartesianCoords(childAngle, childPolarCoords.getR());
+            Matrix relationChildPoint = CoordsUtils.convertToCartesianCoords(childAngle, childPolarCoords.getR());
 
             child.getShape().setCenterOfMass(parent.getShape().getRealCoords(relationParentPoint.plus(relationChildPoint)));
 

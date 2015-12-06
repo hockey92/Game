@@ -14,7 +14,6 @@ abstract public class AbstractConstraint implements IConstraint {
         this.po1 = po1;
         this.po2 = po2;
         this.M = PhysicsMatrixUtils.createMassMatrix(po1, po2);
-//        this.V = PhysicsMatrixUtils.createVelocityMatrix(po1, po2);
     }
 
     protected Matrix getJacobian() {

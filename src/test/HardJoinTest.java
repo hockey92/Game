@@ -3,8 +3,7 @@ package test;
 import game.engine.gamefield.IDrawable;
 import game.engine.gamefield.GameField;
 import game.engine.geometry.GeometryObject;
-import game.engine.geometry.HardJoin;
-import game.engine.geometry.figures.ShapeFactory;
+import game.engine.geometry.HumanBeing;
 
 import java.util.ArrayList;
 import java.util.List;

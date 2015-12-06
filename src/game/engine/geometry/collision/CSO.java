@@ -1,6 +1,7 @@
 package game.engine.geometry.collision;
 
 import game.engine.geometry.figures.ConvexPolygon;
+import game.engine.myutils.Angle;
 import game.engine.myutils.MathUtils;
 import game.engine.myutils.Matrix;
 import game.engine.myutils.Pair;
@@ -69,41 +70,6 @@ public class CSO extends ConvexPolygon {
         for (int vertexNumber = 0; vertexNumber < verticesCount; vertexNumber++) {
             int nextVertexNumber = vertexNumber + 1 == verticesCount ? 0 : vertexNumber + 1;
             lines[vertexNumber] = new Line(getRealCoords(vertexNumber), getRealCoords(nextVertexNumber));
-        }
-    }
-
-    private static class Angle implements Comparable<Angle> {
-        private float value;
-        private final float DELTA = 0.00001f;
-
-        public Angle(Matrix matrix) {
-            value = (float) Math.atan2(matrix.get(1), matrix.get(0));
-        }
-
-        @Override
-        public boolean equals(Object object) {
-            if (!(object instanceof Angle)) {
-                return false;
-            }
-
-            Angle angle = (Angle) object;
-            float diff = angle.value - value;
-            return Math.abs(diff) < DELTA;
-        }
-
-        float adjustValue(float value) {
-            return value < 0f ? value + 2f * MathUtils.PI : value;
-        }
-
-        @Override
-        public int compareTo(Angle angle) {
-            float diff = adjustValue(angle.value) - adjustValue(value);
-            if (Math.abs(diff) < DELTA) {
-                return 0;
-            } else if (diff < 0) {
-                return 1;
-            }
-            return -1;
         }
     }
 

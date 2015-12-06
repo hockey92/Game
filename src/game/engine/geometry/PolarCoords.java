@@ -19,18 +19,4 @@ public class PolarCoords {
     public float getAngle() {
         return angle;
     }
-
-    public Matrix getCartesianCoords() {
-        if (cartesianCoords == null) {
-            cartesianCoords = createCartesianCoords(angle, r);
-        }
-        return cartesianCoords;
-    }
-
-    public static Matrix createCartesianCoords(float angle, float r) {
-        return Matrix.createCoords(
-                r * (float) Math.cos(angle),
-                r * (float) Math.sin(angle)
-        );
-    }
 }

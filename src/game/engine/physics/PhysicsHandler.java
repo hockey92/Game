@@ -17,7 +17,7 @@ public class PhysicsHandler implements Runnable {
         physicsObjects.add(physicsObject);
     }
 
-    public void addJoint(IConstraint constraint) {
+    public void addConstraint(IConstraint constraint) {
         constraints.add(constraint);
     }
 

@@ -30,10 +30,10 @@ public class CSO extends ConvexPolygon {
         vertices = new Matrix[csoEdges.length];
         vertices[0] = Matrix.createCoords(0f, 0f);
         for (int i = 0; i < csoEdges.length - 1; i++) {
-            vertices[i + 1] = Matrix.getLinComb(csoEdges[i].getVectorCoords(), vertices[i], 1, 1);
+            vertices[i + 1] = csoEdges[i].getVectorCoords().plusEq(vertices[i]);
         }
         calculateOuterRectangleBorders();
-        setCenterOfMass(Matrix.getLinComb(rightTopPoint, Matrix.getLinComb(p1.getRightTopPoint(), p2.getLeftBottomPoint().mul(-1f), 1f, 1f), -1f, 1f));
+        setCenterOfMass(p1.getRightTopPoint().minusEq(p2.getLeftBottomPoint()).minus(rightTopPoint));
         calculateLines();
     }
 
@@ -41,18 +41,18 @@ public class CSO extends ConvexPolygon {
         Map<Angle, CSOEdge> sortedEdgesMap = new TreeMap<Angle, CSOEdge>();
         float coeffs[][] = {{1f, -1f}, {-1f, 1f}};
         ConvexPolygon[] ps = {p1, p2};
-        for (int polygonNum = 0; polygonNum < ps.length; polygonNum++) {
-            for (int vertexNum = 0; vertexNum < ps[polygonNum].getVerticesCount(); vertexNum++) {
+        for (int plgNum = 0; plgNum < ps.length; plgNum++) {
+            for (int vrtNum = 0; vrtNum < ps[plgNum].getVerticesCount(); vrtNum++) {
 
-                int nextVertexNumber = vertexNum + 1 == ps[polygonNum].getVerticesCount() ? 0 : vertexNum + 1;
-                Matrix vectorCoords = ps[polygonNum].getCoords(nextVertexNumber).applyLinComb(ps[polygonNum].getCoords(vertexNum), coeffs[polygonNum][0], coeffs[polygonNum][1]);
+                int nextVertexNumber = vrtNum + 1 == ps[plgNum].getVerticesCount() ? 0 : vrtNum + 1;
+                Matrix vectorCoords = ps[plgNum].getCoords(nextVertexNumber).applyLinComb(ps[plgNum].getCoords(vrtNum), coeffs[plgNum][0], coeffs[plgNum][1]);
 
                 Angle angle = new Angle(vectorCoords);
                 CSOEdge csoEdge = sortedEdgesMap.get(angle);
                 if (csoEdge == null) {
-                    sortedEdgesMap.put(angle, new CSOEdge(vectorCoords, polygonNum, vertexNum));
+                    sortedEdgesMap.put(angle, new CSOEdge(vectorCoords, plgNum, vrtNum));
                 } else {
-                    csoEdge.addEdge(vectorCoords, polygonNum, vertexNum);
+                    csoEdge.addEdge(vectorCoords, plgNum, vrtNum);
                 }
             }
         }
@@ -116,7 +116,7 @@ public class CSO extends ConvexPolygon {
         }
 
         public void addEdge(Matrix vectorCoords, int polygonNumber, int vertexNumber) {
-            this.vectorCoords.applyLinComb(vectorCoords, 1, 1);
+            this.vectorCoords.plus(vectorCoords);
             edges.add(new Pair<Integer, Integer>(polygonNumber, vertexNumber));
         }
 

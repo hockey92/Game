@@ -95,19 +95,31 @@ public class Matrix implements Cloneable {
             for (int j = 0; j < mulMatrix.columnCount; j++) {
                 float value = 0.0f;
                 for (int k = 0; k < a.columnCount; k++) {
-                    value += a.get(i, k) * b.get(k, j);
+                    value += a.values[i][k] * b.values[k][j];
                 }
-                mulMatrix.set(i, j, value);
+                mulMatrix.values[i][j] = value;
             }
         }
         return mulMatrix;
     }
 
-    public static Matrix getMul(Matrix a, float c) {
+    public Matrix mulEq(float c) {
+        Matrix multMatrix = new Matrix(rowCount, columnCount);
+        for (int i = 0; i < multMatrix.rowCount; i++) {
+            for (int j = 0; j < multMatrix.columnCount; j++) {
+                multMatrix.values[i][j] = values[i][j] * c;
+            }
+        }
+        return multMatrix;
+    }
+
+    //use mulEguals(float) instead
+    @Deprecated
+    public static Matrix createMul(Matrix a, float c) {
         Matrix multMatrix = new Matrix(a.rowCount, a.columnCount);
         for (int i = 0; i < multMatrix.rowCount; i++) {
             for (int j = 0; j < multMatrix.columnCount; j++) {
-                multMatrix.set(i, j, a.get(i, j) * c);
+                multMatrix.values[i][j] = a.values[i][j] * c;
             }
         }
         return multMatrix;
@@ -116,19 +128,35 @@ public class Matrix implements Cloneable {
     public Matrix mul(float c) {
         for (int i = 0; i < this.rowCount; i++) {
             for (int j = 0; j < this.columnCount; j++) {
-                this.set(i, j, this.get(i, j) * c);
+                values[i][j] *= c;
             }
         }
         return this;
     }
 
+    public Matrix plus(Matrix m) {
+        return applyLinComb(m, 1f, 1f);
+    }
+
+    public Matrix plusEq(Matrix m) {
+        return getLinComb(this, m, 1f, 1f);
+    }
+
+    public Matrix minus(Matrix m) {
+        return applyLinComb(m, 1f, -1f);
+    }
+
+    public Matrix minusEq(Matrix m) {
+        return getLinComb(this, m, 1f, -1f);
+    }
+
     public Matrix mulLikeSum(Matrix m) {
         if (rowCount != m.rowCount || columnCount != m.columnCount) {
-            throw new MatrixException("Incorrect matrix sizes");
+            throw new MatrixException("Incorrect matrix size");
         }
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                set(i, j, get(i, j) * m.get(i, j));
+                values[i][j] *= m.values[i][j];
             }
         }
         return this;
@@ -141,7 +169,7 @@ public class Matrix implements Cloneable {
         Matrix linCombMatrix = new Matrix(a.rowCount, a.columnCount);
         for (int i = 0; i < linCombMatrix.rowCount; i++) {
             for (int j = 0; j < linCombMatrix.columnCount; j++) {
-                linCombMatrix.set(i, j, a.get(i, j) * c1 + b.get(i, j) * c2);
+                linCombMatrix.values[i][j] = a.values[i][j] * c1 + b.values[i][j] * c2;
             }
         }
         return linCombMatrix;
@@ -153,7 +181,7 @@ public class Matrix implements Cloneable {
         }
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                this.set(i, j, this.get(i, j) * c1 + b.get(i, j) * c2);
+                values[i][j] = values[i][j] * c1 + b.values[i][j] * c2;
             }
         }
         return this;
@@ -230,14 +258,10 @@ public class Matrix implements Cloneable {
         return scalarProduct;
     }
 
-    public static Matrix getIdentityMatrix(int size) {
+    public static Matrix createIdentityMatrix(int size) {
         Matrix identityMatrix = new Matrix(size, size);
-        for (int i = 0; i < identityMatrix.rowCount; i++) {
-            for (int j = 0; j < identityMatrix.columnCount; j++) {
-                if (i == j) {
-                    identityMatrix.set(i, j, 1.0f);
-                }
-            }
+        for (int i = 0; i < size; i++) {
+            identityMatrix.values[i][i] = 1.0f;
         }
         return identityMatrix;
     }
@@ -338,7 +362,7 @@ public class Matrix implements Cloneable {
         String matrixOut = "";
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                matrixOut += get(i, j) + " ";
+                matrixOut += values[i][j] + " ";
             }
             matrixOut += "\n";
         }

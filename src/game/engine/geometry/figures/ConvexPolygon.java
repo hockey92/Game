@@ -73,7 +73,7 @@ public class ConvexPolygon implements IConvexPolygon, IMovable {
     }
 
     public Matrix getRealCoords(Matrix coords) {
-        return Matrix.getLinComb(coords, centerOfMass, 1, 1);
+        return coords.plusEq(centerOfMass);
     }
 
     public Matrix getCoords(int vertexNum) {
@@ -86,12 +86,12 @@ public class ConvexPolygon implements IConvexPolygon, IMovable {
 
     @Override
     public void move(float dx, float dy) {
-        centerOfMass.applyLinComb(Matrix.createCoords(dx, dy), 1, 1);
+        centerOfMass.plus(Matrix.createCoords(dx, dy));
     }
 
     @Override
     public void move(Matrix dCoords) {
-        centerOfMass.applyLinComb(dCoords, 1, 1);
+        centerOfMass.plus(dCoords);
     }
 
     @Override

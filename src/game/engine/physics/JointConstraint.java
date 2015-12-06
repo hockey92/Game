@@ -30,7 +30,7 @@ public class JointConstraint extends AbstractConstraint {
         v1 = po1.getGeometryObject().getShape().getRealCoords(rv1);
         v2 = po2.getGeometryObject().getShape().getRealCoords(rv2);
 
-        d = Matrix.getLinComb(v2, v1, 1f, -1f);
+        d = v2.minusEq(v1);
         if (d.length() == 0.0f) {
             d = Matrix.createCoords(0.001f, 0.001f);
         }
@@ -60,6 +60,6 @@ public class JointConstraint extends AbstractConstraint {
         Matrix b = new Matrix(1, 1);
         float len = d.length();
         b.set(0, (len < 0.1f ? 0 : len) * (1f / dt)).mul(0.1f);
-        return b.applyLinComb(calculateAdjustment(), 1f, 1f);
+        return b.plus(calculateAdjustment());
     }
 }

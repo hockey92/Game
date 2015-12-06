@@ -67,7 +67,7 @@ public class Collision implements ICollision, IDrawable {
         }
 
         cso = new CSO(p1, p2);
-        point = p2.getCenterOfMass().applyLinComb(p1.getCenterOfMass(), 1f, -1f);
+        point = p2.getCenterOfMass().minus(p1.getCenterOfMass());
 
         int theNearestVertexNumber = 0;
         penetrationDepth = cso.getLine(0).getDistanceToPoint(point);
@@ -105,7 +105,7 @@ public class Collision implements ICollision, IDrawable {
     }
 
     private void calculateEdgeToPointContact(CSO cso, int theNearestVertexNumber, Matrix point, ConvexPolygon[] ps) {
-        Line perpendicularLine = new Line(point, (new Matrix(point)).applyLinComb(normal, 1, 1));
+        Line perpendicularLine = new Line(point, point.plusEq(normal));
         mutualPoint = Line.getMutualPoint(perpendicularLine, cso.getLine(theNearestVertexNumber));
         List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
 
@@ -114,10 +114,10 @@ public class Collision implements ICollision, IDrawable {
         int vrtNum = csoEdge.get(0).b; // vertex number
 
         Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber + plgNum < cso.getVerticesCount() ? theNearestVertexNumber + plgNum : 0);
-        Matrix d = Matrix.getLinComb(mutualPoint, csoPoint, 1f, -1f); // relative shift
+        Matrix d = mutualPoint.minusEq(csoPoint); // relative shift
         contactVectors[plgNum] = Matrix.getLinComb(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVerticesCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
         int nxtPlgNum = plgNum + 1 > 1 ? 0 : 1;
-        contactVectors[nxtPlgNum] = Matrix.getLinComb(contactVectors[plgNum], Matrix.getMul(normal, penetrationDepth), 1f, coeffs[plgNum]);
+        contactVectors[nxtPlgNum] = Matrix.getLinComb(contactVectors[plgNum], normal.mulEq(penetrationDepth), 1f, coeffs[plgNum]);
         adjustResult(ps);
     }
 
@@ -139,21 +139,21 @@ public class Collision implements ICollision, IDrawable {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 Matrix currPoint = ps[i].getRealCoords(coeffs[i][j]);
-                Line currLine = new Line(currPoint, (new Matrix(currPoint)).applyLinComb(normal, 1, 1));
+                Line currLine = new Line(currPoint, currPoint.plusEq(normal));
                 pointsAndLines.add(new Pair<Matrix, Line>(Line.getMutualPoint(firstPLine, currLine), currLine));
             }
         }
 
         Collections.sort(pointsAndLines, new EdgeToEdgeContactPairComparator());
 
-        contactVectors[0] = Matrix.getLinComb(pointsAndLines.get(1).a, Matrix.getLinComb(pointsAndLines.get(2).a, pointsAndLines.get(1).a, 1f, -1f).mul(0.5f), 1f, 1f);
-        contactVectors[1] = Matrix.getLinComb(contactVectors[0], Matrix.getMul(normal, penetrationDepth), 1f, 1f);
+        contactVectors[0] = pointsAndLines.get(1).a.plusEq(pointsAndLines.get(2).a.minusEq(pointsAndLines.get(1).a).mul(0.5f));
+        contactVectors[1] = contactVectors[0].plusEq(normal.mulEq(penetrationDepth));
         adjustResult(ps);
     }
 
     private void adjustResult(ConvexPolygon[] ps) {
         for (int i = 0; i < 2; i++) {
-            contactVectors[i].applyLinComb(ps[i].getCenterOfMass(), 1f, -1f);
+            contactVectors[i].minus(ps[i].getCenterOfMass());
         }
     }
 

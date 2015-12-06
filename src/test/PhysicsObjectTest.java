@@ -35,7 +35,7 @@ public class PhysicsObjectTest {
                 .setAV(0.1f)
                 .setInvM(0f)
                 .setInvI(0f)
-                .createPhysicsObject();
+                .build();
 
         pos[n - 2] = (new PhysicsObject.PhysicsObjectBuilder())
                 .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(15f, 15f, 300f, 250f, 0f), null))
@@ -44,7 +44,7 @@ public class PhysicsObjectTest {
                 .setAV(0.1f)
                 .setInvM(0f)
                 .setInvI(0f)
-                .createPhysicsObject();
+                .build();
 
         pos[n - 1] = (new PhysicsObject.PhysicsObjectBuilder())
                 .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(15f, 15f, 400f, 250f, 0f), null))
@@ -53,7 +53,7 @@ public class PhysicsObjectTest {
                 .setAV(0.1f)
                 .setInvM(0f)
                 .setInvI(0f)
-                .createPhysicsObject();
+                .build();
 
         float x = 300f;
         for (int i = 1; i < n - 2; i++) {
@@ -66,7 +66,7 @@ public class PhysicsObjectTest {
                     .setAV(0f)
                     .setInvM(invM)
                     .setInvI(invM * 12f * (1f / (2500f + 2500f)))
-                    .createPhysicsObject();
+                    .build();
         }
 //        pos[2] = (new PhysicsObject.PhysicsObjectBuilder())
 //                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 5f, 400f, 100f, 0f), null))
@@ -75,7 +75,7 @@ public class PhysicsObjectTest {
 //                .setAV(0f)
 //                .setInvM(1f)
 //                .setInvI(1f * 12f * (1f / (400f + 10000f)))
-//                .createPhysicsObject();
+//                .build();
 //
 //        pos[3] = (new PhysicsObject.PhysicsObjectBuilder())
 //                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 5f, 400f, 100f, 0f), null))
@@ -84,7 +84,7 @@ public class PhysicsObjectTest {
 //                .setAV(0f)
 //                .setInvM(1f)
 //                .setInvI(1f * 12f * (1f / (25f + 10000f)))
-//                .createPhysicsObject();
+//                .build();
 //
 //        pos[4] = (new PhysicsObject.PhysicsObjectBuilder())
 //                .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(100f, 5f, 400f, 100f, 0f), null))
@@ -93,7 +93,7 @@ public class PhysicsObjectTest {
 //                .setAV(0f)
 //                .setInvM(1f)
 //                .setInvI(1f * 12f * (1f / (25f + 10000f)))
-//                .createPhysicsObject();
+//                .build();
 //
 //        for (int i = 0; i < n; i++) {
 //            pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
@@ -103,7 +103,7 @@ public class PhysicsObjectTest {
 //                    .setAV(0f)
 //                    .setInvM(1f)
 //                    .setInvI(invM)
-//                    .createPhysicsObject();
+//                    .build();
 //        }
 //
 //        PhysicsObject.PhysicsObjectBuilder builder = (new PhysicsObject.PhysicsObjectBuilder())
@@ -170,16 +170,16 @@ public class PhysicsObjectTest {
                 .setA(Matrix.createCoords(0f, 0f))
                 .setAV(0f);
 
-//        PhysicsObject po1 = builder.createPhysicsObject();
-//        PhysicsObject po2 = builder2.createPhysicsObject();
-//        PhysicsObject po3 = builder3.createPhysicsObject();
-//        PhysicsObject po4 = builder4.createPhysicsObject();
-//        PhysicsObject po5 = builder5.createPhysicsObject();
-        IPhysicsObject gPlatform = gPlatformBuilder.createPhysicsObject();
+//        PhysicsObject po1 = builder.build();
+//        PhysicsObject po2 = builder2.build();
+//        PhysicsObject po3 = builder3.build();
+//        PhysicsObject po4 = builder4.build();
+//        PhysicsObject po5 = builder5.build();
+        IPhysicsObject gPlatform = gPlatformBuilder.build();
 //        gPlatform.getGeometryObject().rotate(0.2f);
-        IPhysicsObject gPlatform2 = gPlatformBuilder2.createPhysicsObject();
-        IPhysicsObject vPlatform = vPlatformBuilder.createPhysicsObject();
-        IPhysicsObject vPlatform2 = vPlatformBuilder2.createPhysicsObject();
+        IPhysicsObject gPlatform2 = gPlatformBuilder2.build();
+        IPhysicsObject vPlatform = vPlatformBuilder.build();
+        IPhysicsObject vPlatform2 = vPlatformBuilder2.build();
 
 //        Collision collision1 = new Collision(po1.getGeometryObject(), gPlatform.getGeometryObject());
 //        Collision collision2 = new Collision(po2.getGeometryObject(), vPlatform.getGeometryObject());

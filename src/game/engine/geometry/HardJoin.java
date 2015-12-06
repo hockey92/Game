@@ -40,7 +40,7 @@ public class HardJoin extends GeometryObject {
             float childAngle = parentAngle + angleBetweenParentAndChild;
             Matrix relationChildPoint = PolarCoords.createCartesianCoords(childAngle, childPolarCoords.getR());
 
-            child.getShape().setCenterOfMass(parent.getShape().getRealCoords(relationParentPoint.applyLinComb(relationChildPoint, 1f, 1f)));
+            child.getShape().setCenterOfMass(parent.getShape().getRealCoords(relationParentPoint.plus(relationChildPoint)));
 
             float adjustedAngle = -child.getShape().getAngle() - childPolarCoords.getAngle() + childAngle + MathUtils.PI;
             child.getShape().setAngle(adjustedAngle);

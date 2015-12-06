@@ -3,6 +3,7 @@ package test;
 import game.engine.gamefield.GameField;
 import game.engine.geometry.collision.CSO;
 import game.engine.geometry.figures.ConvexPolygon;
+import game.engine.myutils.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +41,9 @@ public class CSOTest {
 
         gameObjects.get(4).move(200f, 200f);
 
-        gameObjects.get(1).rotate((float) Math.PI);
-        gameObjects.get(2).rotate((float) Math.PI);
-        gameObjects.get(3).rotate((float) Math.PI);
+        gameObjects.get(1).rotate(MathUtils.PI);
+        gameObjects.get(2).rotate(MathUtils.PI);
+        gameObjects.get(3).rotate(MathUtils.PI);
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);

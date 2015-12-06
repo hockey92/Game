@@ -1,5 +1,6 @@
 package game.engine.geometry;
 
+import game.engine.myutils.MathUtils;
 import game.engine.myutils.Matrix;
 
 import java.util.ArrayList;
@@ -34,14 +35,14 @@ public class HardJoin extends GeometryObject {
             GeometryObject child = children.get(i);
 
             float parentAngle = parent.getShape().getAngle() + parendPolarCoords.getAngle();
-            Matrix relationParentPoint = Matrix.convertPolarCoords(parentAngle, parendPolarCoords.getR());
+            Matrix relationParentPoint = PolarCoords.createCartesianCoords(parentAngle, parendPolarCoords.getR());
 
             float childAngle = parentAngle + angleBetweenParentAndChild;
-            Matrix relationChildPoint = Matrix.convertPolarCoords(childAngle, childPolarCoords.getR());
+            Matrix relationChildPoint = PolarCoords.createCartesianCoords(childAngle, childPolarCoords.getR());
 
             child.getShape().setCenterOfMass(parent.getShape().getRealCoords(relationParentPoint.applyLinComb(relationChildPoint, 1f, 1f)));
 
-            float adjustedAngle = -child.getShape().getAngle() - childPolarCoords.getAngle() + childAngle + (float) Math.PI;
+            float adjustedAngle = -child.getShape().getAngle() - childPolarCoords.getAngle() + childAngle + MathUtils.PI;
             child.getShape().setAngle(adjustedAngle);
         }
     }

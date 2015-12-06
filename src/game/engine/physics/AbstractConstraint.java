@@ -43,7 +43,7 @@ abstract public class AbstractConstraint implements IConstraint {
 
     protected float calculateLyambda() {
         Matrix J = getJacobian();
-        Matrix transposeJ = (new Matrix(J)).transpose();
+        Matrix transposeJ = J.transpose();
         Matrix V = PhysicsMatrixFactory.createVelocityMatrix(po1, po2);
         return Matrix.getLinComb(Matrix.mul(V, transposeJ), getB(), -1f, -1f).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
 //        return -Matrix.mul(V, transposeJ).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
@@ -57,8 +57,7 @@ abstract public class AbstractConstraint implements IConstraint {
         totalImpulse = clamp(oldImpulse + lyambda);//oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
         lyambda = totalImpulse - oldImpulse;
         Matrix J = getJacobian();
-        Matrix transposeJ = (new Matrix(J)).transpose();
-        Matrix dV = Matrix.mul(M, transposeJ).mul(lyambda);
+        Matrix dV = Matrix.mul(M, J.transpose()).mul(lyambda);
         IPhysicsObject[] pos = {po1, po2};
         for (int i = 0; i < 2; i++) {
             pos[i].applyVelocityFix(Matrix.createCoords(dV.get(6 * i), dV.get(6 * i + 1)), dV.get(6 * i + 5));

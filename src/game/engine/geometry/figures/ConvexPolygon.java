@@ -1,10 +1,10 @@
 package game.engine.geometry.figures;
 
 import game.engine.gamefield.IDrawContext;
+import game.engine.myutils.MathUtils;
 import game.engine.myutils.Matrix;
 
 public class ConvexPolygon implements IConvexPolygon, IMovable {
-    public static final float doublePI = (float) (2.0 * Math.PI);
     protected int verticesCount;
     protected Matrix[] initialVertices;
     protected Matrix[] vertices;
@@ -99,9 +99,9 @@ public class ConvexPolygon implements IConvexPolygon, IMovable {
         angle += dAngle;
 
         if (angle < 0f) {
-            angle += doublePI;
-        } else if (angle > doublePI) {
-            angle -= doublePI;
+            angle += MathUtils.DOUBLE_PI;
+        } else if (angle > MathUtils.DOUBLE_PI) {
+            angle -= MathUtils.DOUBLE_PI;
         }
 
         for (int i = 0; i < verticesCount; i++) {

@@ -48,46 +48,36 @@ public class Matrix implements Cloneable {
     }
 
     public Matrix transpose() {
-        transposed = !transposed;
+        Matrix transposedMatrix = new Matrix(columnCount, rowCount);
+
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                transposedMatrix.values[j][i] = values[j][i];
+            }
+        }
         return this;
     }
 
     public int getRowCount() {
-        if (transposed) {
-            return columnCount;
-        } else {
-            return rowCount;
-        }
+        return rowCount;
     }
 
     public int getColumnCount() {
-        if (transposed) {
-            return rowCount;
-        } else {
-            return columnCount;
-        }
+        return columnCount;
     }
 
     public float get(int row, int column) throws MatrixException {
-        if (row < 0 || column < 0 || row >= getRowCount() || column >= getColumnCount()) {
+        if (row < 0 || column < 0 || row >= rowCount || column >= columnCount) {
             throw new MatrixException("Element not found");
         }
-        if (transposed) {
-            return values[column][row];
-        } else {
-            return values[row][column];
-        }
+        return values[row][column];
     }
 
     public void set(int row, int column, float value) throws MatrixException {
         if (row < 0 || column < 0 || row >= getRowCount() || column >= getColumnCount()) {
             throw new MatrixException("Wrong index");
         }
-        if (transposed) {
-            values[column][row] = value;
-        } else {
-            values[row][column] = value;
-        }
+        values[row][column] = value;
     }
 
     public static Matrix getRotateMatrix(float angle) {
@@ -176,7 +166,7 @@ public class Matrix implements Cloneable {
     public float get(int index) {
         if (!isVector()) {
             throw new MatrixException("It isn't a vector");
-        } else if (Math.max(columnCount, rowCount) <= index) {
+        } else if (maxOfSizes() <= index) {
             throw new MatrixException("Wrong index");
         }
 
@@ -343,16 +333,16 @@ public class Matrix implements Cloneable {
         return this;
     }
 
-    public static Matrix convertPolarCoords(float angle, float r) {
-        return Matrix.createCoords(
-                r * (float) Math.cos(angle),
-                r * (float) Math.sin(angle)
-        );
-    }
-
-    public static Matrix convertPolarCoords(PolarCoords polarCoords) {
-        return convertPolarCoords(polarCoords.getAngle(), polarCoords.getR());
-    }
+//    public static Matrix convertPolarCoords(float angle, float r) {
+//        return Matrix.createCoords(
+//                r * (float) Math.cos(angle),
+//                r * (float) Math.sin(angle)
+//        );
+//    }
+//
+//    public static Matrix convertPolarCoords(PolarCoords polarCoords) {
+//        return convertPolarCoords(polarCoords.getAngle(), polarCoords.getR());
+//    }
 
     @Override
     public String toString() {

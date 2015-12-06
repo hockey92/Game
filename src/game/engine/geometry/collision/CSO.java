@@ -1,5 +1,6 @@
 package game.engine.geometry.collision;
 
+import game.engine.gamefield.IDrawContext;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Angle;
 import game.engine.myutils.MathUtils;
@@ -44,12 +45,14 @@ public class CSO extends ConvexPolygon {
         ConvexPolygon[] ps = {p1, p2};
         for (int plgNum = 0; plgNum < ps.length; plgNum++) {
             for (int vrtNum = 0; vrtNum < ps[plgNum].getVerticesCount(); vrtNum++) {
-
                 int nextVertexNumber = vrtNum + 1 == ps[plgNum].getVerticesCount() ? 0 : vrtNum + 1;
                 Matrix vectorCoords = ps[plgNum].getCoords(nextVertexNumber).applyLinComb(ps[plgNum].getCoords(vrtNum), coeffs[plgNum][0], coeffs[plgNum][1]);
-
                 Angle angle = new Angle(vectorCoords);
                 CSOEdge csoEdge = sortedEdgesMap.get(angle);
+                if (csoEdge == null) {
+                    Angle adjustedAngle = createAdjustedAngle(angle);
+                    csoEdge = sortedEdgesMap.get(adjustedAngle);
+                }
                 if (csoEdge == null) {
                     sortedEdgesMap.put(angle, new CSOEdge(vectorCoords, plgNum, vrtNum));
                 } else {
@@ -65,12 +68,24 @@ public class CSO extends ConvexPolygon {
         }
     }
 
+    private Angle createAdjustedAngle(Angle angle) {
+        float angleValue = angle.getValue();
+        return new Angle(angleValue > 0 ? angleValue - MathUtils.DOUBLE_PI : angleValue + MathUtils.DOUBLE_PI);
+    }
+
     private void calculateLines() {
         lines = new Line[verticesCount];
         for (int vertexNumber = 0; vertexNumber < verticesCount; vertexNumber++) {
             int nextVertexNumber = vertexNumber + 1 == verticesCount ? 0 : vertexNumber + 1;
             lines[vertexNumber] = new Line(getRealCoords(vertexNumber), getRealCoords(nextVertexNumber));
         }
+    }
+
+    @Override
+    public void draw(IDrawContext drawContext) {
+        move(400, 400);
+        super.draw(drawContext);
+        move(-400, -400);
     }
 
     private static class CSOEdge {

@@ -2,14 +2,18 @@ package game.engine.myutils;
 
 public class Angle implements Comparable<Angle> {
     private float value;
-    private final float DELTA = 0.0001f;
+    private static final float DELTA = 0.0001f;
 
     public Angle(Matrix matrix) {
-        value = adjustValue((float) Math.atan2(matrix.get(1), matrix.get(0)));
+        value = (float) Math.atan2(matrix.get(1), matrix.get(0));
     }
 
     public Angle(float x, float y) {
-        value = adjustValue((float) Math.atan2(y, x));
+        value = (float) Math.atan2(y, x);
+    }
+
+    public Angle(float value) {
+        this.value = value;
     }
 
     public float getValue() {
@@ -39,10 +43,11 @@ public class Angle implements Comparable<Angle> {
 
     private boolean isValuesEqual(float value1, float value2) {
         float diff = Math.abs(value1 - value2);
-        return diff < DELTA || diff > MathUtils.DOUBLE_PI - DELTA;
+        return diff < DELTA;
     }
 
-    private float adjustValue(float value) {
-        return value < 0f ? value + MathUtils.DOUBLE_PI : value;
+    @Override
+    public String toString() {
+        return "angle: " + value;
     }
 }

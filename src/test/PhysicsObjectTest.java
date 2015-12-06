@@ -24,7 +24,7 @@ public class PhysicsObjectTest {
         float[] ys2 = {-50f, -50f, 50f};
 
         float invI = 0.001f;
-        int n = 50;
+        int n = 5;
 
         IPhysicsObject pos[] = new PhysicsObject[n];
 

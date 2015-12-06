@@ -6,31 +6,43 @@ import java.util.ArrayList;
 
 public class HardJoin extends GeometryObject {
 
-    private Matrix polarCoordsOfParentJoinPoint = Matrix.createCoords(0f, 20f); // (angle, r)
-    private ArrayList<Matrix> polarCoordsOfChildJoinPoints = new ArrayList<Matrix>();
+    private PolarCoords parendPolarCoords = null; // (angle, r)
+    private ArrayList<PolarCoords> childrenPolarCoords = new ArrayList<PolarCoords>();
     private ArrayList<Float> anglesBetweenParentAndChild = new ArrayList<Float>();
 
-    public HardJoin(GeometryObject parent) {
+    public HardJoin(GeometryObject parent, PolarCoords parendPolarCoords) {
         this.parent = parent;
-        polarCoordsOfChildJoinPoints.add(Matrix.createCoords((float) Math.PI, 20f));
-        anglesBetweenParentAndChild.add(0.3f);
+        this.parendPolarCoords = parendPolarCoords;
+    }
+
+    @Override
+    public void addChild(GeometryObject gObject) {
+        throw new UnsupportedOperationException("You can't use addChild(GeometryObject gObject) in HardJoin. Use addChild(GeometryObject gObject, Matrix childPolarCoords) instead.");
+    }
+
+    public void addChild(GeometryObject gObject, PolarCoords childPolarCoords) {
+        super.addChild(gObject);
+        childrenPolarCoords.add(childPolarCoords);
+        anglesBetweenParentAndChild.add(0f);
     }
 
     @Override
     protected void updateThisOne() {
-        float parentAngle = parent.getShape().getAngle() + polarCoordsOfParentJoinPoint.get(0);
-        Matrix relParPoint = Matrix.convertPolarCoords(
-                parentAngle,
-                polarCoordsOfParentJoinPoint.get(1)
-        );
-        float childAngle = parentAngle + anglesBetweenParentAndChild.get(0);
-        Matrix relChPoint = Matrix.convertPolarCoords(
-                childAngle,
-                polarCoordsOfChildJoinPoints.get(0).get(1)
-        );
-        children.get(0).getShape().setCenterOfMass(parent.getShape().getRealCoords(relParPoint.applyLinComb(relChPoint, 1f, 1f)));
-        float adjust = -children.get(0).getShape().getAngle() - polarCoordsOfChildJoinPoints.get(0).get(0) + childAngle + (float) Math.PI;
-        children.get(0).getShape().setAngle(adjust);
-    }
+        for (int i = 0; i < childCount(); i++) {
+            float angleBetweenParentAndChild = anglesBetweenParentAndChild.get(i);
+            PolarCoords childPolarCoords = childrenPolarCoords.get(i);
+            GeometryObject child = children.get(i);
 
+            float parentAngle = parent.getShape().getAngle() + parendPolarCoords.getAngle();
+            Matrix relationParentPoint = Matrix.convertPolarCoords(parentAngle, parendPolarCoords.getR());
+
+            float childAngle = parentAngle + angleBetweenParentAndChild;
+            Matrix relationChildPoint = Matrix.convertPolarCoords(childAngle, childPolarCoords.getR());
+
+            child.getShape().setCenterOfMass(parent.getShape().getRealCoords(relationParentPoint.applyLinComb(relationChildPoint, 1f, 1f)));
+
+            float adjustedAngle = -child.getShape().getAngle() - childPolarCoords.getAngle() + childAngle + (float) Math.PI;
+            child.getShape().setAngle(adjustedAngle);
+        }
+    }
 }

@@ -11,20 +11,11 @@ import java.util.List;
 
 public class HardJoinTest {
     public static void main(String args[]) {
-        GeometryObject geometryObject;
-        GeometryObject parent = geometryObject = new GeometryObject(ShapeFactory.createRectangle(40f, 40f, 300f, 300f, 0f));
+        GeometryObject geometryObject = new HumanBeing();
+//        GeometryObject parent = geometryObject = new GeometryObject(ShapeFactory.createRectangle(40f, 40f, 300f, 300f, 0f));
 
         List<IDrawable> objectsToDraw = new ArrayList<IDrawable>();
-        objectsToDraw.add(parent);
-
-        for (int i = 0; i < 10; i++) {
-            GeometryObject hardJoin = new HardJoin(parent);
-            parent.addChild(hardJoin);
-            GeometryObject child = new GeometryObject(ShapeFactory.createRectangle(40f, 40f, 300f, 300f, 0f), parent);
-            hardJoin.addChild(child);
-            objectsToDraw.add(child);
-            parent = child;
-        }
+        objectsToDraw.add(geometryObject);
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);

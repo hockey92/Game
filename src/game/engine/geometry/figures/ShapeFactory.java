@@ -1,6 +1,11 @@
 package game.engine.geometry.figures;
 
 public class ShapeFactory {
+
+    public static ConvexPolygon createRectangle(float w, float h) {
+        return createRectangle(w, h, 0, 0, 0);
+    }
+
     public static ConvexPolygon createRectangle(float w, float h, float x, float y, float angle) {
         float[] ys = {-h / 2, h / 2, h / 2, -h / 2};
         float[] xs = {w / 2, w / 2, -w / 2, -w / 2};
@@ -10,4 +15,5 @@ public class ShapeFactory {
         shape.setAngle(angle);
         return shape;
     }
+
 }

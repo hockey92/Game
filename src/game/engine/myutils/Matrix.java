@@ -1,5 +1,7 @@
 package game.engine.myutils;
 
+import game.engine.geometry.PolarCoords;
+
 class MatrixException extends RuntimeException {
 
     public MatrixException() {
@@ -346,6 +348,10 @@ public class Matrix implements Cloneable {
                 r * (float) Math.cos(angle),
                 r * (float) Math.sin(angle)
         );
+    }
+
+    public static Matrix convertPolarCoords(PolarCoords polarCoords) {
+        return convertPolarCoords(polarCoords.getAngle(), polarCoords.getR());
     }
 
     @Override

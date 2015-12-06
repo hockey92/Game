@@ -34,6 +34,10 @@ public class GeometryObject implements IDrawable, IMovable, IAnimationable {
     protected void updateThisOne() {
     }
 
+    public int childCount() {
+        return children.size();
+    }
+
     public void update() {
         updateThisOne();
         if (children != null) {

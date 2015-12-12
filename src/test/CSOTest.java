@@ -57,11 +57,11 @@ public class CSOTest {
         Thread renderThread = new Thread(gameField);
         renderThread.start();
 
-//        while (true) {
-//            gameObjects.get(0).rotate(0.02f);
-//            gameObjects.get(1).rotate(0.02f);
-//            cso.createCSO(gameObjects.get(0), gameObjects.get(1));
-//            Thread.sleep(200);
-//        }
+        while (true) {
+            gameObjects.get(0).rotate(0.02f);
+            gameObjects.get(1).rotate(-0.02f);
+            cso.createCSO(gameObjects.get(0), gameObjects.get(1));
+            Thread.sleep(200);
+        }
     }
 }

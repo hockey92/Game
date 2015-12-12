@@ -19,11 +19,11 @@ public class Collision implements ICollision, IDrawable {
     private Matrix[] contactVectors = {Matrix.createCoords(0.0f, 0.0f), Matrix.createCoords(0.0f, 0.0f)};
     private ConvexPolygon[] convexPolygons = new ConvexPolygon[2];
 
-    public Collision(GeometryObject go1, GeometryObject go2) throws Exception {
+    public Collision(GeometryObject go1, GeometryObject go2) {
         calculateCollision(go1.getShape(), go2.getShape());
     }
 
-    public Collision(ConvexPolygon p1, ConvexPolygon p2) throws Exception {
+    public Collision(ConvexPolygon p1, ConvexPolygon p2) {
         calculateCollision(p1, p2);
     }
 
@@ -56,7 +56,7 @@ public class Collision implements ICollision, IDrawable {
         return normal;
     }
 
-    public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) throws Exception {
+    public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) {
         objectsArePenetrated = false;
 
         convexPolygons[0] = p1;
@@ -83,7 +83,7 @@ public class Collision implements ICollision, IDrawable {
         }
 
         objectsArePenetrated = true;
-        normal = cso.getLine(theNearestVertexNumber).getNormal();
+        normal = cso.getLine(theNearestVertexNumber).getNormal().mul(-1f);
 
         List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
 
@@ -97,11 +97,8 @@ public class Collision implements ICollision, IDrawable {
                 calculateEdgeToEdgeContact(cso, theNearestVertexNumber, ps);
                 break;
             default:
-                throw new Exception("CSOEdge must contains one or two edges from convex polygons.");
+                throw new RuntimeException("CSOEdge must contains one or two edges from convex polygons.");
         }
-
-//        System.out.println(theNearestVertexNumber);
-//        System.out.println(normal.get(0) + " " + normal.get(1));
     }
 
     private void calculateEdgeToPointContact(CSO cso, int theNearestVertexNumber, Matrix point, ConvexPolygon[] ps) {
@@ -158,7 +155,6 @@ public class Collision implements ICollision, IDrawable {
     }
 
     private static class EdgeToEdgeContactPairComparator implements Comparator<Pair<Matrix, Line>> {
-
         @Override
         public int compare(Pair<Matrix, Line> obj1, Pair<Matrix, Line> obj2) {
             return (int) Math.signum(obj1.b.getValueOfExpression(obj2.a));

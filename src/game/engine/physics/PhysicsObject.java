@@ -44,8 +44,8 @@ public class PhysicsObject implements IPhysicsObject, IDrawable {
 
         v = newV;
 
-//        v.mul(0.998f);
-//        av *= 0.998f;
+        v.mul(0.998f);
+        av *= 0.998f;
     }
 
     @Override

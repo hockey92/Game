@@ -1,8 +1,8 @@
 package game.engine.myutils;
 
 public class Angle implements Comparable<Angle> {
+    public static final float DELTA = 0.001f;
     private float value;
-    private static final float DELTA = 0.0001f;
 
     public Angle(Matrix matrix) {
         value = (float) Math.atan2(matrix.get(1), matrix.get(0));

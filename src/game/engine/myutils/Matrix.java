@@ -336,6 +336,17 @@ public class Matrix implements Cloneable {
         return this;
     }
 
+    public float getVectorLength() {
+        if (!isVector()) {
+            throw new MatrixException("It isn't a vector");
+        }
+        float result = 0f;
+        for (int i = 0; i < maxOfSizes(); i++) {
+            result += get(i);
+        }
+        return (float) Math.sqrt(result);
+    }
+
     public Matrix setMainDiag(float[] mainDiag) {
         if (columnCount != rowCount || columnCount != mainDiag.length) {
             throw new MatrixException("Incorrect size");

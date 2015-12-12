@@ -43,7 +43,7 @@ abstract public class AbstractConstraint implements IConstraint {
         Matrix J = getJacobian();
         Matrix transposeJ = J.transpose();
         Matrix V = PhysicsMatrixUtils.createVelocityMatrix(po1, po2);
-        return Matrix.getLinComb(Matrix.mul(V, transposeJ), getB(), -1f, -1f).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
+        return -Matrix.mul(V, transposeJ).plus(getB()).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
 //        return -Matrix.mul(V, transposeJ).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
     }
 

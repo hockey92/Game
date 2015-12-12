@@ -21,7 +21,7 @@ public class ContactConstraint extends AbstractConstraint {
         av2.set(2, po2.getAV());
         Matrix d2 = Matrix.getCrossProduct(av2, Matrix.convert(c.getContactVector(1))).minusEq(Matrix.getCrossProduct(av1, Matrix.convert(c.getContactVector(0))));
         Matrix answ = new Matrix(1, 1);
-        answ.set(0, Math.max(Matrix.getScalarProduct(Matrix.convert(d1).plusEq(d2), Matrix.convert(c.getNormal())) - 0.0f, 0) * 0.5f);
+        answ.set(0, Math.max(Matrix.getScalarProduct(Matrix.convert(d1).plusEq(d2), Matrix.convert(c.getNormal())) - 0.09f, 0) * 0.3f);
         return answ;
     }
 
@@ -33,12 +33,12 @@ public class ContactConstraint extends AbstractConstraint {
     @Override
     protected Matrix createB() {
         Matrix b = new Matrix(1, 1);
-        b.set(0, Math.max(c.getPenetrationDepth() - 0.0f, 0) * (1f / dt)).mul(0.1f);
+        b.set(0, -Math.max(c.getPenetrationDepth() - 0.5f, 0) * (1f / dt)).mul(0.4f);
         return b.plus(calculateAdjustment());
     }
 
     @Override
     protected float clamp(float lyambda) {
-        return lyambda > 0 ? 0 : lyambda;
+        return lyambda < 0 ? 0 : lyambda;
     }
 }

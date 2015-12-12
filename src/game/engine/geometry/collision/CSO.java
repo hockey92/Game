@@ -1,6 +1,5 @@
 package game.engine.geometry.collision;
 
-import game.engine.gamefield.IDrawContext;
 import game.engine.geometry.figures.ConvexPolygon;
 import game.engine.myutils.Angle;
 import game.engine.myutils.MathUtils;
@@ -26,7 +25,7 @@ public class CSO extends ConvexPolygon {
         return csoEdges[edgeNumber].getEdges();
     }
 
-    private void createCSO(ConvexPolygon p1, ConvexPolygon p2) {
+    public void createCSO(ConvexPolygon p1, ConvexPolygon p2) {
         createCSOEdges(p1, p2);
         verticesCount = csoEdges.length;
         vertices = new Matrix[csoEdges.length];
@@ -40,30 +39,30 @@ public class CSO extends ConvexPolygon {
     }
 
     private void createCSOEdges(ConvexPolygon p1, ConvexPolygon p2) {
-        Map<Angle, CSOEdge> sortedEdgesMap = new TreeMap<Angle, CSOEdge>();
+        Map<Angle, CSOEdge> edgesMap = new TreeMap<Angle, CSOEdge>();
         float coeffs[][] = {{1f, -1f}, {-1f, 1f}};
         ConvexPolygon[] ps = {p1, p2};
         for (int plgNum = 0; plgNum < ps.length; plgNum++) {
             for (int vrtNum = 0; vrtNum < ps[plgNum].getVerticesCount(); vrtNum++) {
-                int nextVertexNumber = vrtNum + 1 == ps[plgNum].getVerticesCount() ? 0 : vrtNum + 1;
-                Matrix vectorCoords = ps[plgNum].getCoords(nextVertexNumber).applyLinComb(ps[plgNum].getCoords(vrtNum), coeffs[plgNum][0], coeffs[plgNum][1]);
+                int nextVrtNum = vrtNum + 1 == ps[plgNum].getVerticesCount() ? 0 : vrtNum + 1;
+                Matrix vectorCoords = ps[plgNum].getCoords(nextVrtNum).applyLinComb(ps[plgNum].getCoords(vrtNum), coeffs[plgNum][0], coeffs[plgNum][1]);
                 Angle angle = new Angle(vectorCoords);
-                CSOEdge csoEdge = sortedEdgesMap.get(angle);
-                if (csoEdge == null) {
+                CSOEdge csoEdge = edgesMap.get(angle);
+                if (csoEdge == null && MathUtils.PI - Math.abs(angle.getValue()) < Angle.DELTA) {
                     Angle adjustedAngle = createAdjustedAngle(angle);
-                    csoEdge = sortedEdgesMap.get(adjustedAngle);
+                    csoEdge = edgesMap.get(adjustedAngle);
                 }
                 if (csoEdge == null) {
-                    sortedEdgesMap.put(angle, new CSOEdge(vectorCoords, plgNum, vrtNum));
+                    edgesMap.put(angle, new CSOEdge(vectorCoords, plgNum, vrtNum));
                 } else {
                     csoEdge.addEdge(vectorCoords, plgNum, vrtNum);
                 }
             }
         }
 
-        csoEdges = new CSOEdge[sortedEdgesMap.size()];
+        csoEdges = new CSOEdge[edgesMap.size()];
         int count = 0;
-        for (CSOEdge edge : sortedEdgesMap.values()) {
+        for (CSOEdge edge : edgesMap.values()) {
             csoEdges[count++] = edge;
         }
     }
@@ -81,12 +80,12 @@ public class CSO extends ConvexPolygon {
         }
     }
 
-    @Override
-    public void draw(IDrawContext drawContext) {
-        move(400, 400);
-        super.draw(drawContext);
-        move(-400, -400);
-    }
+//    @Override
+//    public void draw(IDrawContext drawContext) {
+//        move(400, 400);
+//        super.draw(drawContext);
+//        move(-400, -400);
+//    }
 
     private static class CSOEdge {
         private Matrix vectorCoords = Matrix.createCoords(0, 0);

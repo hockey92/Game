@@ -4,13 +4,13 @@ import game.engine.myutils.Matrix;
 
 public class Line {
     private float[] coeffs = new float[3];
-    private float sqrt;
+    private float invSqrt;
 
     public Line(Matrix point1, Matrix point2) {
         coeffs[0] = point1.get(1) - point2.get(1);
         coeffs[1] = point2.get(0) - point1.get(0);
         coeffs[2] = point1.get(0) * point2.get(1) - point1.get(1) * point2.get(0);
-        sqrt = (float) Math.sqrt(coeffs[0] * coeffs[0] + coeffs[1] * coeffs[1]);
+        invSqrt = (float) (1f / Math.sqrt(coeffs[0] * coeffs[0] + coeffs[1] * coeffs[1]));
     }
 
     public float getValueOfExpression(Matrix point) {
@@ -22,11 +22,11 @@ public class Line {
     }
 
     public float getDistanceToPoint(Matrix point) {
-        return getValueOfExpression(point) / sqrt;
+        return getValueOfExpression(point) * invSqrt;
     }
 
     public Matrix getNormal() {
-        return Matrix.createCoords(coeffs[0] / sqrt, coeffs[1] / sqrt);
+        return Matrix.createCoords(coeffs[0] * invSqrt, coeffs[1] * invSqrt);
     }
 
     public static float getMainDeterminant(Line l1, Line l2) {

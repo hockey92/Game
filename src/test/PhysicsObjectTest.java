@@ -24,7 +24,7 @@ public class PhysicsObjectTest {
         float[] ys2 = {-50f, -50f, 50f};
 
         float invI = 0.001f;
-        int n = 50;
+        int n = 4;
 
         IPhysicsObject pos[] = new PhysicsObject[n];
 
@@ -55,7 +55,7 @@ public class PhysicsObjectTest {
                 .setInvI(0f)
                 .build();
 
-        float x = 300f;
+        float x = 600f;
         for (int i = 1; i < n - 2; i++) {
 //            x += i == 1 ? 10f : 20f;
             float invM = i == n - 3 ? 1f : 1f;

@@ -123,8 +123,8 @@ public class Collision implements ICollision, IDrawable {
         List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
 
         float[] coeffs = {1f, -1f};
-        int plgNum = csoEdge.get(0).a; // polygon number
-        int vrtNum = csoEdge.get(0).b; // vertex number
+        int plgNum = csoEdge.get(0).a; //polygon number
+        int vrtNum = csoEdge.get(0).b; //vertex number
 
         Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber + plgNum < cso.getVertexCount() ? theNearestVertexNumber + plgNum : 0);
         Matrix d = mutualPoint.minusEq(csoPoint); // relative shift
@@ -200,13 +200,19 @@ public class Collision implements ICollision, IDrawable {
 //            IDrawContext.drawCircle(mutualPoint.get(0), mutualPoint.get(1), 2f);
 //            IDrawContext.drawCircle(point.get(0), point.get(1), 2f);
             for (int i = 0; i < 2; i++) {
-                IDrawContext.drawCircle(convexPolygons[i].getCenterOfMass().get(0) + contactVectors[i].get(0),
-                        convexPolygons[i].getCenterOfMass().get(1) + contactVectors[i].get(1), 4f);
+                IDrawContext.drawCircle(
+                        convexPolygons[i].getCenterOfMass().get(0) + contactVectors[i].get(0),
+                        convexPolygons[i].getCenterOfMass().get(1) + contactVectors[i].get(1),
+                        4f
+                );
             }
             if (collisionType == CollisionType.EDGE_TO_EDGE) {
                 for (int i = 2; i < 4; i++) {
-                    IDrawContext.drawCircle(convexPolygons[i % 2].getCenterOfMass().get(0) + contactVectors[i].get(0),
-                            convexPolygons[i % 2].getCenterOfMass().get(1) + contactVectors[i].get(1), 4f);
+                    IDrawContext.drawCircle(
+                            convexPolygons[i % 2].getCenterOfMass().get(0) + contactVectors[i].get(0),
+                            convexPolygons[i % 2].getCenterOfMass().get(1) + contactVectors[i].get(1),
+                            4f
+                    );
                 }
             }
 //            mutualPoint.applyLinComb(d, 1f, -1f);

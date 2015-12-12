@@ -1,7 +1,7 @@
 package game.engine.myutils;
 
 public class Angle implements Comparable<Angle> {
-    public static final float DELTA = 0.001f;
+    public static final float DELTA = 0.01f;
     private float value;
 
     public Angle(Matrix matrix) {

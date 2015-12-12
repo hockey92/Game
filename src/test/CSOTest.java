@@ -66,7 +66,7 @@ public class CSOTest {
 
         while (true) {
             cp1.rotate(0.02f);
-            cp2.rotate(-0.02f);
+            cp2.rotate(0.02f);
             c.calculateCollision(cp1, cp2);
 //            cso.createCSO(gameObjects.get(0), gameObjects.get(1));
             Thread.sleep(20);

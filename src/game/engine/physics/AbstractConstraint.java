@@ -16,7 +16,7 @@ abstract public class AbstractConstraint implements IConstraint {
         this.M = PhysicsMatrixUtils.createMassMatrix(po1, po2);
     }
 
-    protected Matrix getJacobian() {
+    private Matrix getJacobian() {
         if (J == null) {
             J = createJacobian();
         }
@@ -30,7 +30,6 @@ abstract public class AbstractConstraint implements IConstraint {
         return b;
     }
 
-
     abstract protected Matrix createJacobian();
 
     abstract protected Matrix createB();
@@ -39,7 +38,7 @@ abstract public class AbstractConstraint implements IConstraint {
         return lyambda;
     }
 
-    protected float calculateLyambda() {
+    private float calculateLyambda() {
         Matrix J = getJacobian();
         Matrix transposeJ = J.transpose();
         Matrix V = PhysicsMatrixUtils.createVelocityMatrix(po1, po2);

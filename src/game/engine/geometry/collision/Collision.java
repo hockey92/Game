@@ -10,13 +10,19 @@ import game.engine.myutils.Pair;
 import java.util.*;
 
 public class Collision implements ICollision, IDrawable {
+    private CollisionType collisionType;
     private boolean objectsArePenetrated = false;
     private float penetrationDepth;
     private Matrix normal;
     private Matrix point;
     private CSO cso;
     private Matrix mutualPoint;
-    private Matrix[] contactVectors = {Matrix.createCoords(0.0f, 0.0f), Matrix.createCoords(0.0f, 0.0f)};
+    private Matrix[] contactVectors = {
+            Matrix.createCoords(0.0f, 0.0f),
+            Matrix.createCoords(0.0f, 0.0f),
+            Matrix.createCoords(0.0f, 0.0f),
+            Matrix.createCoords(0.0f, 0.0f)
+    };
     private ConvexPolygon[] convexPolygons = new ConvexPolygon[2];
 
     public Collision(GeometryObject go1, GeometryObject go2) {
@@ -29,6 +35,9 @@ public class Collision implements ICollision, IDrawable {
 
     @Override
     public Matrix getContactVector(int index) {
+        if (index > 3 || collisionType == CollisionType.EDGE_TO_POINT && index > 0) {
+            throw new RuntimeException("Wrong index");
+        }
         return contactVectors[index];
     }
 
@@ -56,6 +65,11 @@ public class Collision implements ICollision, IDrawable {
         return normal;
     }
 
+    @Override
+    public CollisionType getCollisionType() {
+        return null;
+    }
+
     public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) {
         objectsArePenetrated = false;
 
@@ -72,7 +86,7 @@ public class Collision implements ICollision, IDrawable {
         int theNearestVertexNumber = 0;
         penetrationDepth = cso.getLine(0).getDistanceToPoint(point);
 
-        for (int i = 0; i < cso.getVerticesCount(); i++) {
+        for (int i = 0; i < cso.getVertexCount(); i++) {
             float distance = cso.getLine(i).getDistanceToPoint(point);
             if (distance < 0) {
                 return;
@@ -102,6 +116,8 @@ public class Collision implements ICollision, IDrawable {
     }
 
     private void calculateEdgeToPointContact(CSO cso, int theNearestVertexNumber, Matrix point, ConvexPolygon[] ps) {
+        collisionType = CollisionType.EDGE_TO_POINT;
+
         Line perpendicularLine = new Line(point, point.plusEq(normal));
         mutualPoint = Line.getMutualPoint(perpendicularLine, cso.getLine(theNearestVertexNumber));
         List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
@@ -110,15 +126,17 @@ public class Collision implements ICollision, IDrawable {
         int plgNum = csoEdge.get(0).a; // polygon number
         int vrtNum = csoEdge.get(0).b; // vertex number
 
-        Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber + plgNum < cso.getVerticesCount() ? theNearestVertexNumber + plgNum : 0);
+        Matrix csoPoint = cso.getRealCoords(theNearestVertexNumber + plgNum < cso.getVertexCount() ? theNearestVertexNumber + plgNum : 0);
         Matrix d = mutualPoint.minusEq(csoPoint); // relative shift
-        contactVectors[plgNum] = Matrix.getLinComb(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVerticesCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
+        contactVectors[plgNum] = Matrix.getLinComb(ps[plgNum].getRealCoords(vrtNum + plgNum < ps[plgNum].getVertexCount() ? vrtNum + plgNum : 0), d, 1f, coeffs[plgNum]);
         int nxtPlgNum = plgNum + 1 > 1 ? 0 : 1;
         contactVectors[nxtPlgNum] = Matrix.getLinComb(contactVectors[plgNum], normal.mulEq(penetrationDepth), 1f, coeffs[plgNum]);
-        adjustResult(ps);
+        adjustResult(ps, collisionType);
     }
 
     private void calculateEdgeToEdgeContact(CSO cso, int theNearestVertexNumber, ConvexPolygon[] ps) {
+        collisionType = CollisionType.EDGE_TO_EDGE;
+
         List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
         List<Pair<Matrix, Line>> pointsAndLines = new ArrayList<Pair<Matrix, Line>>(4);
 
@@ -127,7 +145,7 @@ public class Collision implements ICollision, IDrawable {
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 int vertexNumber = csoEdge.get(i).b + j;
-                coeffs[csoEdge.get(i).a][j] = vertexNumber == ps[csoEdge.get(i).a].getVerticesCount() ? 0 : vertexNumber;
+                coeffs[csoEdge.get(i).a][j] = vertexNumber == ps[csoEdge.get(i).a].getVertexCount() ? 0 : vertexNumber;
             }
         }
 
@@ -143,14 +161,20 @@ public class Collision implements ICollision, IDrawable {
 
         Collections.sort(pointsAndLines, new EdgeToEdgeContactPairComparator());
 
-        contactVectors[0] = pointsAndLines.get(1).a.plusEq(pointsAndLines.get(2).a.minusEq(pointsAndLines.get(1).a).mul(0.5f));
-        contactVectors[1] = contactVectors[0].plusEq(normal.mulEq(penetrationDepth));
-        adjustResult(ps);
+        Matrix shift = normal.mulEq(penetrationDepth);
+        contactVectors[0] = pointsAndLines.get(1).a;
+        contactVectors[1] = contactVectors[0].plusEq(shift);
+        contactVectors[2] = pointsAndLines.get(2).a;
+        contactVectors[3] = contactVectors[2].plusEq(shift);
+        adjustResult(ps, collisionType);
     }
 
-    private void adjustResult(ConvexPolygon[] ps) {
-        for (int i = 0; i < 2; i++) {
-            contactVectors[i].minus(ps[i].getCenterOfMass());
+    private void adjustResult(ConvexPolygon[] ps, CollisionType collisionType) {
+        int shift[] = {0, 2};
+        for (int i = 0; i < collisionType.getIndex(); i++) {
+            for (int j = 0; j < 2; j++) {
+                contactVectors[shift[i] + j].minus(ps[j].getCenterOfMass());
+            }
         }
     }
 

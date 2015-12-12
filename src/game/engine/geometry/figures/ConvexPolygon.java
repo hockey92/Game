@@ -17,7 +17,7 @@ public class ConvexPolygon implements IConvexPolygon, IMovable {
 
     }
 
-    public int getVerticesCount() {
+    public int getVertexCount() {
         return verticesCount;
     }
 

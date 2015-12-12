@@ -10,4 +10,6 @@ public interface ICollision {
     boolean isCollision();
 
     Matrix getNormal();
+
+    CollisionType getCollisionType();
 }

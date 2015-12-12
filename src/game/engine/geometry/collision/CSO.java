@@ -43,8 +43,8 @@ public class CSO extends ConvexPolygon {
         float coeffs[][] = {{1f, -1f}, {-1f, 1f}};
         ConvexPolygon[] ps = {p1, p2};
         for (int plgNum = 0; plgNum < ps.length; plgNum++) {
-            for (int vrtNum = 0; vrtNum < ps[plgNum].getVerticesCount(); vrtNum++) {
-                int nextVrtNum = vrtNum + 1 == ps[plgNum].getVerticesCount() ? 0 : vrtNum + 1;
+            for (int vrtNum = 0; vrtNum < ps[plgNum].getVertexCount(); vrtNum++) {
+                int nextVrtNum = vrtNum + 1 == ps[plgNum].getVertexCount() ? 0 : vrtNum + 1;
                 Matrix vectorCoords = ps[plgNum].getCoords(nextVrtNum).applyLinComb(ps[plgNum].getCoords(vrtNum), coeffs[plgNum][0], coeffs[plgNum][1]);
                 Angle angle = new Angle(vectorCoords);
                 CSOEdge csoEdge = edgesMap.get(angle);

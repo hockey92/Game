@@ -35,7 +35,7 @@ public class ContactConstraint extends AbstractConstraint {
             Matrix d2 = Matrix.getCrossProduct(av2, Matrix.convert(c.getContactVector(i * 2 + 1))).minusEq(Matrix.getCrossProduct(av1, Matrix.convert(c.getContactVector(i * 2))));
 
             float v = Matrix.getScalarProduct(Matrix.convert(d1).plusEq(d2), Matrix.convert(c.getNormal()));
-            v = Math.abs(v) - 2.0f < 0f ? 0f : Math.signum(v) * (Math.abs(v) - 2.0f);
+            v = Math.abs(v) - 0.1f < 0f ? 0f : Math.signum(v) * (Math.abs(v) - 0.1f);
             answ.set(i, v * 1.0f);
         }
 
@@ -47,7 +47,7 @@ public class ContactConstraint extends AbstractConstraint {
         int rowCount = c.getCollisionType().getIndex() + 1;
         Matrix b = new Matrix(rowCount, 1);
         for (int i = 0; i < rowCount; i++) {
-            b.set(i, -Math.max(c.getPenetrationDepth(), 0) * (1f / dt) * 0.1f);
+            b.set(i, -Math.max(c.getPenetrationDepth() - 0.5f, 0) * (1f / dt) * 0.01f);
         }
         b.plus(calculateAdjustment());
         return b;

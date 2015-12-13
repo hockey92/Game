@@ -11,7 +11,7 @@ public class PhysicsHandler implements Runnable {
     List<IPhysicsObject> physicsObjects = new ArrayList<IPhysicsObject>();
     List<IConstraint> constraints = new ArrayList<IConstraint>();
     private float dt = 0.5f;
-    private int iterationCount = 5;
+    private int iterationCount = 4;
 
     public void addObject(IPhysicsObject physicsObject) {
         physicsObjects.add(physicsObject);
@@ -74,7 +74,7 @@ public class PhysicsHandler implements Runnable {
             }
             try {
 //                long sleepTime = 10 - (time4 - time1);
-                Thread.sleep(10);
+                Thread.sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

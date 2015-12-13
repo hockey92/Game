@@ -26,7 +26,7 @@ public class PhysicsObjectTest {
         float[] ys2 = {-50f, -50f, 50f};
 
         float invI = 0.001f;
-        int n = 20;
+        int n = 1;
 
         IPhysicsObject pos[] = new PhysicsObject[n];
 
@@ -34,7 +34,7 @@ public class PhysicsObjectTest {
         for (int i = 0; i < n; i++) {
             float invM = 1f;
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())
-                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(50f, 50f, 100f + (i % 6) * 60f, 100f + (i / 6) * 60f, -0.4f), null))
+                    .setGeometryObject(new GeometryObject(ShapeFactory.createRectangle(50f, 50f, 100f /*+ (i % 6) * 50f + ((i / 6) % 2) * 50*/, 100f + (i / 6) * 60f, 0.0f), null))
                     .setV(Matrix.createCoords(0f, 0f))
                     .setA(Matrix.createCoords(0f, 0.1f))
                     .setAV(0f)

@@ -70,9 +70,7 @@ abstract public class AbstractConstraint implements IConstraint {
         IPhysicsObject[] pos = {po1, po2};
         for (int i = 0; i < 2; i++) {
             pos[i].applyVelocityFix(Matrix.createCoords(dV.get(6 * i), dV.get(6 * i + 1)), dV.get(6 * i + 5));
-            if (pos[i].getV().length() > 20f) {
-                System.out.println("velocity length is " + pos[i].getV().length());
-            }
+            System.out.println(pos[i].getV() + " --- " + pos[i].getAV());
         }
     }
 }

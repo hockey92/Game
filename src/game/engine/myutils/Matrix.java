@@ -54,11 +54,11 @@ public class Matrix implements Cloneable {
         return transposedMatrix;
     }
 
-    public int getRowCount() {
+    public int rowCount() {
         return rowCount;
     }
 
-    public int getColumnCount() {
+    public int columnCount() {
         return columnCount;
     }
 
@@ -367,6 +367,32 @@ public class Matrix implements Cloneable {
 //    public static Matrix convertPolarCoords(PolarCoords polarCoords) {
 //        return convertPolarCoords(polarCoords.getAngle(), polarCoords.getR());
 //    }
+
+    public Matrix getInv() {
+        if (rowCount != columnCount || rowCount > 2) {
+            throw new MatrixException("We can't get an inverse matrix with this dimension.");
+        }
+
+        Matrix m = null;
+
+        if (rowCount == 1) {
+            m = new Matrix(1, 1);
+            m.values[0][0] = 1 / values[0][0];
+        } else if (rowCount == 2) {
+            float d = values[0][0] * values[1][1] - values[0][1] * values[1][0];
+            if (d == 0) {
+                throw new MatrixException("A determinant of a 2x2 matrix (" + toString() + ") is zero. We can't find an inverse matrix");
+            }
+            m = new Matrix(2, 2);
+            m.values[0][0] = values[1][1];
+            m.values[1][1] = values[0][0];
+            m.values[0][1] = -values[0][1];
+            m.values[1][0] = -values[1][0];
+            m.mul(1f / d);
+        }
+
+        return m;
+    }
 
     @Override
     public String toString() {

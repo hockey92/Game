@@ -8,7 +8,7 @@ abstract public class AbstractConstraint implements IConstraint {
     private Matrix J = null;
     private Matrix b = null;
     protected Matrix M;
-    private float totalImpulse = 0;
+    protected Matrix totalImpulse = null;
 
     public AbstractConstraint(IPhysicsObject po1, IPhysicsObject po2) {
         this.po1 = po1;
@@ -24,10 +24,11 @@ abstract public class AbstractConstraint implements IConstraint {
     }
 
     private Matrix getB() {
-        if (b == null) {
-            b = createB();
-        }
-        return b;
+//        if (b == null) {
+//            b = createB();
+//        }
+//        return b;
+        return createB();
     }
 
     abstract protected Matrix createJacobian();
@@ -38,26 +39,40 @@ abstract public class AbstractConstraint implements IConstraint {
         return lyambda;
     }
 
-    private float calculateLyambda() {
+    protected Matrix clamp(Matrix lyambda) {
+        return lyambda;
+    }
+
+    private Matrix calculateLyambda() {
         Matrix J = getJacobian();
-        Matrix transposeJ = J.transpose();
         Matrix V = PhysicsMatrixUtils.createVelocityMatrix(po1, po2);
-        return -Matrix.mul(V, transposeJ).plus(getB()).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
+
+        Matrix m1 = Matrix.mul(J, V.transpose()).plus(getB()).mul(-1f);
+        Matrix m2 = Matrix.mul(Matrix.mul(J, M), J.transpose()).getInv();
+
+        return Matrix.mul(m2, m1);
+//        return -Matrix.mul(V, transposeJ).plus(getB()).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
 //        return -Matrix.mul(V, transposeJ).get(0) / Matrix.mul(Matrix.mul(J, M), transposeJ).get(0);
     }
 
     @Override
     public void fix() {
-        float lyambda = calculateLyambda();
+        Matrix lyambda = calculateLyambda();
 //        System.out.println("lyambda = " + lyambda);
-        float oldImpulse = totalImpulse;
-        totalImpulse = clamp(oldImpulse + lyambda);//oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
-        lyambda = totalImpulse - oldImpulse;
+        Matrix oldImpulse = new Matrix(totalImpulse);
+//        totalImpulse = clamp(oldImpulse.plusEq(lyambda));//oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
+        totalImpulse = clamp(oldImpulse.plusEq(lyambda));
+
+        lyambda = totalImpulse.minusEq(oldImpulse);
+
         Matrix J = getJacobian();
-        Matrix dV = Matrix.mul(M, J.transpose()).mul(lyambda);
+        Matrix dV = Matrix.mul(Matrix.mul(M, J.transpose()), lyambda);
         IPhysicsObject[] pos = {po1, po2};
         for (int i = 0; i < 2; i++) {
             pos[i].applyVelocityFix(Matrix.createCoords(dV.get(6 * i), dV.get(6 * i + 1)), dV.get(6 * i + 5));
+            if (pos[i].getV().length() > 20f) {
+                System.out.println("velocity length is " + pos[i].getV().length());
+            }
         }
     }
 }

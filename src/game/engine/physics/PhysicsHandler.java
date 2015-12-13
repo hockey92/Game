@@ -11,7 +11,7 @@ public class PhysicsHandler implements Runnable {
     List<IPhysicsObject> physicsObjects = new ArrayList<IPhysicsObject>();
     List<IConstraint> constraints = new ArrayList<IConstraint>();
     private float dt = 0.5f;
-    private int iterationCount = 4;
+    private int iterationCount = 5;
 
     public void addObject(IPhysicsObject physicsObject) {
         physicsObjects.add(physicsObject);
@@ -43,13 +43,9 @@ public class PhysicsHandler implements Runnable {
                         continue;
                     }
 
-                    try {
-                        c = new Collision(p1.getGeometryObject(), p2.getGeometryObject());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    c = new Collision(p1.getGeometryObject(), p2.getGeometryObject());
 
-                    if (c != null && c.isCollision()) {
+                    if (c.isCollision()) {
                         contactConstraints.add(new ContactConstraint(p1, p2, c, dt));
                     }
                 }
@@ -72,7 +68,7 @@ public class PhysicsHandler implements Runnable {
 //                System.out.println("---------------------");
             }
             constraints.clear();
-            System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
+//            System.out.println("1: " + (time2 - time1) + " 2: " + (time3 - time2) + " 3: " + (time4 - time3));
             for (IPhysicsObject object : physicsObjects) {
                 object.updatePosition(dt);
             }

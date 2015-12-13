@@ -67,7 +67,7 @@ public class Collision implements ICollision, IDrawable {
 
     @Override
     public CollisionType getCollisionType() {
-        return null;
+        return collisionType;
     }
 
     public void calculateCollision(ConvexPolygon p1, ConvexPolygon p2) {
@@ -135,31 +135,35 @@ public class Collision implements ICollision, IDrawable {
     }
 
     private void calculateEdgeToEdgeContact(CSO cso, int theNearestVertexNumber, ConvexPolygon[] ps) {
-        collisionType = CollisionType.EDGE_TO_EDGE;
-
         List<Pair<Integer, Integer>> csoEdge = cso.getCSOEdge(theNearestVertexNumber);
         List<Pair<Matrix, Line>> pointsAndLines = new ArrayList<Pair<Matrix, Line>>(4);
 
-        int coeffs[][] = new int[2][2];
+        int vertNums[][] = new int[2][2];
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
                 int vertexNumber = csoEdge.get(i).b + j;
-                coeffs[csoEdge.get(i).a][j] = vertexNumber == ps[csoEdge.get(i).a].getVertexCount() ? 0 : vertexNumber;
+                vertNums[csoEdge.get(i).a][j] = vertexNumber == ps[csoEdge.get(i).a].getVertexCount() ? 0 : vertexNumber;
             }
         }
 
-        Line firstPLine = new Line(ps[0].getRealCoords(coeffs[0][0]), ps[0].getRealCoords(coeffs[0][1]));
+        Line firstPLine = new Line(ps[0].getRealCoords(vertNums[0][0]), ps[0].getRealCoords(vertNums[0][1]));
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                Matrix currPoint = ps[i].getRealCoords(coeffs[i][j]);
+                Matrix currPoint = ps[i].getRealCoords(vertNums[i][j]);
                 Line currLine = new Line(currPoint, currPoint.plusEq(normal));
                 pointsAndLines.add(new Pair<Matrix, Line>(Line.getMutualPoint(firstPLine, currLine), currLine));
             }
         }
 
         Collections.sort(pointsAndLines, new EdgeToEdgeContactPairComparator());
+
+        if (pointsAndLines.get(1).a.minusEq(pointsAndLines.get(2).a).length() < 0.1f) {
+            collisionType = CollisionType.EDGE_TO_POINT;
+        } else {
+            collisionType = CollisionType.EDGE_TO_EDGE;
+        }
 
         Matrix shift = normal.mulEq(penetrationDepth);
         contactVectors[0] = pointsAndLines.get(1).a;

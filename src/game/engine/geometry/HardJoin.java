@@ -10,11 +10,11 @@ public class HardJoin extends GeometryObject {
 
     private PolarCoords parendPolarCoords = null; // (angle, r)
     private ArrayList<PolarCoords> childrenPolarCoords = new ArrayList<PolarCoords>();
-    private ArrayList<Float> anglesBetweenParentAndChild = new ArrayList<Float>();
+    private ArrayList<Value> anglesBetweenParentAndChild = new ArrayList<Value>();
 
-    public HardJoin(GeometryObject parent, PolarCoords parendPolarCoords) {
+    public HardJoin(GeometryObject parent, PolarCoords parentPolarCoords) {
         this.parent = parent;
-        this.parendPolarCoords = parendPolarCoords;
+        this.parendPolarCoords = parentPolarCoords;
     }
 
     @Override
@@ -22,16 +22,43 @@ public class HardJoin extends GeometryObject {
         throw new UnsupportedOperationException("You can't use addChild(GeometryObject gObject) in HardJoin. Use addChild(GeometryObject gObject, Matrix childPolarCoords) instead.");
     }
 
-    public void addChild(GeometryObject child, PolarCoords childPolarCoords) {
+    public void setAngleBetweenParentAndChild(int index, float angle) {
+        if (index > anglesBetweenParentAndChild.size()) {
+            throw new RuntimeException("Wrong index");
+        }
+
+        anglesBetweenParentAndChild.get(index).setValue(angle);
+    }
+
+    public void shiftAngleBetweenParentAndChild(int index, float dAngle) {
+        if (index > anglesBetweenParentAndChild.size()) {
+            throw new RuntimeException("Wrong index");
+        }
+
+        anglesBetweenParentAndChild.get(index).plus(dAngle);
+    }
+
+    public void addChild(
+            GeometryObject child,
+            PolarCoords childPolarCoords
+    ) {
+        addChild(child, childPolarCoords, 0f);
+    }
+
+    public void addChild(
+            GeometryObject child,
+            PolarCoords childPolarCoords,
+            float angleBetweenParentAndChild
+    ) {
         super.addChild(child);
         childrenPolarCoords.add(childPolarCoords);
-        anglesBetweenParentAndChild.add(0f);
+        anglesBetweenParentAndChild.add(new Value(angleBetweenParentAndChild));
     }
 
     @Override
     protected void updateThisOne() {
         for (int i = 0; i < childCount(); i++) {
-            float angleBetweenParentAndChild = anglesBetweenParentAndChild.get(i);
+            float angleBetweenParentAndChild = anglesBetweenParentAndChild.get(i).getValue();
             PolarCoords childPolarCoords = childrenPolarCoords.get(i);
             GeometryObject child = children.get(i);
 
@@ -45,6 +72,30 @@ public class HardJoin extends GeometryObject {
 
             float adjustedAngle = -child.getShape().getAngle() - childPolarCoords.getAngle() + childAngle + MathUtils.PI;
             child.getShape().setAngle(adjustedAngle);
+        }
+    }
+
+    private static class Value {
+        private float value;
+
+        public Value(float value) {
+            this.value = value;
+        }
+
+        public Value() {
+            this.value = 0;
+        }
+
+        public float getValue() {
+            return value;
+        }
+
+        public void setValue(float value) {
+            this.value = value;
+        }
+
+        public void plus(float dValue) {
+            this.value += dValue;
         }
     }
 }

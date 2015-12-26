@@ -23,10 +23,12 @@ public class HardJoinTest {
         Thread renderThread = new Thread(gameField);
         renderThread.start();
 
+        geometryObject.update();
+
         while (true) {
             try {
-                geometryObject.rotate(0.01f);
-                geometryObject.update();
+//                geometryObject.rotate(0.01f);
+//                geometryObject.update();
                 Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();

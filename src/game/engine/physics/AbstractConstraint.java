@@ -47,7 +47,9 @@ abstract public class AbstractConstraint implements IConstraint {
         Matrix J = getJacobian();
         Matrix V = PhysicsMatrixUtils.createVelocityMatrix(po1, po2);
 
-        Matrix m1 = Matrix.mul(J, V.transpose()).plus(getB()).mul(-1f);
+        Matrix b = getB();
+
+        Matrix m1 = Matrix.mul(J, V.transpose()).plus(b).mul(-1f);
         Matrix m2 = Matrix.mul(Matrix.mul(J, M), J.transpose()).getInv();
 
         return Matrix.mul(m2, m1);
@@ -59,12 +61,14 @@ abstract public class AbstractConstraint implements IConstraint {
     public void fix() {
         Matrix lyambda = calculateLyambda();
 //        System.out.println("lyambda = " + lyambda);
-        Matrix oldImpulse = new Matrix(totalImpulse);
+//        Matrix oldImpulse = new Matrix(totalImpulse);
 //        totalImpulse = clamp(oldImpulse.plusEq(lyambda));//oldImpulse + lyambda > 0 ? 0 : oldImpulse + lyambda;
-        totalImpulse = clamp(oldImpulse.plusEq(lyambda));
+//        totalImpulse = clamp(oldImpulse.plusEq(lyambda));
 
-        lyambda = totalImpulse.minusEq(oldImpulse);
+//        lyambda = totalImpulse.minusEq(oldImpulse);
 
+//        lyambda = clamp(lyambda);
+        lyambda = clamp(lyambda);
         Matrix J = getJacobian();
         Matrix dV = Matrix.mul(Matrix.mul(M, J.transpose()), lyambda);
         IPhysicsObject[] pos = {po1, po2};

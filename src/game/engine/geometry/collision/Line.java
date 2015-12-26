@@ -1,12 +1,13 @@
 package game.engine.geometry.collision;
 
+import game.engine.myutils.IVector;
 import game.engine.myutils.Matrix;
 
 public class Line {
     private float[] coeffs = new float[3];
     private float invSqrt;
 
-    public Line(Matrix point1, Matrix point2) {
+    public Line(IVector point1, IVector point2) {
         coeffs[0] = point1.get(1) - point2.get(1);
         coeffs[1] = point2.get(0) - point1.get(0);
         coeffs[2] = point1.get(0) * point2.get(1) - point1.get(1) * point2.get(0);
@@ -36,7 +37,7 @@ public class Line {
     public static Matrix getMutualPoint(Line l1, Line l2) {
         float delta = getMainDeterminant(l1, l2);
         if (delta == 0f) {
-            throw new RuntimeException("Lines are parallel, there is no the mutual point.");
+            throw new RuntimeException("Lines are parallel, there is no a mutual point.");
         }
         float delta1 = -l1.coeffs[2] * l2.coeffs[1] + l1.coeffs[1] * l2.coeffs[2];
         float delta2 = -l1.coeffs[0] * l2.coeffs[2] + l1.coeffs[2] * l2.coeffs[0];

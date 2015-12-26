@@ -1,27 +1,30 @@
 package game.engine.physics;
 
+import game.engine.geometry.collision.Collision;
 import game.engine.geometry.collision.ICollision;
 import game.engine.myutils.Matrix;
 
+import java.util.Collection;
+
 public class ContactConstraint extends AbstractConstraint {
-    private ICollision c;
+    private CollisionInfo c;
     private float dt;
 
-    public ContactConstraint(IPhysicsObject po1, IPhysicsObject po2, ICollision c, float dt) {
+    public ContactConstraint(IPhysicsObject po1, IPhysicsObject po2, CollisionInfo c, float dt) {
         super(po1, po2);
         this.c = c;
         this.dt = dt;
-        totalImpulse = new Matrix(c.getCollisionType().getIndex() + 1, 1);
+        totalImpulse = new Matrix(1/*c.getCollisionType().getIndex() + 1*/, 1);
     }
 
     @Override
     protected Matrix createJacobian() {
-        return PhysicsMatrixUtils.createCollisionJacobian(c);
-//        return PhysicsMatrixUtils.createSimpleJacobian(c.getNormal(), c.getContactVector(0), c.getContactVector(1));
+//        return PhysicsMatrixUtils.createCollisionJacobian(c);
+        return PhysicsMatrixUtils.createSimpleJacobian(c.getNormal(), c.getContactVector(0), c.getContactVector(1));
     }
 
     private Matrix calculateAdjustment() {
-        int rowCount = c.getCollisionType().getIndex() + 1;
+        int rowCount = 1;//c.getCollisionType().getIndex() + 1;
 
         Matrix answ = new Matrix(rowCount, 1);
 
@@ -35,8 +38,7 @@ public class ContactConstraint extends AbstractConstraint {
             Matrix d2 = Matrix.getCrossProduct(av2, Matrix.convert(c.getContactVector(i * 2 + 1))).minusEq(Matrix.getCrossProduct(av1, Matrix.convert(c.getContactVector(i * 2))));
 
             float v = Matrix.getScalarProduct(Matrix.convert(d1).plusEq(d2), Matrix.convert(c.getNormal()));
-            v = Math.abs(v) - 0.1f < 0f ? 0f : Math.signum(v) * (Math.abs(v) - 0.1f);
-            answ.set(i, v * 1.0f);
+            answ.set(i, v * 0.8f);
         }
 
         return answ;
@@ -44,10 +46,10 @@ public class ContactConstraint extends AbstractConstraint {
 
     @Override
     protected Matrix createB() {
-        int rowCount = c.getCollisionType().getIndex() + 1;
+        int rowCount = 1;//c.getCollisionType().getIndex() + 1;
         Matrix b = new Matrix(rowCount, 1);
         for (int i = 0; i < rowCount; i++) {
-            b.set(i, -Math.max(c.getPenetrationDepth() - 0.5f, 0) * (1f / dt) * 0.01f);
+            b.set(i, -Math.max(c.getPenetrationDepth() - 0.5f, 0) * (1f / dt) * 0.1f);
         }
         b.plus(calculateAdjustment());
         return b;
@@ -67,5 +69,30 @@ public class ContactConstraint extends AbstractConstraint {
             }
         }
         return lyambda;
+    }
+
+    public static class CollisionInfo {
+        private Matrix[] contactVectors = new Matrix[2];
+        private Matrix normal;
+        private float penetrationDepth;
+
+        public CollisionInfo(Matrix n, Matrix r1, Matrix r2, float penetrationDepth) {
+            contactVectors[0] = r1;
+            contactVectors[1] = r2;
+            normal = n;
+            this.penetrationDepth = penetrationDepth;
+        }
+
+        public Matrix getContactVector(int i) {
+            return contactVectors[i];
+        }
+
+        public Matrix getNormal() {
+            return normal;
+        }
+
+        public float getPenetrationDepth() {
+            return penetrationDepth;
+        }
     }
 }

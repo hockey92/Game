@@ -30,7 +30,6 @@ public class PhysicsObjectTest {
 
         IPhysicsObject pos[] = new PhysicsObject[n];
 
-        float x = 200f;
         for (int i = 0; i < n; i++) {
             float invM = 1f;
             pos[i] = (new PhysicsObject.PhysicsObjectBuilder())

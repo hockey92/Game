@@ -54,6 +54,10 @@ public class GeometryObject implements IDrawable, IMovable, IAnimationable {
         children.add(child);
     }
 
+    public GeometryObject getChild(int index) {
+        return children.get(index);
+    }
+
     protected void drawThisOne(IDrawContext drawContext) {
         if (shape != null) {
             shape.draw(drawContext);

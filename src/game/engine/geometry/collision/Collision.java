@@ -159,17 +159,21 @@ public class Collision implements ICollision, IDrawable {
 
         Collections.sort(pointsAndLines, new EdgeToEdgeContactPairComparator());
 
-        if (pointsAndLines.get(1).a.minusEq(pointsAndLines.get(2).a).length() < 0.1f) {
-            collisionType = CollisionType.EDGE_TO_POINT;
-        } else {
-            collisionType = CollisionType.EDGE_TO_EDGE;
-        }
+//        if (pointsAndLines.get(1).a.minusEq(pointsAndLines.get(2).a).length() < 0.1f) {
+//            collisionType = CollisionType.EDGE_TO_POINT;
+//        } else {
+//            collisionType = CollisionType.EDGE_TO_EDGE;
+//        }
 
-        Matrix shift = normal.mulEq(penetrationDepth);
-        contactVectors[0] = pointsAndLines.get(1).a;
-        contactVectors[1] = contactVectors[0].minusEq(shift);
-        contactVectors[2] = pointsAndLines.get(2).a;
-        contactVectors[3] = contactVectors[2].minusEq(shift);
+        collisionType = CollisionType.EDGE_TO_POINT;
+        contactVectors[0] = pointsAndLines.get(1).a.plusEq(pointsAndLines.get(2).a.minusEq(pointsAndLines.get(1).a).mul(0.5f));
+        contactVectors[1] = contactVectors[0].plusEq(normal.mulEq(penetrationDepth));
+
+//        Matrix shift = normal.mulEq(penetrationDepth);
+//        contactVectors[0] = pointsAndLines.get(1).a;
+//        contactVectors[1] = contactVectors[0].minusEq(shift);
+//        contactVectors[2] = pointsAndLines.get(2).a;
+//        contactVectors[3] = contactVectors[2].minusEq(shift);
         adjustResult(ps, collisionType);
     }
 

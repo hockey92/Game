@@ -1,6 +1,7 @@
 package game.engine.physics;
 
 import game.engine.geometry.collision.Collision;
+import game.engine.geometry.collision.CollisionType;
 import game.engine.geometry.collision.ICollision;
 
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.List;
 public class PhysicsHandler implements Runnable {
     List<IPhysicsObject> physicsObjects = new ArrayList<IPhysicsObject>();
     List<IConstraint> constraints = new ArrayList<IConstraint>();
-    private float dt = 0.5f;
-    private int iterationCount = 4;
+    private float dt = 0.05f;
+    private int iterationCount = 10;
 
     public void addObject(IPhysicsObject physicsObject) {
         physicsObjects.add(physicsObject);
@@ -46,7 +47,10 @@ public class PhysicsHandler implements Runnable {
                     c = new Collision(p1.getGeometryObject(), p2.getGeometryObject());
 
                     if (c.isCollision()) {
-                        contactConstraints.add(new ContactConstraint(p1, p2, c, dt));
+                        contactConstraints.add(new ContactConstraint(p1, p2, new ContactConstraint.CollisionInfo(c.getNormal(), c.getContactVector(0), c.getContactVector(1), c.getPenetrationDepth()), dt));
+                        if (c.getCollisionType() == CollisionType.EDGE_TO_EDGE) {
+                            contactConstraints.add(new ContactConstraint(p1, p2, new ContactConstraint.CollisionInfo(c.getNormal(), c.getContactVector(2), c.getContactVector(3), c.getPenetrationDepth()), dt));
+                        }
                     }
                 }
             }
@@ -74,7 +78,7 @@ public class PhysicsHandler implements Runnable {
             }
             try {
 //                long sleepTime = 10 - (time4 - time1);
-                Thread.sleep(2);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

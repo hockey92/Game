@@ -10,7 +10,7 @@ class MatrixException extends RuntimeException {
     }
 }
 
-public class Matrix implements Cloneable {
+public class Matrix implements Cloneable, IVector {
     private float[][] values;
     private int rowCount, columnCount;
     private boolean transposed;
@@ -187,6 +187,7 @@ public class Matrix implements Cloneable {
         return this;
     }
 
+    @Override
     public float get(int index) {
         if (!isVector()) {
             throw new MatrixException("It isn't a vector");
@@ -377,7 +378,7 @@ public class Matrix implements Cloneable {
 
         if (rowCount == 1) {
             m = new Matrix(1, 1);
-            m.values[0][0] = 1 / values[0][0];
+            m.values[0][0] = 1f / values[0][0];
         } else if (rowCount == 2) {
             float d = values[0][0] * values[1][1] - values[0][1] * values[1][0];
             if (d == 0) {

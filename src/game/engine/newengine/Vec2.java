@@ -84,11 +84,11 @@ public class Vec2 implements IVector {
     }
 
     public static float getDotProd(Vec2 v1, Vec2 v2) {
-        float dorProd = 0;
+        float dotProd = 0;
         for (int i = 0; i < 2; i++) {
-            dorProd += v1.values[i] * v2.values[i];
+            dotProd += v1.values[i] * v2.values[i];
         }
-        return dorProd;
+        return dotProd;
     }
 
     @Override

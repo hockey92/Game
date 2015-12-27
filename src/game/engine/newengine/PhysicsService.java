@@ -1,6 +1,9 @@
 package game.engine.newengine;
 
+import game.engine.physics.IConstraint;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PhysicsService implements Runnable {
@@ -19,21 +22,40 @@ public class PhysicsService implements Runnable {
 
             synchronized (newGameObjects) {
                 for (NewGameObject newGameObject : newGameObjects) {
-                    newGameObject.updateVel(0.2f);
+                    newGameObject.updateVel(NewEngineConstants.dt);
                 }
+
+                List<IConstraint> constraints = new LinkedList<IConstraint>();
 
                 for (int i = 0; i < newGameObjects.size(); i++) {
                     for (int j = i + 1; j < newGameObjects.size(); j++) {
-                        Collision c = CollisionFactory.createCollision(
-                                newGameObjects.get(i).getShape(),
-                                newGameObjects.get(j).getShape()
-                        );
-                        if (c == null) {
-                            for (NewGameObject newGameObject : newGameObjects) {
-                                newGameObject.updatePos(0.2f);
+
+                        NewGameObject o1 = newGameObjects.get(i);
+                        NewGameObject o2 = newGameObjects.get(j);
+
+                        if (o1.getInvM() == 0f && o2.getInvM() == 0f) {
+                            continue;
+                        }
+
+                        for (IShape a : o1.getShape().getSimpleShapes()) {
+                            for (IShape b : o2.getShape().getSimpleShapes()) {
+                                Collision c = CollisionFactory.createCollision(a, b);
+                                if (c != null) {
+                                    constraints.add(new NewEngineConstraint(c, o1, o2));
+                                }
                             }
                         }
                     }
+                }
+
+                for (int i = 0; i < 10; i++) {
+                    for (IConstraint constraint : constraints) {
+                        constraint.fix();
+                    }
+                }
+
+                for (NewGameObject newGameObject : newGameObjects) {
+                    newGameObject.updatePos(NewEngineConstants.dt);
                 }
             }
 

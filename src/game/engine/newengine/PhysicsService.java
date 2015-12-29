@@ -48,7 +48,7 @@ public class PhysicsService implements Runnable {
                     }
                 }
 
-                for (int i = 0; i < 10; i++) {
+                for (int i = 0; i < 1; i++) {
                     for (IConstraint constraint : constraints) {
                         constraint.fix();
                     }

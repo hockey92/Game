@@ -17,7 +17,7 @@ public class NewEngineTest {
         List<IDrawable> drawableObjects = new ArrayList<IDrawable>();
         PhysicsService physicsService = new PhysicsService();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
 
             float y = 10f + i * 10f;
 
@@ -26,13 +26,13 @@ public class NewEngineTest {
 //            gameObjects.add(new NewGameObject(new Circle(new Vec2(320, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 0.5f)));
 //            gameObjects.add(new NewGameObject(new Circle(new Vec2(480, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 0.5f)));
 //
-            gameObjects.add(new NewGameObject(new Circle(new Vec2(360, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
-            gameObjects.add(new NewGameObject(new Circle(new Vec2(440, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
-            gameObjects.add(new NewGameObject(new Circle(new Vec2(320, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
+//            gameObjects.add(new NewGameObject(new Circle(new Vec2(360, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
+//            gameObjects.add(new NewGameObject(new Circle(new Vec2(440, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
+//            gameObjects.add(new NewGameObject(new Circle(new Vec2(320, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
             gameObjects.add(new NewGameObject(new Circle(new Vec2(480, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
         }
 
-        gameObjects.add(new NewGameObject(new Segment(new Vec2(0, 300), new Vec2(190, 300)), 0f));
+        gameObjects.add(new NewGameObject(new Segment(new Vec2(0, 250), new Vec2(800, 250)), 0f));
         final IShape container = new Container();
         container.move(new Vec2(400, 250));
 

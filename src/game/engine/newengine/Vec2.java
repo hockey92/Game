@@ -83,6 +83,10 @@ public class Vec2 implements IVector {
         return (float) Math.sqrt(values[0] * values[0] + values[1] * values[1]);
     }
 
+    public float len2() {
+        return values[0] * values[0] + values[1] * values[1];
+    }
+
     public static float getDotProd(Vec2 v1, Vec2 v2) {
         float dotProd = 0;
         for (int i = 0; i < 2; i++) {

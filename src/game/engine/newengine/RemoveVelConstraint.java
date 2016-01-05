@@ -2,28 +2,22 @@ package game.engine.newengine;
 
 import game.engine.physics.IConstraint;
 
-public class NewEngineConstraint implements IConstraint {
+public class RemoveVelConstraint implements IConstraint {
 
     private NewGameObject o1;
     private NewGameObject o2;
     private Collision c;
     private float totalImpulse = 0f;
-    public static float j = 0;
 
-    public NewEngineConstraint(Collision c, NewGameObject o1, NewGameObject o2) {
+    public RemoveVelConstraint(Collision c, NewGameObject o1, NewGameObject o2) {
         this.c = c;
         this.o1 = o1;
         this.o2 = o2;
     }
 
-    private float clamp(float j) {
-        return j > 0f ? j : 0.0f;
-    }
-
     @Override
     public void fix() {
-        /*float */
-        j = ImpulseFactory.createImpulse(o1, o2, c);
+        float j = ImpulseFactory.createRemoveVelImpulse(o1, o2, c);
 //        float oldImpulse = totalImpulse;
 //        totalImpulse = clamp(oldImpulse + j);
 //        j = totalImpulse - oldImpulse;

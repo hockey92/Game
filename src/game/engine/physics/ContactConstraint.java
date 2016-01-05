@@ -1,10 +1,8 @@
 package game.engine.physics;
 
-import game.engine.geometry.collision.Collision;
-import game.engine.geometry.collision.ICollision;
+
 import game.engine.myutils.Matrix;
 
-import java.util.Collection;
 
 public class ContactConstraint extends AbstractConstraint {
     private CollisionInfo c;

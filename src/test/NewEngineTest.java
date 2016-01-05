@@ -4,6 +4,7 @@ import game.engine.gamefield.GameField;
 import game.engine.gamefield.IDrawContext;
 import game.engine.gamefield.IDrawable;
 import game.engine.newengine.*;
+import game.engine.newengine.Box;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -15,30 +16,33 @@ public class NewEngineTest {
     public static void main(String args[]) throws Exception {
         List<NewGameObject> gameObjects = new ArrayList<NewGameObject>();
         List<IDrawable> drawableObjects = new ArrayList<IDrawable>();
-        PhysicsService physicsService = new PhysicsService();
+        final PhysicsService physicsService = new PhysicsService();
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
 
             float y = 10f + i * 10f;
 
-//            gameObjects.add(new NewGameObject(new Circle(new Vec2(340, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 0.5f)));
-//            gameObjects.add(new NewGameObject(new Circle(new Vec2(460, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 0.5f)));
-//            gameObjects.add(new NewGameObject(new Circle(new Vec2(320, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 0.5f)));
-//            gameObjects.add(new NewGameObject(new Circle(new Vec2(480, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 0.5f)));
-//
-//            gameObjects.add(new NewGameObject(new Circle(new Vec2(360, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
-//            gameObjects.add(new NewGameObject(new Circle(new Vec2(440, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
-//            gameObjects.add(new NewGameObject(new Circle(new Vec2(320, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
-            gameObjects.add(new NewGameObject(new Circle(new Vec2(480, 10 + y), 7), 1f).setAcceleration(new Vec2(0f, 1.0f)));
+            gameObjects.add(new NewGameObject(new Circle(new Vec2(340, 10 + y), 8), 1f).setAcceleration(new Vec2(0f, 0.8f)));
+            gameObjects.add(new NewGameObject(new Circle(new Vec2(460, 10 + y), 8), 1f).setAcceleration(new Vec2(0f, 0.8f)));
+            gameObjects.add(new NewGameObject(new Circle(new Vec2(320, 10 + y), 8), 1f).setAcceleration(new Vec2(0f, 0.8f)));
+            gameObjects.add(new NewGameObject(new Circle(new Vec2(480, 10 + y), 8), 1f).setAcceleration(new Vec2(0f, 0.8f)));
+
+            gameObjects.add(new NewGameObject(new Circle(new Vec2(360, 10 + y), 8), 1f).setAcceleration(new Vec2(0f, 0.8f)));
+            gameObjects.add(new NewGameObject(new Circle(new Vec2(440, 10 + y), 8), 1f).setAcceleration(new Vec2(0f, 0.8f)));
+            gameObjects.add(new NewGameObject(new Circle(new Vec2(320, 10 + y), 8), 1f).setAcceleration(new Vec2(0f, 0.8f)));
+            gameObjects.add(new NewGameObject(new Circle(new Vec2(480, 10 + y), 8), 1f).setAcceleration(new Vec2(0f, 0.8f)));
         }
 
-        gameObjects.add(new NewGameObject(new Segment(new Vec2(0, 250), new Vec2(800, 250)), 0f));
         final IShape container = new Container();
         container.move(new Vec2(400, 250));
 
         final IShape glass = new Glass();
         glass.move(new Vec2(400, 700));
 
+//        final IShape box = new Box();
+//        box.move(new Vec2(300, 600));
+//        gameObjects.add(new NewGameObject(box, 0f));
+//
         NewGameObject glassObject = new NewGameObject(glass, 0f);
 
         gameObjects.add(new NewGameObject(container, 0f));
@@ -46,18 +50,29 @@ public class NewEngineTest {
 
         drawableObjects.add(container);
         drawableObjects.add(glass);
+//        drawableObjects.add(box);
         physicsService.setNewGameObjects(gameObjects);
 
         IDrawContext context = new SimpleGameContextImpl();
-        GameField gameField = new GameField(context);
+        final GameField gameField = new GameField(context);
 
         drawableObjects.addAll(gameObjects);
-        gameField.setObjectsToDraw(drawableObjects);
+        gameField.addObjectsToDraw(drawableObjects);
 
         ((JFrame) context).addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 ((Container) container).open();
+//
+//                IShape newCircle = new Circle(new Vec2(e.getX(), e.getY()), 8);
+//
+//                physicsService.addGameObject(
+//                        new NewGameObject(
+//                                newCircle, 1f).setAcceleration(new Vec2(0f, 0.5f)
+//                        )
+//                );
+//
+//                gameField.addObjectsToDraw(newCircle);
             }
         });
 
@@ -75,14 +90,13 @@ public class NewEngineTest {
                 new Vec2(0f, 1f)
         };
 
-        glassObject.setVel(new Vec2(6f, 0f));
+        glassObject.setVel(new Vec2(1f, 0f));
         while (true) {
             if (glass.getCenter().get(0) > 400 + 200 || glass.getCenter().get(0) < 400 - 200) {
                 index *= -1f;
-                glassObject.setVel(new Vec2(6f * index, 0f));
+                glassObject.setVel(new Vec2(1f * index, 0f));
             }
             Thread.sleep(20);
         }
-
     }
 }

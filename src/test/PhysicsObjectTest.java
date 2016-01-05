@@ -88,7 +88,7 @@ public class PhysicsObjectTest {
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);
-        gameField.setObjectsToDraw(gameObjects);
+        gameField.addObjectsToDraw(gameObjects);
 
         Thread renderThread = new Thread(gameField);
         renderThread.start();

@@ -12,4 +12,6 @@ public interface IShape extends IDrawable {
     void rotate(float angle);
 
     List<IShape> getSimpleShapes();
+
+    AABB getAABB();
 }

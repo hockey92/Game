@@ -18,7 +18,7 @@ public class HardJoinTest {
 
         SimpleGameContextImpl contextImp = new SimpleGameContextImpl();
         GameField gameField = new GameField(contextImp);
-        gameField.setObjectsToDraw(objectsToDraw);
+        gameField.addObjectsToDraw(objectsToDraw);
 
         Thread renderThread = new Thread(gameField);
         renderThread.start();

@@ -40,7 +40,7 @@ public class NewGameObject implements IDrawable {
 
     public void updateVel(float dt) {
         vel.plus(acc.mulEq(dt));
-        adjustVelocity();
+//        adjustVelocity();
     }
 
     public void updatePos(float dt) {
@@ -49,7 +49,7 @@ public class NewGameObject implements IDrawable {
 
     public void applyImpulse(Vec2 impulse) {
         vel.plus(impulse.mulEq(invM));
-        adjustVelocity();
+//        adjustVelocity();
     }
 
     private void adjustVelocity() {

@@ -8,6 +8,7 @@ public class Segment extends AbstractShape {
     public Segment(Vec2 point1, Vec2 point2) {
         coords[0] = point1;
         coords[1] = point2;
+        aabb = new AABB(this);
     }
 
     public Vec2 getCoord(int i) {
@@ -19,5 +20,10 @@ public class Segment extends AbstractShape {
         Vec2 p1 = getCoord(0);
         Vec2 p2 = getCoord(1);
         drawContext.drawLine(p1.x(), p1.y(), p2.x(), p2.y());
+
+//        if (aabb != null) {
+//            aabb.draw(drawContext);
+//        }
+
     }
 }

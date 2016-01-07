@@ -7,19 +7,32 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class PhysicsService implements Runnable {
-    private final Object synchObject = new Object();
+    private static PhysicsService instance;
+    private static final Object instanceMutex = new Object();
 
+    private final Object mutex = new Object();
     private final List<NewGameObject> newGameObjects = new ArrayList<NewGameObject>();
     private final List<NewGameObject> objectsToAdd = new ArrayList<NewGameObject>();
 
+    public static PhysicsService getInstance() {
+        if (instance == null) {
+            synchronized (instanceMutex) {
+                if (instance == null) {
+                    instance = new PhysicsService();
+                }
+            }
+        }
+        return instance;
+    }
+
     public void addGameObject(NewGameObject gameObject) {
-        synchronized (synchObject) {
+        synchronized (mutex) {
             objectsToAdd.add(gameObject);
         }
     }
 
     public void setNewGameObjects(List<NewGameObject> newGameObjects) {
-        synchronized (synchObject) {
+        synchronized (mutex) {
             this.newGameObjects.addAll(newGameObjects);
         }
     }
@@ -27,7 +40,7 @@ public class PhysicsService implements Runnable {
     @Override
     public void run() {
         while (true) {
-            synchronized (synchObject) {
+            synchronized (mutex) {
                 newGameObjects.addAll(objectsToAdd);
                 objectsToAdd.clear();
 
@@ -137,4 +150,3 @@ public class PhysicsService implements Runnable {
         }
     }
 }
-

@@ -4,7 +4,6 @@ import game.engine.gamefield.GameField;
 import game.engine.gamefield.IDrawContext;
 import game.engine.gamefield.IDrawable;
 import game.engine.newengine.*;
-import game.engine.newengine.Box;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -18,7 +17,7 @@ public class NewEngineTest {
     public static void main(String args[]) throws Exception {
         List<NewGameObject> gameObjects = new ArrayList<NewGameObject>();
         List<IDrawable> drawableObjects = new ArrayList<IDrawable>();
-        final PhysicsService physicsService = new PhysicsService();
+        final PhysicsServiceX physicsServiceX = new PhysicsServiceX();
 
         Queue<NewGameObject> balls = new LinkedList<NewGameObject>();
 
@@ -70,7 +69,7 @@ public class NewEngineTest {
         }
 
 //        drawableObjects.add(box);
-        physicsService.setNewGameObjects(gameObjects);
+        physicsServiceX.setNewGameObjects(gameObjects);
 
 
         IDrawContext context = new SimpleGameContextImpl();
@@ -86,7 +85,7 @@ public class NewEngineTest {
 //
 //                IShape newCircle = new Circle(new Vec2(e.getX(), e.getY()), 8);
 //
-//                physicsService.addGameObject(
+//                physicsServiceX.addGameObject(
 //                        new NewGameObject(
 //                                newCircle, 1f).setAcceleration(new Vec2(0f, 0.5f)
 //                        )
@@ -99,7 +98,7 @@ public class NewEngineTest {
         Thread renderThread = new Thread(gameField);
         renderThread.start();
 
-        Thread physicsThread = new Thread(physicsService);
+        Thread physicsThread = new Thread(physicsServiceX);
         physicsThread.start();
 
         float index = 1f;

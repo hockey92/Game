@@ -70,11 +70,13 @@ public class CollisionFactory {
     }
 
     private static boolean pointBelongsToSegment(Segment s, Vec2 p) {
+        float d = 0.01f;
         for (int i = 0; i < 2; i++) {
             float point1 = s.getCoord(0).get(i);
             float point2 = s.getCoord(1).get(i);
             float point = p.get(i);
-            if (!(point1 <= point && point <= point2) && !(point2 <= point && point <= point1)) {
+
+            if (!(point1 - d <= point && point <= point2 + d) && !(point2 - d <= point && point <= point1 + d)) {
                 return false;
             }
         }

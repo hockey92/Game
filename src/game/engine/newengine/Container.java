@@ -12,11 +12,11 @@ public class Container extends AbstractShape {
 
     public Container() {
         segments.add(new Segment(new Vec2(-100, -80), new Vec2(-100, 20)));
-        segments.add(new Segment(new Vec2(-100, 20), new Vec2(-20, 80)));
-        segments.add(new Segment(new Vec2(-20, 80), new Vec2(-20, 120)));
-        segments.add(new Segment(new Vec2(-20, 120), new Vec2(20, 120)));
-        segments.add(new Segment(new Vec2(20, 120), new Vec2(20, 80)));
-        segments.add(new Segment(new Vec2(20, 80), new Vec2(100, 20)));
+        segments.add(new Segment(new Vec2(-100, 20), new Vec2(-10, 100)));
+        segments.add(new Segment(new Vec2(-10, 100), new Vec2(-10, 120)));
+        segments.add(new Segment(new Vec2(-10, 120), new Vec2(10, 120)));
+        segments.add(new Segment(new Vec2(10, 120), new Vec2(10, 100)));
+        segments.add(new Segment(new Vec2(10, 100), new Vec2(100, 20)));
         segments.add(new Segment(new Vec2(100, 20), new Vec2(100, -80)));
 
     }

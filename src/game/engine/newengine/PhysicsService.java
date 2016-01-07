@@ -35,7 +35,7 @@ public class PhysicsService {
         }
     }
 
-    public void setNewGameObjects(List<NewGameObject> newGameObjects) {
+    public void addGameObjects(List<? extends NewGameObject> newGameObjects) {
         synchronized (mutex) {
             this.newGameObjects.addAll(newGameObjects);
         }
@@ -51,9 +51,6 @@ public class PhysicsService {
                     objectsToAdd.clear();
 
                     for (NewGameObject object : newGameObjects) {
-                        if (object.getInvM() == 0) {
-                            continue;
-                        }
                         object.updateVel(NewEngineConstants.dt);
                     }
 
@@ -84,7 +81,7 @@ public class PhysicsService {
                         }
                     }
 
-                    System.err.println("=======================================");
+//                    System.err.println("=======================================");
 //                for (int i = 0; i < 5; i++) {
                     for (int i = 0; i < 50; i++) {
                         Float maxx = null;
@@ -94,12 +91,12 @@ public class PhysicsService {
                                 maxx = NewEngineConstraint.j;
                             }
                         }
-                        if (maxx == null || maxx < 0.1f) {
-                            System.err.println(i);
+                        if (maxx == null || maxx < 0.01f) {
+//                            System.err.println(i);
                             break;
                         }
                     }
-                    System.err.println("=======================================");
+//                    System.err.println("=======================================");
 //                for (NewGameObject object : newGameObjects) {
 //                    if (object.getInvM() == 0) {
 //                        continue;
@@ -144,7 +141,10 @@ public class PhysicsService {
 //                        continue;
 //                    }
                         object.updatePos(NewEngineConstants.dt);
+
+                        System.err.println(object.getVel());
                     }
+                    System.err.println("===");
                 }
 
                 try {

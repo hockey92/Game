@@ -16,6 +16,13 @@ public class Segment extends AbstractShape {
     }
 
     @Override
+    public void rotate(float angle) {
+        for (Vec2 vertex : coords) {
+            vertex.rotate(angle);
+        }
+    }
+
+    @Override
     public void draw(IDrawContext drawContext) {
         Vec2 p1 = getCoord(0);
         Vec2 p2 = getCoord(1);

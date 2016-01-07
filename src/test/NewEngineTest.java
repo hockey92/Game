@@ -46,7 +46,7 @@ public class NewEngineTest {
         final IShape container = new Container();
         container.move(new Vec2(400, 250));
 
-        final IShape glass = new Glass();
+        final IShape glass = new GlassShape();
         glass.move(new Vec2(400, 700));
 
 //        final IShape box = new Box();

@@ -5,7 +5,7 @@ import game.engine.gamefield.IDrawContext;
 public class Circle extends AbstractShape {
     private float r;
 
-    private final static float d2 = 0.9f * 0.9f;
+    private final static float d2 = 0.5f * 0.5f;
 
     private Vec2 drawCoords = null;
 

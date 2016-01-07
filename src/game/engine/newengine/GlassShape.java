@@ -5,14 +5,14 @@ import game.engine.gamefield.IDrawContext;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Glass extends AbstractShape {
+public class GlassShape extends AbstractShape {
 
     private List<IShape> segments = new ArrayList<IShape>();
 
-    public Glass() {
-        segments.add(new Segment(new Vec2(-40, -40), new Vec2(-20, 40)));
-        segments.add(new Segment(new Vec2(-20, 40), new Vec2(20, 40)));
-        segments.add(new Segment(new Vec2(20, 40), new Vec2(40, -40)));
+    public GlassShape() {
+        segments.add(new Segment(new Vec2(-30, -30), new Vec2(-20, 30)));
+        segments.add(new Segment(new Vec2(-20, 30), new Vec2(20, 30)));
+        segments.add(new Segment(new Vec2(20, 30), new Vec2(30, -30)));
     }
 
     @Override
@@ -25,7 +25,9 @@ public class Glass extends AbstractShape {
 
     @Override
     public void rotate(float angle) {
-
+        for (IShape shape : segments) {
+            shape.rotate(angle);
+        }
     }
 
     @Override

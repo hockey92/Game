@@ -18,59 +18,69 @@ public class CollisionFactory {
         return null;
     }
 
-    private static Collision createCollision(Circle c1, Circle c2) {
-        Vec2 v = c2.getCenterCoords().minusEq(c1.getCenterCoords());
+    private static Collision createCollision(Circle c, Circle c2) {
+        Vec2 v = c2.getCenterCoords().minusEq(c.getCenterCoords());
         float d = v.len();
-        float r = c1.getR() + c2.getR();
+        float r = c.getR() + c2.getR();
 //        if (r >= d) {
-            Vec2 n = v.mulEq(1 / d);
-            Vec2 r1 = n.mulEq(c1.getR());
-            Vec2 r2 = n.mulEq(-c2.getR());
-            return new Collision(r1, r2, n, r - d);
+        Vec2 n = v.mulEq(1 / d);
+        Vec2 r1 = n.mulEq(c.getR());
+        Vec2 r2 = n.mulEq(-c2.getR());
+        return new Collision(r1, r2, n, r - d);
 //        }
 //        return null;
     }
 
-    private static Collision createCollision(Circle c1, Segment s2) {
-        Line line = new Line(s2.getCoord(0), s2.getCoord(1));
-        Vec2 lineNormal = new Vec2(line.getNormal());
-        Line pLine = new Line(
-                c1.getCenterCoords(),
-                c1.getCenterCoords().plusEq(lineNormal)
-        );
-        Vec2 mutualPoint = new Vec2(Line.getMutualPoint(line, pLine));
+    private static Collision createCollision(Circle c, Segment s) {
+        try {
+            Line line = new Line(s.getCoord(0), s.getCoord(1));
+            Vec2 lineNormal = new Vec2(line.getNormal());
+            Line pLine = new Line(
+                    c.getCenterCoords(),
+                    c.getCenterCoords().plusEq(lineNormal)
+            );
 
-        if (pointBelongsToSegment(s2, mutualPoint)) {
-            Vec2 v1 = mutualPoint.minusEq(c1.getCenterCoords());
-            float len = v1.len();
+            Vec2 mutualPoint = new Vec2(Line.getMutualPoint(line, pLine));
+            if (pointBelongsToSegment(s, mutualPoint)) {
+                Vec2 v1 = mutualPoint.minusEq(c.getCenterCoords());
+                float len = v1.len();
 //            if (len > c1.getR()) {
 //                return null;
 //            }
-            Vec2 n = v1.mulEq(1 / len);
-            Vec2 r1 = n.mulEq(c1.getR());
-            return new Collision(r1, null, n, c1.getR() - len);
-        } else {
-            Vec2[] d = new Vec2[2];
-            Vec2 a = null;
-            Float aLen = null;
-            for (int i = 0; i < 2; i++) {
-                d[i] = s2.getCoord(i).minusEq(c1.getCenterCoords());
-                float len = d[i].len();
-                if (a == null || len < aLen) {
-                    a = d[i];
-                    aLen = len;
+                Vec2 n = v1.mulEq(1 / len);
+//                Vec2 r1 = n.mulEq(c.getR());
+//                Vec2 r2 = mutualPoint.minusEq(s.getCenter());
+                float penetration = c.getR() - len;
+                return new Collision(null, null, n, penetration);
+            } else {
+                Vec2[] d = new Vec2[2];
+                Vec2 a = null;
+                Float aLen = null;
+                for (int i = 0; i < 2; i++) {
+                    d[i] = s.getCoord(i).minusEq(c.getCenterCoords());
+                    float len = d[i].len();
+                    if (a == null || len < aLen) {
+                        a = d[i];
+                        aLen = len;
+                    }
                 }
-            }
 //            if (aLen > c1.getR()) {
 //                return null;
 //            }
-            Vec2 n = a.mulEq(1 / aLen);
-            return new Collision(n.mulEq(c1.getR()), null, n, c1.getR() - aLen);
+                Vec2 n = a.mulEq(1 / aLen);
+                float penetration = c.getR() - aLen;
+                Vec2 r1 = n.mulEq(c.getR());
+//                Vec2 r2 = a.minusEq(s.getCenter());
+                return new Collision(null, null, n, penetration);
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
         }
+        return null;
     }
 
     private static boolean pointBelongsToSegment(Segment s, Vec2 p) {
-        float d = 0.01f;
+        float d = 0.001f;
         for (int i = 0; i < 2; i++) {
             float point1 = s.getCoord(0).get(i);
             float point2 = s.getCoord(1).get(i);

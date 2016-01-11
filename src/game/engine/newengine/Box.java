@@ -10,9 +10,9 @@ public class Box extends AbstractShape {
     private List<IShape> segments = new ArrayList<IShape>();
 
     public Box() {
-        segments.add(new Segment(new Vec2(-100, -100), new Vec2(-100, 100)));
-        segments.add(new Segment(new Vec2(-100, 100), new Vec2(100, 100)));
-        segments.add(new Segment(new Vec2(100, 100), new Vec2(100, -100)));
+        segments.add(new Segment(new Vec2(-1, -1), new Vec2(-1, 1)));
+        segments.add(new Segment(new Vec2(-1, 1), new Vec2(1, 1)));
+        segments.add(new Segment(new Vec2(1, 1), new Vec2(1, -1)));
     }
 
     @Override

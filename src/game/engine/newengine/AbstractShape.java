@@ -9,6 +9,7 @@ public class AbstractShape implements IShape {
 
     protected Vec2 centerCoords = new Vec2(0f, 0f);
     protected AABB aabb = null;
+    protected int id;
 
     @Override
     public Vec2 getCenter() {
@@ -36,6 +37,24 @@ public class AbstractShape implements IShape {
     @Override
     public AABB getAABB() {
         return aabb;
+    }
+
+    @Override
+    public void setId(ShapeId shapeId) {
+        this.id = shapeId.getId();
+        shapeId.increment();
+        List<IShape> shapes = getSimpleShapes();
+        if (shapes.size() == 1) {
+            return;
+        }
+        for (IShape shape : shapes) {
+            shape.setId(shapeId);
+        }
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override

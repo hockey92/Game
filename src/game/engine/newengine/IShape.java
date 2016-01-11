@@ -2,6 +2,7 @@ package game.engine.newengine;
 
 import game.engine.gamefield.IDrawable;
 
+import java.awt.*;
 import java.util.List;
 
 public interface IShape extends IDrawable {
@@ -14,4 +15,8 @@ public interface IShape extends IDrawable {
     List<IShape> getSimpleShapes();
 
     AABB getAABB();
+
+    void setId(ShapeId shapeId);
+
+    int getId();
 }

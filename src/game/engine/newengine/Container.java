@@ -11,21 +11,21 @@ public class Container extends AbstractShape {
     private boolean isOpen = false;
 
     public Container() {
-        segments.add(new Segment(new Vec2(-100, -80), new Vec2(-100, 20)));
-        segments.add(new Segment(new Vec2(-100, 20), new Vec2(-10, 100)));
-        segments.add(new Segment(new Vec2(-10, 100), new Vec2(-10, 120)));
-        segments.add(new Segment(new Vec2(-10, 120), new Vec2(10, 120)));
-        segments.add(new Segment(new Vec2(10, 120), new Vec2(10, 100)));
-        segments.add(new Segment(new Vec2(10, 100), new Vec2(100, 20)));
-        segments.add(new Segment(new Vec2(100, 20), new Vec2(100, -80)));
+        segments.add(new Segment(new Vec2(-1.00f, -0.80f), new Vec2(-1.00f, 0.20f)));
+        segments.add(new Segment(new Vec2(-1.00f, 0.20f), new Vec2(-0.10f, 1.00f)));
+        segments.add(new Segment(new Vec2(-0.10f, 1.00f), new Vec2(-0.10f, 1.20f)));
+        segments.add(new Segment(new Vec2(-0.10f, 1.20f), new Vec2(0.10f, 1.20f)));
+        segments.add(new Segment(new Vec2(0.10f, 1.20f), new Vec2(0.10f, 1.00f)));
+        segments.add(new Segment(new Vec2(0.10f, 1.00f), new Vec2(1.00f, 0.20f)));
+        segments.add(new Segment(new Vec2(1.00f, 0.20f), new Vec2(1.00f, -0.80f)));
 
     }
 
     public void open() {
         if (isOpen) {
-            segments.get(3).move(new Vec2(40f, 0f));
+            segments.get(3).move(new Vec2(0.40f, 0f));
         } else {
-            segments.get(3).move(new Vec2(-40f, 0f));
+            segments.get(3).move(new Vec2(-0.40f, 0f));
         }
         isOpen = !isOpen;
     }

@@ -14,7 +14,7 @@ public class SimpleGameContextImpl extends JFrame implements IDrawContext {
 
     public SimpleGameContextImpl() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(700, 1000);
+        setSize(700, 800);
         setVisible(true);
         createBufferStrategy(2);
     }

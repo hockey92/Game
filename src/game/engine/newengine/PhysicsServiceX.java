@@ -82,17 +82,17 @@ public class PhysicsServiceX implements Runnable {
                 System.err.println("=======================================");
 //                for (int i = 0; i < 5; i++) {
                 for (int i = 0; i < 50; i++) {
-                    Float maxx = null;
+//                    Float maxx = null;
                     for (IConstraint constraint : constraints) {
                         constraint.fix();
-                        if (maxx == null || maxx < NewEngineConstraint.j) {
-                            maxx = NewEngineConstraint.j;
-                        }
+//                        if (maxx == null || maxx < NewEngineConstraint.j) {
+//                            maxx = NewEngineConstraint.j;
+//                        }
                     }
-                    if (maxx == null || maxx < 0.5f) {
-                        System.err.println(i);
-                        break;
-                    }
+//                    if (maxx == null || maxx < 0.5f) {
+//                        System.err.println(i);
+//                        break;
+//                    }
                 }
                 System.err.println("=======================================");
 //                for (NewGameObject object : newGameObjects) {

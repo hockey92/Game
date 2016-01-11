@@ -4,7 +4,6 @@ import game.engine.gamefield.IDrawContext;
 import game.engine.gamefield.IDrawable;
 
 public class NewGameObject implements IDrawable {
-
     private IShape shape;
     private float invM;
     private Vec2 vel = new Vec2(0, 0);

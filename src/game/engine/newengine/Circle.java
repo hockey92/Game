@@ -40,11 +40,11 @@ public class Circle extends AbstractShape {
 //                r
 //        );
 //        aabb.draw(drawContext);
-
+//
         drawContext.drawCircle(
-                centerCoords.get(0),
-                centerCoords.get(1),
-                r
+                centerCoords.get(0) * 100f,
+                centerCoords.get(1) * 100f,
+                r * 100f
         );
     }
 }

@@ -11,33 +11,41 @@ import java.util.List;
 public class OneHundredBalls implements IDrawable {
 
     private NewGameObject container;
+    private NewGameObject bottomBorder;
+
     private List<GlassPhysicsObject> glasses = new ArrayList<GlassPhysicsObject>();
     private List<NewGameObject> balls = new ArrayList<NewGameObject>();
 
     private Deque<NewGameObject> notUsedBalls;
     private Deque<NewGameObject> notUsedGlasses;
 
-    private final int BALLS_COUNT = 20;
+    private final int BALLS_COUNT = 100;
     private int activeBalls = 0;
     private int glassesCount = 0;
 
     public OneHundredBalls() {
         final IShape containerShape = new Container();
-        containerShape.move(new Vec2(300, 350));
+        containerShape.move(new Vec2(3.00f, 2.75f));
         container = new NewGameObject(containerShape, 0f);
+
+        final IShape bottomBorderShape = new Segment(
+                new Vec2(0f, 7.40f),
+                new Vec2(7.00f, 7.40f)
+        );
+        bottomBorder = new NewGameObject(bottomBorderShape, 0f);
 
         for (int i = 0; i < 10; i++) {
             IShape glassShape = new GlassShape();
-            glassShape.move(new Vec2(500f + 200f * i, NewEngineConstants.down));
+            glassShape.move(new Vec2(8.00f + 2.50f * i, NewEngineConstants.down));
             glasses.add(new GlassPhysicsObject(glassShape, 0f));
         }
 
-        float x = 210;
-        float y = 275;
+        float x = 2.10f;
+        float y = 2.00f;
         for (int i = 0; i < 100; i++) {
-            float currX = x + 12 * (i % 16);
-            float currY = y + 12 * (i / 16);
-            NewGameObject ball = new NewGameObject(new Circle(new Vec2(currX, currY), 4.99f), 1f).setAcceleration(new Vec2(0f, 0.8f));
+            float currX = x + 0.12f * (i % 16);
+            float currY = y + 0.12f * (i / 16);
+            NewGameObject ball = new NewGameObject(new Circle(new Vec2(currX, currY), 0.0499f), 1f).setAcceleration(new Vec2(0f, 10.0f));
             balls.add(ball);
         }
 
@@ -46,6 +54,7 @@ public class OneHundredBalls implements IDrawable {
 
         PhysicsService.getInstance().addGameObject(container);
         PhysicsService.getInstance().addGameObjects(glasses);
+        PhysicsService.getInstance().addGameObject(bottomBorder);
 
         this.new GameThread().start();
     }
@@ -65,6 +74,7 @@ public class OneHundredBalls implements IDrawable {
     @Override
     public void draw(IDrawContext drawContext) {
         container.draw(drawContext);
+        bottomBorder.draw(drawContext);
         for (NewGameObject glass : glasses) {
             glass.draw(drawContext);
         }

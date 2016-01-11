@@ -10,9 +10,9 @@ public class GlassShape extends AbstractShape {
     private List<IShape> segments = new ArrayList<IShape>();
 
     public GlassShape() {
-        segments.add(new Segment(new Vec2(-30, -30), new Vec2(-20, 30)));
-        segments.add(new Segment(new Vec2(-20, 30), new Vec2(20, 30)));
-        segments.add(new Segment(new Vec2(20, 30), new Vec2(30, -30)));
+        segments.add(new Segment(new Vec2(-0.30f, -0.30f), new Vec2(-0.20f, 0.30f)));
+        segments.add(new Segment(new Vec2(-0.20f, 0.30f), new Vec2(0.20f, 0.30f)));
+        segments.add(new Segment(new Vec2(0.20f, 0.30f), new Vec2(0.30f, -0.30f)));
     }
 
     @Override

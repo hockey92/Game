@@ -10,10 +10,11 @@ public class GlassPhysicsObject extends NewGameObject {
             new Vec2(1f, 0f),
             new Vec2(0f, 1f)
     };
+    private float vel = 2f;
 
     public GlassPhysicsObject(IShape shape, float invM) {
         super(shape, invM);
-        setVel(velocities[direction].mulEq(4f));
+        setVel(velocities[direction].mulEq(vel));
     }
 
     public void checkDirection() {
@@ -27,7 +28,7 @@ public class GlassPhysicsObject extends NewGameObject {
                 || y < NewEngineConstants.up && direction == 1
                 || y > NewEngineConstants.down && direction == 3) {
             direction = (direction + 1) % 4;
-            setVel(velocities[direction].mulEq(4f));
+            setVel(velocities[direction].mulEq(vel));
         }
     }
 }

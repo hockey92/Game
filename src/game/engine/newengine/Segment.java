@@ -26,7 +26,7 @@ public class Segment extends AbstractShape {
     public void draw(IDrawContext drawContext) {
         Vec2 p1 = getCoord(0);
         Vec2 p2 = getCoord(1);
-        drawContext.drawLine(p1.x(), p1.y(), p2.x(), p2.y());
+        drawContext.drawLine(p1.x() * 100f, p1.y() * 100f, p2.x() * 100f, p2.y() * 100f);
 
 //        if (aabb != null) {
 //            aabb.draw(drawContext);

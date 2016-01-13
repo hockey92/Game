@@ -38,4 +38,8 @@ public class ImpulseFactory {
 //        }
         return /*alpha * Math.max(-vrn - velocitySlop, 0f) + */beta * Math.max(c.getPenetrationDepth() - penetrationSlop, 0) / NewEngineConstants.dt;
     }
+
+    private Vec2 getPointVel() {
+        return null;
+    }
 }

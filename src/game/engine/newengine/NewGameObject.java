@@ -8,6 +8,7 @@ public class NewGameObject implements IDrawable {
     private float invM;
     private Vec2 vel = new Vec2(0, 0);
     private Vec2 acc = new Vec2(0, 0);
+    private float angleVel = 0;
 
     private final static float MAX_VEL = 15f;
 
@@ -35,6 +36,10 @@ public class NewGameObject implements IDrawable {
 
     public void setVel(Vec2 vel) {
         this.vel = vel;
+    }
+
+    public float getAngleVel() {
+        return angleVel;
     }
 
     public void updateVel(float dt) {

@@ -116,4 +116,16 @@ public class Vec2 implements IVector {
     public String toString() {
         return "[" + values[0] + ", " + values[1] + "]";
     }
+
+    public static float getCrossProd(Vec2 a, Vec2 b) {
+        return a.values[0] * b.values[1] + a.values[1] * b.values[0];
+    }
+
+    public static Vec2 getCrossProd(Vec2 a, float b) {
+        return new Vec2(a.values[1] * b, a.values[0] * b);
+    }
+
+    public static Vec2 getCrossProd(float a, Vec2 b) {
+        return new Vec2(-a * b.values[1], -a * b.values[0]);
+    }
 }

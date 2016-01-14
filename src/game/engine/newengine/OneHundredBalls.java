@@ -10,6 +10,8 @@ import java.util.List;
 
 public class OneHundredBalls implements IDrawable {
 
+    private final int MAX_ACTIVE_BALLS_COUNT = 40;
+
     private NewGameObject container;
     private NewGameObject bottomBorder;
 
@@ -19,7 +21,6 @@ public class OneHundredBalls implements IDrawable {
     private Deque<NewGameObject> notUsedBalls;
     private Deque<NewGameObject> notUsedGlasses;
 
-    private final int BALLS_COUNT = 100;
     private int activeBalls = 0;
     private int glassesCount = 0;
 
@@ -37,7 +38,9 @@ public class OneHundredBalls implements IDrawable {
         for (int i = 0; i < 10; i++) {
             IShape glassShape = new GlassShape();
             glassShape.move(new Vec2(8.00f + 2.50f * i, NewEngineConstants.down));
-            glasses.add(new GlassPhysicsObject(glassShape, 0f));
+            GlassPhysicsObject glass = new GlassPhysicsObject(glassShape, 0f);
+//            glass.setAngleVel(0.05f);
+            glasses.add(glass);
         }
 
         float x = 2.10f;
@@ -88,7 +91,7 @@ public class OneHundredBalls implements IDrawable {
         @Override
         public void run() {
             while (true) {
-                if (activeBalls < BALLS_COUNT && notUsedBalls.size() > 0) {
+                if (activeBalls < MAX_ACTIVE_BALLS_COUNT && notUsedBalls.size() > 0) {
                     NewGameObject ball = notUsedBalls.pollLast();
                     if (ball != null) {
                         PhysicsService.getInstance().addGameObject(ball);

@@ -122,10 +122,10 @@ public class Vec2 implements IVector {
     }
 
     public static Vec2 getCrossProd(Vec2 a, float b) {
-        return new Vec2(a.values[1] * b, a.values[0] * b);
+        return new Vec2(a.values[1] * b, -a.values[0] * b);
     }
 
     public static Vec2 getCrossProd(float a, Vec2 b) {
-        return new Vec2(-a * b.values[1], -a * b.values[0]);
+        return new Vec2(-a * b.values[1], a * b.values[0]);
     }
 }

@@ -1,6 +1,6 @@
 package game.engine.newengine;
 
-public class NewEngineConstants {
+public class Constants {
 
     public final static float dt = 1f / 40f;
 

@@ -14,7 +14,7 @@ public class ImpulseFactory {
 
 //        System.err.println(vrn);
 
-        vrn -= c.getPenetrationDepth() / NewEngineConstants.dt;
+        vrn -= c.getPenetrationDepth() / Constants.dt;
 
 //        if (vrn >= 0) {
 //            return 0;
@@ -23,7 +23,7 @@ public class ImpulseFactory {
 //        if (c.getPenetrationDepth() >= 0) {
         return (-1f * vrn /*+ getB(c, vrn)*/) / (o1.getInvM() + o2.getInvM());
 //        } else {
-//            vrn -= c.getPenetrationDepth() / NewEngineConstants.dt;
+//            vrn -= c.getPenetrationDepth() / Constants.dt;
 //            if (vrn >= 0) {
 //                return 0;
 //            }
@@ -32,11 +32,11 @@ public class ImpulseFactory {
     }
 
     private static float getB(Collision c, float vrn) {
-//        return alpha * Math.max(-vrn - velocitySlop, 0f)/* + beta * (c.getPenetrationDepth() - penetrationSlop < 0 ? 0 : c.getPenetrationDepth()) / NewEngineConstants.dt*/;
+//        return alpha * Math.max(-vrn - velocitySlop, 0f)/* + beta * (c.getPenetrationDepth() - penetrationSlop < 0 ? 0 : c.getPenetrationDepth()) / Constants.dt*/;
 //        if (c.getPenetrationDepth() <= 0) {
 //            return 0;
 //        }
-        return /*alpha * Math.max(-vrn - velocitySlop, 0f) + */beta * Math.max(c.getPenetrationDepth() - penetrationSlop, 0) / NewEngineConstants.dt;
+        return /*alpha * Math.max(-vrn - velocitySlop, 0f) + */beta * Math.max(c.getPenetrationDepth() - penetrationSlop, 0) / Constants.dt;
     }
 
     private Vec2 getPointVel() {

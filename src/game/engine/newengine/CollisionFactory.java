@@ -18,13 +18,40 @@ public class CollisionFactory {
         return null;
     }
 
-    private static Collision createCollision(Circle c, Circle c2) {
-        Vec2 v = c2.getCenterCoords().minusEq(c.getCenterCoords());
+    public static Vec2 createDistance(Vec2 p, Segment s) {
+        try {
+            Line line = new Line(s.getCoord(0), s.getCoord(1));
+            Vec2 lineNormal = new Vec2(line.getNormal());
+            Line pLine = new Line(p, p.plusEq(lineNormal));
+            Vec2 mutualPoint = new Vec2(Line.getMutualPoint(line, pLine));
+            if (pointBelongsToSegment(s, mutualPoint)) {
+                return mutualPoint.minusEq(p);
+            } else {
+                Vec2 a = null;
+                Float aLen = null;
+                for (int i = 0; i < 2; i++) {
+                    Vec2 d = s.getCoord(i).minusEq(p);
+                    float len = d.len();
+                    if (a == null || len < aLen) {
+                        a = d;
+                        aLen = len;
+                    }
+                }
+                return a;
+            }
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+        return null;
+    }
+
+    private static Collision createCollision(Circle c1, Circle c2) {
+        Vec2 v = c2.getCenterCoords().minusEq(c1.getCenterCoords());
         float d = v.len();
-        float r = c.getR() + c2.getR();
+        float r = c1.getR() + c2.getR();
 //        if (r >= d) {
         Vec2 n = v.mulEq(1 / d);
-        Vec2 r1 = n.mulEq(c.getR());
+        Vec2 r1 = n.mulEq(c1.getR());
         Vec2 r2 = n.mulEq(-c2.getR());
         return new Collision(r1, r2, n, r - d);
 //        }
@@ -69,7 +96,7 @@ public class CollisionFactory {
 //            }
                 Vec2 n = a.mulEq(1 / aLen);
                 float penetration = c.getR() - aLen;
-                Vec2 r1 = n.mulEq(c.getR());
+//                Vec2 r1 = n.mulEq(c.getR());
 //                Vec2 r2 = a.minusEq(s.getCenter());
                 return new Collision(null, null, n, penetration);
             }

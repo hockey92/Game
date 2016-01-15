@@ -60,6 +60,10 @@ public class NewGameObject implements IDrawable {
         vel.plus(impulse.mulEq(invM));
     }
 
+    public void update() {
+
+    }
+
     @Override
     public void draw(IDrawContext drawContext) {
         shape.draw(drawContext);

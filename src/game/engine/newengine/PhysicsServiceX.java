@@ -48,7 +48,7 @@ public class PhysicsServiceX implements Runnable {
                     if (object.getInvM() == 0) {
                         continue;
                     }
-                    object.updateVel(NewEngineConstants.dt);
+                    object.updateVel(Constants.dt);
                 }
 
                 List<IConstraint> constraints = new LinkedList<IConstraint>();
@@ -102,7 +102,7 @@ public class PhysicsServiceX implements Runnable {
 //                    for (IShape shape : object.getShape().getSimpleShapes()) {
 //                        AABB outerAABB = new AABB(
 //                                shape.getAABB(),
-//                                object.getVel().mulEq(NewEngineConstants.dt)
+//                                object.getVel().mulEq(Constants.dt)
 //                        );
 //                        for (NewGameObject innerObject : newGameObjects) {
 //                            if (innerObject != object) {
@@ -121,11 +121,11 @@ public class PhysicsServiceX implements Runnable {
 //                                                continue;
 //                                            }
 //                                            Vec2 relV = collision.getN().mulEq(dotProduct);
-//                                            float realLen = relV.mulEq(NewEngineConstants.dt).len();
+//                                            float realLen = relV.mulEq(Constants.dt).len();
 //                                            if (len > realLen) {
 //                                                continue;
 //                                            }
-//                                            object.getVel().minus(collision.getN().mulEq((realLen - len) / NewEngineConstants.dt));
+//                                            object.getVel().minus(collision.getN().mulEq((realLen - len) / Constants.dt));
 //                                            int i = 0;
 //                                        }
 //                                    }
@@ -138,7 +138,7 @@ public class PhysicsServiceX implements Runnable {
 //                    if (object.getInvM() == 0) {
 //                        continue;
 //                    }
-                    object.updatePos(NewEngineConstants.dt);
+                    object.updatePos(Constants.dt);
                 }
             }
 

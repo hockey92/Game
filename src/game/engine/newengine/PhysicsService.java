@@ -4,7 +4,6 @@ import game.engine.physics.IConstraint;
 
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.SynchronousQueue;
 
 public class PhysicsService {
     private static PhysicsService instance;
@@ -60,7 +59,11 @@ public class PhysicsService {
                     objectsToAdd.clear();
 
                     for (NewGameObject object : newGameObjects) {
-                        object.updateVel(NewEngineConstants.dt);
+                        object.update();
+                        if (object.getInvM() == 0f) {
+                            continue;
+                        }
+                        object.updateVel(Constants.dt);
                     }
 
 
@@ -118,7 +121,7 @@ public class PhysicsService {
 //                    for (IShape shape : object.getShape().getSimpleShapes()) {
 //                        AABB outerAABB = new AABB(
 //                                shape.getAABB(),
-//                                object.getVel().mulEq(NewEngineConstants.dt)
+//                                object.getVel().mulEq(Constants.dt)
 //                        );
 //                        for (NewGameObject innerObject : newGameObjects) {
 //                            if (innerObject != object) {
@@ -137,11 +140,11 @@ public class PhysicsService {
 //                                                continue;
 //                                            }
 //                                            Vec2 relV = collision.getN().mulEq(dotProduct);
-//                                            float realLen = relV.mulEq(NewEngineConstants.dt).len();
+//                                            float realLen = relV.mulEq(Constants.dt).len();
 //                                            if (len > realLen) {
 //                                                continue;
 //                                            }
-//                                            object.getVel().minus(collision.getN().mulEq((realLen - len) / NewEngineConstants.dt));
+//                                            object.getVel().minus(collision.getN().mulEq((realLen - len) / Constants.dt));
 //                                            int i = 0;
 //                                        }
 //                                    }
@@ -154,7 +157,7 @@ public class PhysicsService {
 //                    if (object.getInvM() == 0) {
 //                        continue;
 //                    }
-                        object.updatePos(NewEngineConstants.dt);
+                        object.updatePos(Constants.dt);
 
 //                        System.err.println(object.getVel());
                     }

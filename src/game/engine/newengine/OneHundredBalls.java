@@ -35,9 +35,9 @@ public class OneHundredBalls implements IDrawable {
         );
         bottomBorder = new NewGameObject(bottomBorderShape, 0f);
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             IShape glassShape = new GlassShape();
-            glassShape.move(new Vec2(8.00f + 2.50f * i, NewEngineConstants.down));
+            glassShape.move(new Vec2(6.00f + 2.50f * i, Constants.up + 0.5f));
             GlassPhysicsObject glass = new GlassPhysicsObject(glassShape, 0f);
 //            glass.setAngleVel(0.05f);
             glasses.add(glass);
@@ -99,9 +99,9 @@ public class OneHundredBalls implements IDrawable {
                     }
                 }
 
-                for (GlassPhysicsObject glass : glasses) {
-                    glass.checkDirection();
-                }
+//                for (GlassPhysicsObject glass : glasses) {
+//                    glass.checkDirection();
+//                }
 
                 try {
                     Thread.sleep(1000 / 30);

@@ -38,7 +38,7 @@ public class GameField implements Runnable {
         while (true) {
             render();
             try {
-                Thread.sleep(20);
+                Thread.sleep(1000 / 60);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

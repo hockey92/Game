@@ -48,7 +48,7 @@ public class OneHundredBalls implements IDrawable {
         for (int i = 0; i < 100; i++) {
             float currX = x + 0.12f * (i % 16);
             float currY = y + 0.12f * (i / 16);
-            NewGameObject ball = new NewGameObject(new Circle(new Vec2(currX, currY), 0.0499f), 1f).setAcceleration(new Vec2(0f, 10.0f));
+            NewGameObject ball = new NewGameObject(new Circle(new Vec2(currX, currY), 0.047f), 1f).setAcceleration(new Vec2(0f, 10.0f));
             balls.add(ball);
         }
 

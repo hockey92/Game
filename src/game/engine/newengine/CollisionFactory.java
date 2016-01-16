@@ -75,10 +75,10 @@ public class CollisionFactory {
 //                return null;
 //            }
                 Vec2 n = v1.mulEq(1 / len);
-//                Vec2 r1 = n.mulEq(c.getR());
-//                Vec2 r2 = mutualPoint.minusEq(s.getCenter());
+                Vec2 r1 = n.mulEq(c.getR());
+                Vec2 r2 = mutualPoint.minusEq(s.getCenter());
                 float penetration = c.getR() - len;
-                return new Collision(null, null, n, penetration);
+                return new Collision(r1, r2, n, penetration);
             } else {
                 Vec2[] d = new Vec2[2];
                 Vec2 a = null;
@@ -96,9 +96,9 @@ public class CollisionFactory {
 //            }
                 Vec2 n = a.mulEq(1 / aLen);
                 float penetration = c.getR() - aLen;
-//                Vec2 r1 = n.mulEq(c.getR());
-//                Vec2 r2 = a.minusEq(s.getCenter());
-                return new Collision(null, null, n, penetration);
+                Vec2 r1 = n.mulEq(c.getR());
+                Vec2 r2 = a.minusEq(s.getCenter());
+                return new Collision(r1, r2, n, penetration);
             }
         } catch (Exception ex) {
             System.err.println(ex.getMessage());

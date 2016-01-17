@@ -7,7 +7,7 @@ public class GlassPhysicsObject extends NewGameObject {
     public final static float UP = 1.5f;
     public final static float DOWN = 5.5f;
 
-    private float velValue = 1.0f;
+    private float velValue = 1.3f;
     private static Segment[] path = {
             new Segment(new Vec2(RIGHT, UP), new Vec2(RIGHT, DOWN)),
             new Segment(new Vec2(RIGHT, DOWN), new Vec2(LEFT, DOWN)),

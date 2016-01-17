@@ -172,7 +172,7 @@ public class PhysicsService {
                 }
 
                 try {
-                    Thread.sleep(1000 / 30);
+                    Thread.sleep(1000 / 60);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

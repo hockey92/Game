@@ -17,7 +17,7 @@ public class ImpulseFactory {
 
 //        System.err.println(vrn);
 
-        vrn -= c.getPenetrationDepth() / Constants.dt;
+        vrn -= (c.getPenetrationDepth()/* + 0.01f*/) / Constants.dt;
 
 //        if (vrn >= 0) {
 //            return 0;

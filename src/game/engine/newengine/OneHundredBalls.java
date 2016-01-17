@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OneHundredBalls implements IDrawable {
 
-    private final int MAX_ACTIVE_BALLS_COUNT = 50;
+    private final int MAX_ACTIVE_BALLS_COUNT = 40;
 
     private NewGameObject container;
     private NewGameObject bottomBorder;
@@ -30,25 +30,28 @@ public class OneHundredBalls implements IDrawable {
         container = new NewGameObject(containerShape, 0f);
 //        container.setAngleVel(0.5f);
 
-        final IShape bottomBorderShape = new Segment(
-                new Vec2(0f, 7.40f),
-                new Vec2(7.00f, 7.40f)
-        );
+//        final IShape bottomBorderShape = new Segment(
+//                new Vec2(0f, 7.40f),
+//                new Vec2(7.00f, 7.40f)
+//        );
+
+        final IShape bottomBorderShape = new Circle(new Vec2(3f, 15.32f), 9f);
+
         bottomBorder = new NewGameObject(bottomBorderShape, 0f);
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 6; i++) {
             IShape glassShape = new GlassShape();
-            glassShape.move(new Vec2(6.00f + 2.50f * i, Constants.up + 0.5f));
+            glassShape.move(new Vec2(5.00f, Constants.up + 0.5f));
             GlassPhysicsObject glass = new GlassPhysicsObject(glassShape, 0f);
 //            glass.setAngleVel(0.05f);
             glasses.add(glass);
         }
 
-        float x = 2.10f;
+        float x = 1.57f;
         float y = 2.00f;
         for (int i = 0; i < 100; i++) {
-            float currX = x + 0.12f * (i % 16);
-            float currY = y + 0.12f * (i / 16);
+            float currX = x + 0.12f * (i % 15);
+            float currY = y + 0.12f * (i / 15);
             NewGameObject ball = new NewGameObject(new Circle(new Vec2(currX, currY), 0.045f), 1f).setAcceleration(new Vec2(0f, 10.0f));
             balls.add(ball);
         }

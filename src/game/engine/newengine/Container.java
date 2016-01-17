@@ -11,15 +11,15 @@ public class Container extends AbstractShape {
     private boolean isOpen = false;
 
     public Container() {
-        segments.add(new Segment(new Vec2(-1.00f, -0.80f), new Vec2(-1.00f, 0.20f)));
-        segments.add(new Segment(new Vec2(-1.00f, 0.20f), new Vec2(-0.10f, 0.90f)));
-        segments.add(new Segment(new Vec2(-0.10f, 0.90f), new Vec2(-0.10f, 1.10f)));
+        segments.add(new Segment(new Vec2(-1.50f, -0.80f), new Vec2(-1.50f, 0.20f)));
+        segments.add(new Segment(new Vec2(-1.50f, 0.20f), new Vec2(-0.12f, 0.90f)));
+        segments.add(new Segment(new Vec2(-0.12f, 0.90f), new Vec2(-0.12f, 1.15f)));
 
-        segments.add(new Segment(new Vec2(-0.10f, 1.10f), new Vec2(0.10f, 1.10f)));
+        segments.add(new Segment(new Vec2(-0.12f, 1.15f), new Vec2(0.12f, 1.15f)));
 
-        segments.add(new Segment(new Vec2(0.10f, 1.10f), new Vec2(0.10f, 0.90f)));
-        segments.add(new Segment(new Vec2(0.10f, 0.90f), new Vec2(1.00f, 0.20f)));
-        segments.add(new Segment(new Vec2(1.00f, 0.20f), new Vec2(1.00f, -0.80f)));
+        segments.add(new Segment(new Vec2(0.12f, 1.15f), new Vec2(0.12f, 0.90f)));
+        segments.add(new Segment(new Vec2(0.12f, 0.90f), new Vec2(1.50f, 0.20f)));
+        segments.add(new Segment(new Vec2(1.50f, 0.20f), new Vec2(1.50f, -0.80f)));
 //        segments.add(new Segment(new Vec2(1.00f, -0.80f), new Vec2(-1.00f, -0.80f)));
 
     }

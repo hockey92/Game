@@ -7,9 +7,12 @@ public class ImpulseFactory {
     private final static float beta = 0.1f;
     private final static float alpha = 0.4f;
 
-    public static float createImpulse(NewGameObject o1, NewGameObject o2, Collision c) {
+    public static float createImpulse(NewGameObject o1, NewGameObject o2, Collision c, float invM) {
 
-        Vec2 vr = o2.getVel().minusEq(o1.getVel());
+        Vec2 v1 = o1.getVel().plusEq(Vec2.getCrossProd(o1.getAngleVel(), c.getR1()));
+        Vec2 v2 = o2.getVel().plusEq(Vec2.getCrossProd(o2.getAngleVel(), c.getR2()));
+
+        Vec2 vr = v2.minusEq(v1);
         float vrn = Vec2.getDotProd(vr, c.getN());
 
 //        System.err.println(vrn);
@@ -21,7 +24,7 @@ public class ImpulseFactory {
 //        }
 
 //        if (c.getPenetrationDepth() >= 0) {
-        return (-1f * vrn /*+ getB(c, vrn)*/) / (o1.getInvM() + o2.getInvM());
+        return (-1f * vrn /*+ getB(c, vrn)*/) * invM;
 //        } else {
 //            vrn -= c.getPenetrationDepth() / Constants.dt;
 //            if (vrn >= 0) {

@@ -16,11 +16,25 @@ public class Collision {
         return r[i];
     }
 
+    public Vec2 getR1() {
+        return r[0];
+    }
+
+    public Vec2 getR2() {
+        return r[1];
+    }
+
     public float getPenetrationDepth() {
         return penetrationDepth;
     }
 
     public Vec2 getN() {
         return n;
+    }
+
+    public void swapR() {
+        Vec2 temp = r[0];
+        r[0] = r[1];
+        r[1] = temp;
     }
 }

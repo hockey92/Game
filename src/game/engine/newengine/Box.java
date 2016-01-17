@@ -11,8 +11,9 @@ public class Box extends AbstractShape {
 
     public Box() {
         segments.add(new Segment(new Vec2(-1, -1), new Vec2(-1, 1)));
-        segments.add(new Segment(new Vec2(-1, 1), new Vec2(1, 1)));
-        segments.add(new Segment(new Vec2(1, 1), new Vec2(1, -1)));
+        segments.add(new Segment(new Vec2(-1, 1), new Vec2(1, 1.5f)));
+//        segments.add(new Segment(new Vec2(1, 1), new Vec2(1, -1)));
+//        segments.add(new Segment(new Vec2(1, -1), new Vec2(-1, -1)));
     }
 
     @Override
@@ -25,7 +26,9 @@ public class Box extends AbstractShape {
 
     @Override
     public void rotate(float angle) {
-
+        for (IShape shape : getSimpleShapes()) {
+            shape.rotate(angle);
+        }
     }
 
     @Override

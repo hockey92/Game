@@ -1,6 +1,10 @@
 package game.engine.gamefield;
 
+import game.engine.newengine.NewEngineConstraint;
+import game.engine.newengine.PhysicsService;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class GameField implements Runnable {
@@ -26,6 +30,10 @@ public class GameField implements Runnable {
     public void render() {
         drawContext.startRendering();
         synchronized (objectsToDraw) {
+            Collection<NewEngineConstraint> constraints = PhysicsService.getInstance().getConstraints();
+            for (IDrawable objectToDraw : constraints) {
+                objectToDraw.draw(drawContext);
+            }
             for (IDrawable objectToDraw : objectsToDraw) {
                 objectToDraw.draw(drawContext);
             }

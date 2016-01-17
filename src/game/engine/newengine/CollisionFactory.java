@@ -12,6 +12,7 @@ public class CollisionFactory {
             Collision c = createCollision((Circle) shape2, (Segment) shape1);
             if (c != null) {
                 c.getN().mul(-1f);
+                c.swapR();
                 return c;
             }
         }
@@ -82,6 +83,7 @@ public class CollisionFactory {
             } else {
                 Vec2[] d = new Vec2[2];
                 Vec2 a = null;
+                int pointNum = 0;
                 Float aLen = null;
                 for (int i = 0; i < 2; i++) {
                     d[i] = s.getCoord(i).minusEq(c.getCenterCoords());
@@ -89,6 +91,7 @@ public class CollisionFactory {
                     if (a == null || len < aLen) {
                         a = d[i];
                         aLen = len;
+                        pointNum = i;
                     }
                 }
 //            if (aLen > c1.getR()) {
@@ -97,7 +100,7 @@ public class CollisionFactory {
                 Vec2 n = a.mulEq(1 / aLen);
                 float penetration = c.getR() - aLen;
                 Vec2 r1 = n.mulEq(c.getR());
-                Vec2 r2 = a.minusEq(s.getCenter());
+                Vec2 r2 = s.getCoord(pointNum).minusEq(s.getCenter());
                 return new Collision(r1, r2, n, penetration);
             }
         } catch (Exception ex) {

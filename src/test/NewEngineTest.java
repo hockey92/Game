@@ -50,9 +50,15 @@ public class NewEngineTest {
 //        final IShape glass = new GlassShape();
 //        glass.move(new Vec2(400, 700));
 
-        final IShape box = new Box();
-        box.move(new Vec2(3, 6));
-        gameObjects.add(new NewGameObject(box, 0f));
+        final IShape boxShape = new Container();
+        boxShape.move(new Vec2(3, 6));
+
+        boxShape.rotate(1.2f);
+
+        NewGameObject box = new NewGameObject(boxShape, 0f);
+        box.setAngleVel(0.5f);
+
+        gameObjects.add(box);
 
 //        NewGameObject glassObject = new NewGameObject(glass, 0f);
 //
@@ -84,7 +90,7 @@ public class NewEngineTest {
             public void mousePressed(MouseEvent e) {
 //                ((Container) container).open();
 //
-                IShape newCircle = new Circle(new Vec2((float) e.getX() / 100f, (float) e.getY() / 100f), 0.2f);
+                IShape newCircle = new Circle(new Vec2((float) e.getX() / 100f, (float) e.getY() / 100f), 0.05f);
 
                 PhysicsService.getInstance().addGameObject(
                         new NewGameObject(

@@ -12,12 +12,15 @@ public class Container extends AbstractShape {
 
     public Container() {
         segments.add(new Segment(new Vec2(-1.00f, -0.80f), new Vec2(-1.00f, 0.20f)));
-        segments.add(new Segment(new Vec2(-1.00f, 0.20f), new Vec2(-0.10f, 1.00f)));
-        segments.add(new Segment(new Vec2(-0.10f, 1.00f), new Vec2(-0.10f, 1.20f)));
-        segments.add(new Segment(new Vec2(-0.10f, 1.20f), new Vec2(0.10f, 1.20f)));
-        segments.add(new Segment(new Vec2(0.10f, 1.20f), new Vec2(0.10f, 1.00f)));
-        segments.add(new Segment(new Vec2(0.10f, 1.00f), new Vec2(1.00f, 0.20f)));
+        segments.add(new Segment(new Vec2(-1.00f, 0.20f), new Vec2(-0.10f, 0.90f)));
+        segments.add(new Segment(new Vec2(-0.10f, 0.90f), new Vec2(-0.10f, 1.10f)));
+
+        segments.add(new Segment(new Vec2(-0.10f, 1.10f), new Vec2(0.10f, 1.10f)));
+
+        segments.add(new Segment(new Vec2(0.10f, 1.10f), new Vec2(0.10f, 0.90f)));
+        segments.add(new Segment(new Vec2(0.10f, 0.90f), new Vec2(1.00f, 0.20f)));
         segments.add(new Segment(new Vec2(1.00f, 0.20f), new Vec2(1.00f, -0.80f)));
+//        segments.add(new Segment(new Vec2(1.00f, -0.80f), new Vec2(-1.00f, -0.80f)));
 
     }
 
@@ -32,6 +35,7 @@ public class Container extends AbstractShape {
 
     @Override
     public void move(Vec2 coords) {
+        super.move(coords);
         for (IShape segment : segments) {
             segment.move(coords);
         }
@@ -39,7 +43,9 @@ public class Container extends AbstractShape {
 
     @Override
     public void rotate(float angle) {
-
+        for (IShape shape : getSimpleShapes()) {
+            shape.rotate(angle);
+        }
     }
 
     @Override

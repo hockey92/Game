@@ -7,11 +7,10 @@ public class NewGameObject implements IDrawable {
 
     private IShape shape;
     private float invM;
+    private float invI = 0;
     private Vec2 vel = new Vec2(0, 0);
     private Vec2 acc = new Vec2(0, 0);
     private float angleVel = 0f;
-
-    private final static float MAX_VEL = 15f;
 
     public NewGameObject(IShape shape, float invM) {
         this.shape = shape;
@@ -35,6 +34,10 @@ public class NewGameObject implements IDrawable {
         return invM;
     }
 
+    public float getInvI() {
+        return invI;
+    }
+
     public void setVel(Vec2 vel) {
         this.vel = vel;
     }
@@ -56,8 +59,9 @@ public class NewGameObject implements IDrawable {
         shape.move(vel.mulEq(dt));
     }
 
-    public void applyImpulse(Vec2 impulse) {
-        vel.plus(impulse.mulEq(invM));
+    public void applyImpulse(Vec2 dVel, float dAngleVel) {
+        vel.plus(dVel);
+//        angleVel += dAngleVel;
     }
 
     public void update() {

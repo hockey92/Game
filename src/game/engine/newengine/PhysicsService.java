@@ -4,6 +4,7 @@ import game.engine.physics.IConstraint;
 
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PhysicsService {
     private static PhysicsService instance;
@@ -12,6 +13,7 @@ public class PhysicsService {
     private final Object mutex = new Object();
     private final List<NewGameObject> newGameObjects = new ArrayList<NewGameObject>();
     private final List<NewGameObject> objectsToAdd = new ArrayList<NewGameObject>();
+    private final Map<Pair, NewEngineConstraint> constraints = new ConcurrentHashMap<Pair, NewEngineConstraint>();
 
     private Map<Pair, NewEngineConstraint> prevConstraints = new HashMap<Pair, NewEngineConstraint>();
 
@@ -48,12 +50,17 @@ public class PhysicsService {
         }
     }
 
+    public Collection<NewEngineConstraint> getConstraints() {
+        return new ArrayList<NewEngineConstraint>(constraints.values());
+    }
+
     private class PhysicsServiceThread extends Thread {
 
         @Override
         public void run() {
             while (true) {
                 synchronized (mutex) {
+                    constraints.clear();
                     System.err.println("time" + System.currentTimeMillis());
                     newGameObjects.addAll(objectsToAdd);
                     objectsToAdd.clear();
@@ -66,8 +73,6 @@ public class PhysicsService {
                         object.updateVel(Constants.dt);
                     }
 
-
-                    Map<Pair, NewEngineConstraint> constraints = new HashMap<Pair, NewEngineConstraint>();
                     for (int i = 0; i < newGameObjects.size(); i++) {
                         for (int j = i + 1; j < newGameObjects.size(); j++) {
                             NewGameObject o1 = newGameObjects.get(i);
@@ -167,7 +172,7 @@ public class PhysicsService {
                 }
 
                 try {
-                    Thread.sleep(1000 / 60);
+                    Thread.sleep(1000 / 30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

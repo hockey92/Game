@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OneHundredBalls implements IDrawable {
 
-    private final int MAX_ACTIVE_BALLS_COUNT = 40;
+    private final int MAX_ACTIVE_BALLS_COUNT = 50;
 
     private NewGameObject container;
     private NewGameObject bottomBorder;
@@ -28,6 +28,7 @@ public class OneHundredBalls implements IDrawable {
         final IShape containerShape = new Container();
         containerShape.move(new Vec2(3.00f, 2.75f));
         container = new NewGameObject(containerShape, 0f);
+//        container.setAngleVel(0.5f);
 
         final IShape bottomBorderShape = new Segment(
                 new Vec2(0f, 7.40f),
@@ -48,7 +49,7 @@ public class OneHundredBalls implements IDrawable {
         for (int i = 0; i < 100; i++) {
             float currX = x + 0.12f * (i % 16);
             float currY = y + 0.12f * (i / 16);
-            NewGameObject ball = new NewGameObject(new Circle(new Vec2(currX, currY), 0.047f), 1f).setAcceleration(new Vec2(0f, 10.0f));
+            NewGameObject ball = new NewGameObject(new Circle(new Vec2(currX, currY), 0.045f), 1f).setAcceleration(new Vec2(0f, 10.0f));
             balls.add(ball);
         }
 
@@ -98,10 +99,6 @@ public class OneHundredBalls implements IDrawable {
                         activeBalls++;
                     }
                 }
-
-//                for (GlassPhysicsObject glass : glasses) {
-//                    glass.checkDirection();
-//                }
 
                 try {
                     Thread.sleep(1000 / 30);
